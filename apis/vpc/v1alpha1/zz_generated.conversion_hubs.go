@@ -7,7 +7,40 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *Entry) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GatewayEndpoint) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GatewayEndpointRouteTableAttachment) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GatewayRouteTableAttachment) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *NATIP) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *NATIPCidr) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Table) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *TableAttachment) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *VPC) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *VPCPeerConnection) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *VPCPeerConnectionAccepter) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *VPCRouteEntry) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *Vswitch) Hub() {}

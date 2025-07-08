@@ -1,0 +1,77 @@
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: NATIPCidr
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/natipcidr
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    natGatewayIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    natIpCidr: 192.168.0.0/16
+    natIpCidrName: terraform-example
+    region: cn-beijing
+
+---
+
+apiVersion: nat.alibabacloud.crossplane.io/v1alpha1
+kind: Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/natipcidr
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    description: terraform-example
+    internetChargeType: PayByLcu
+    natGatewayName: terraform-example
+    natType: Enhanced
+    networkType: intranet
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    vswitchIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/natipcidr
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cidrBlock: 172.16.0.0/12
+    region: cn-beijing
+    vpcName: terraform-example
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: Vswitch
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/natipcidr
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cidrBlock: 172.16.0.0/21
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    vswitchName: terraform-example
+    zoneId: ${data.alicloud_zones.example.zones.0.id}

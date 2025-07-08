@@ -8,10 +8,593 @@ package v1alpha1
 
 import (
 	"context"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ecs/v1alpha1"
+	v1alpha11 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/nat/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
+	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+// ResolveReferences of this Entry.
+func (mg *Entry) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.NexthopID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.NexthopIDRef,
+		Selector:     mg.Spec.ForProvider.NexthopIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.InstanceList{},
+			Managed: &v1alpha1.Instance{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.NexthopID")
+	}
+	mg.Spec.ForProvider.NexthopID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NexthopIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RouteTableID),
+		Extract:      resource.ExtractParamPath("route_table_id", true),
+		Reference:    mg.Spec.ForProvider.RouteTableIDRef,
+		Selector:     mg.Spec.ForProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RouteTableID")
+	}
+	mg.Spec.ForProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.NexthopID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.NexthopIDRef,
+		Selector:     mg.Spec.InitProvider.NexthopIDSelector,
+		To: reference.To{
+			List:    &v1alpha1.InstanceList{},
+			Managed: &v1alpha1.Instance{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.NexthopID")
+	}
+	mg.Spec.InitProvider.NexthopID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.NexthopIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RouteTableID),
+		Extract:      resource.ExtractParamPath("route_table_id", true),
+		Reference:    mg.Spec.InitProvider.RouteTableIDRef,
+		Selector:     mg.Spec.InitProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.RouteTableID")
+	}
+	mg.Spec.InitProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this GatewayEndpoint.
+func (mg *GatewayEndpoint) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VPCID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VPCIDRef,
+		Selector:     mg.Spec.ForProvider.VPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VPCID")
+	}
+	mg.Spec.ForProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VPCIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VPCID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.VPCIDRef,
+		Selector:     mg.Spec.InitProvider.VPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VPCID")
+	}
+	mg.Spec.InitProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VPCIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this GatewayEndpointRouteTableAttachment.
+func (mg *GatewayEndpointRouteTableAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.GatewayEndpointID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.GatewayEndpointIDRef,
+		Selector:     mg.Spec.ForProvider.GatewayEndpointIDSelector,
+		To: reference.To{
+			List:    &GatewayEndpointList{},
+			Managed: &GatewayEndpoint{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.GatewayEndpointID")
+	}
+	mg.Spec.ForProvider.GatewayEndpointID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.GatewayEndpointIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RouteTableID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.RouteTableIDRef,
+		Selector:     mg.Spec.ForProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &TableList{},
+			Managed: &Table{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RouteTableID")
+	}
+	mg.Spec.ForProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.GatewayEndpointID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.GatewayEndpointIDRef,
+		Selector:     mg.Spec.InitProvider.GatewayEndpointIDSelector,
+		To: reference.To{
+			List:    &GatewayEndpointList{},
+			Managed: &GatewayEndpoint{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.GatewayEndpointID")
+	}
+	mg.Spec.InitProvider.GatewayEndpointID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.GatewayEndpointIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RouteTableID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.RouteTableIDRef,
+		Selector:     mg.Spec.InitProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &TableList{},
+			Managed: &Table{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.RouteTableID")
+	}
+	mg.Spec.InitProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this GatewayRouteTableAttachment.
+func (mg *GatewayRouteTableAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RouteTableID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.RouteTableIDRef,
+		Selector:     mg.Spec.ForProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &TableList{},
+			Managed: &Table{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RouteTableID")
+	}
+	mg.Spec.ForProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RouteTableID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.RouteTableIDRef,
+		Selector:     mg.Spec.InitProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &TableList{},
+			Managed: &Table{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.RouteTableID")
+	}
+	mg.Spec.InitProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this NATIP.
+func (mg *NATIP) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.NATGatewayID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.NATGatewayIDRef,
+		Selector:     mg.Spec.ForProvider.NATGatewayIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.GatewayList{},
+			Managed: &v1alpha11.Gateway{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.NATGatewayID")
+	}
+	mg.Spec.ForProvider.NATGatewayID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NATGatewayIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.NATIPCidr),
+		Extract:      resource.ExtractParamPath("nat_ip_cidr", false),
+		Reference:    mg.Spec.ForProvider.NATIPCidrRef,
+		Selector:     mg.Spec.ForProvider.NATIPCidrSelector,
+		To: reference.To{
+			List:    &NATIPCidrList{},
+			Managed: &NATIPCidr{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.NATIPCidr")
+	}
+	mg.Spec.ForProvider.NATIPCidr = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NATIPCidrRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.NATGatewayID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.NATGatewayIDRef,
+		Selector:     mg.Spec.InitProvider.NATGatewayIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.GatewayList{},
+			Managed: &v1alpha11.Gateway{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.NATGatewayID")
+	}
+	mg.Spec.InitProvider.NATGatewayID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.NATGatewayIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.NATIPCidr),
+		Extract:      resource.ExtractParamPath("nat_ip_cidr", false),
+		Reference:    mg.Spec.InitProvider.NATIPCidrRef,
+		Selector:     mg.Spec.InitProvider.NATIPCidrSelector,
+		To: reference.To{
+			List:    &NATIPCidrList{},
+			Managed: &NATIPCidr{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.NATIPCidr")
+	}
+	mg.Spec.InitProvider.NATIPCidr = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.NATIPCidrRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this NATIPCidr.
+func (mg *NATIPCidr) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.NATGatewayID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.NATGatewayIDRef,
+		Selector:     mg.Spec.ForProvider.NATGatewayIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.GatewayList{},
+			Managed: &v1alpha11.Gateway{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.NATGatewayID")
+	}
+	mg.Spec.ForProvider.NATGatewayID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.NATGatewayIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.NATGatewayID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.NATGatewayIDRef,
+		Selector:     mg.Spec.InitProvider.NATGatewayIDSelector,
+		To: reference.To{
+			List:    &v1alpha11.GatewayList{},
+			Managed: &v1alpha11.Gateway{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.NATGatewayID")
+	}
+	mg.Spec.InitProvider.NATGatewayID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.NATGatewayIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this Table.
+func (mg *Table) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VPCID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VPCIDRef,
+		Selector:     mg.Spec.ForProvider.VPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VPCID")
+	}
+	mg.Spec.ForProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VPCIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VPCID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.VPCIDRef,
+		Selector:     mg.Spec.InitProvider.VPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VPCID")
+	}
+	mg.Spec.InitProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VPCIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this TableAttachment.
+func (mg *TableAttachment) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.RouteTableID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.RouteTableIDRef,
+		Selector:     mg.Spec.ForProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &TableList{},
+			Managed: &Table{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.RouteTableID")
+	}
+	mg.Spec.ForProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VswitchID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VswitchIDRef,
+		Selector:     mg.Spec.ForProvider.VswitchIDSelector,
+		To: reference.To{
+			List:    &VswitchList{},
+			Managed: &Vswitch{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VswitchID")
+	}
+	mg.Spec.ForProvider.VswitchID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VswitchIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.RouteTableID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.RouteTableIDRef,
+		Selector:     mg.Spec.InitProvider.RouteTableIDSelector,
+		To: reference.To{
+			List:    &TableList{},
+			Managed: &Table{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.RouteTableID")
+	}
+	mg.Spec.InitProvider.RouteTableID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.RouteTableIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VswitchID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.VswitchIDRef,
+		Selector:     mg.Spec.InitProvider.VswitchIDSelector,
+		To: reference.To{
+			List:    &VswitchList{},
+			Managed: &Vswitch{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VswitchID")
+	}
+	mg.Spec.InitProvider.VswitchID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VswitchIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this VPCPeerConnection.
+func (mg *VPCPeerConnection) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.AcceptingVPCID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.AcceptingVPCIDRef,
+		Selector:     mg.Spec.ForProvider.AcceptingVPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.AcceptingVPCID")
+	}
+	mg.Spec.ForProvider.AcceptingVPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.AcceptingVPCIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.VPCID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.ForProvider.VPCIDRef,
+		Selector:     mg.Spec.ForProvider.VPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.VPCID")
+	}
+	mg.Spec.ForProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.VPCIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.AcceptingVPCID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.AcceptingVPCIDRef,
+		Selector:     mg.Spec.InitProvider.AcceptingVPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.AcceptingVPCID")
+	}
+	mg.Spec.InitProvider.AcceptingVPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.AcceptingVPCIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.VPCID),
+		Extract:      reference.ExternalName(),
+		Reference:    mg.Spec.InitProvider.VPCIDRef,
+		Selector:     mg.Spec.InitProvider.VPCIDSelector,
+		To: reference.To{
+			List:    &VPCList{},
+			Managed: &VPC{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.VPCID")
+	}
+	mg.Spec.InitProvider.VPCID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.VPCIDRef = rsp.ResolvedReference
+
+	return nil
+}
+
+// ResolveReferences of this VPCPeerConnectionAccepter.
+func (mg *VPCPeerConnectionAccepter) ResolveReferences(ctx context.Context, c client.Reader) error {
+	r := reference.NewAPIResolver(c, mg)
+
+	var rsp reference.ResolutionResponse
+	var err error
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.InstanceID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.ForProvider.InstanceIDRef,
+		Selector:     mg.Spec.ForProvider.InstanceIDSelector,
+		To: reference.To{
+			List:    &VPCPeerConnectionList{},
+			Managed: &VPCPeerConnection{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.ForProvider.InstanceID")
+	}
+	mg.Spec.ForProvider.InstanceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.ForProvider.InstanceIDRef = rsp.ResolvedReference
+
+	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
+		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.InstanceID),
+		Extract:      resource.ExtractResourceID(),
+		Reference:    mg.Spec.InitProvider.InstanceIDRef,
+		Selector:     mg.Spec.InitProvider.InstanceIDSelector,
+		To: reference.To{
+			List:    &VPCPeerConnectionList{},
+			Managed: &VPCPeerConnection{},
+		},
+	})
+	if err != nil {
+		return errors.Wrap(err, "mg.Spec.InitProvider.InstanceID")
+	}
+	mg.Spec.InitProvider.InstanceID = reference.ToPtrValue(rsp.ResolvedValue)
+	mg.Spec.InitProvider.InstanceIDRef = rsp.ResolvedReference
+
+	return nil
+}
 
 // ResolveReferences of this Vswitch.
 func (mg *Vswitch) ResolveReferences(ctx context.Context, c client.Reader) error {

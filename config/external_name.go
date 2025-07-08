@@ -103,6 +103,11 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"alicloud_security_group":      config.IdentifierFromProvider,
 	"alicloud_security_group_rule": config.IdentifierFromProvider,
 
+	// Elastic IP Address (EIP)
+	"alicloud_eip":             config.IdentifierFromProvider,
+	"alicloud_eip_address":     config.IdentifierFromProvider,
+	"alicloud_eip_association": config.IdentifierFromProvider,
+
 	// KMS
 	"alicloud_kms_alias":    config.IdentifierFromProvider,
 	"alicloud_kms_instance": config.IdentifierFromProvider,
@@ -197,8 +202,24 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"alicloud_redis_tair_instance":      config.IdentifierFromProvider,
 
 	// VPC
-	"alicloud_vpc":     config.IdentifierFromProvider,
-	"alicloud_vswitch": config.IdentifierFromProvider,
+	"alicloud_vpc":                                         config.IdentifierFromProvider,
+	"alicloud_vswitch":                                     config.IdentifierFromProvider,
+	"alicloud_route_entry":                                 config.IdentifierFromProvider,
+	"alicloud_route_table":                                 config.IdentifierFromProvider,
+	"alicloud_route_table_attachment":                      config.IdentifierFromProvider,
+	"alicloud_vpc_gateway_endpoint":                        config.IdentifierFromProvider,
+	"alicloud_vpc_gateway_endpoint_route_table_attachment": config.IdentifierFromProvider,
+	"alicloud_vpc_gateway_route_table_attachment":          config.IdentifierFromProvider,
+	"alicloud_vpc_peer_connection":                         config.IdentifierFromProvider,
+	"alicloud_vpc_peer_connection_accepter":                config.IdentifierFromProvider,
+	"alicloud_vpc_route_entry":                             config.IdentifierFromProvider,
+
+	// NAT Gateway
+	"alicloud_forward_entry":   config.IdentifierFromProvider,
+	"alicloud_nat_gateway":     config.IdentifierFromProvider,
+	"alicloud_snat_entry":      config.IdentifierFromProvider,
+	"alicloud_vpc_nat_ip":      config.IdentifierFromProvider,
+	"alicloud_vpc_nat_ip_cidr": config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

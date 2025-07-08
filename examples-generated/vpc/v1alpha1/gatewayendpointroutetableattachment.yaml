@@ -1,0 +1,80 @@
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: GatewayEndpointRouteTableAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/gatewayendpointroutetableattachment
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    gatewayEndpointIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: defaultGE
+    region: cn-beijing
+    routeTableIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: defaultRT
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: Table
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/gatewayendpointroutetableattachment
+  labels:
+    testing.upbound.io/example-name: defaultRT
+  name: defaultrt
+spec:
+  forProvider:
+    region: cn-beijing
+    routeTableName: ${var.name}2
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: defaulteVpc
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/gatewayendpointroutetableattachment
+  labels:
+    testing.upbound.io/example-name: defaulteVpc
+  name: defaultevpc
+spec:
+  forProvider:
+    description: test
+    region: cn-beijing
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: GatewayEndpoint
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/gatewayendpointroutetableattachment
+  labels:
+    testing.upbound.io/example-name: defaultGE
+  name: defaultge
+spec:
+  forProvider:
+    gatewayEndpointDescrption: test-gateway-endpoint
+    gatewayEndpointName: ${var.name}1
+    policyDocument: |2
+              {
+                "Version": "1",
+                "Statement": [{
+                  "Effect": "Allow",
+                  "Resource": ["*"],
+                  "Action": ["*"],
+                  "Principal": ["*"]
+                }]
+              }
+    region: cn-beijing
+    serviceName: com.aliyun.cn-hangzhou.oss
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: defaulteVpc

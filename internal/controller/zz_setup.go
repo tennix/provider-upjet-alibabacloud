@@ -31,6 +31,7 @@ import (
 	rule "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alb/rule"
 	securitypolicy "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alb/securitypolicy"
 	servergroup "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alb/servergroup"
+	eip "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alicloud/eip"
 	addresspool "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alidns/addresspool"
 	customline "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alidns/customline"
 	domain "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/alidns/domain"
@@ -82,6 +83,9 @@ import (
 	snapshot "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ecs/snapshot"
 	snapshotgroup "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ecs/snapshotgroup"
 	storagecapacityunit "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ecs/storagecapacityunit"
+	address "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/eip/address"
+	association "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/eip/association"
+	entry "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/forward/entry"
 	alias "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/kms/alias"
 	instancekms "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/kms/instance"
 	key "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/kms/key"
@@ -91,6 +95,7 @@ import (
 	queue "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/messageservice/queue"
 	subscription "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/messageservice/subscription"
 	topic "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/messageservice/topic"
+	gateway "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/nat/gateway"
 	accesspoint "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/oss/accesspoint"
 	accountpublicaccessblock "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/oss/accountpublicaccessblock"
 	bucket "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/oss/bucket"
@@ -155,12 +160,24 @@ import (
 	user "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ram/user"
 	usergroupattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ram/usergroupattachment"
 	userpolicyattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ram/userpolicyattachment"
+	entrysnat "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/snat/entry"
 	accounttair "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/account"
 	auditlogconfig "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/auditlogconfig"
 	connection "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/connection"
 	instancetair "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/instance"
 	tairinstance "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/tairinstance"
+	entryvpc "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/entry"
+	gatewayendpoint "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/gatewayendpoint"
+	gatewayendpointroutetableattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/gatewayendpointroutetableattachment"
+	gatewayroutetableattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/gatewayroutetableattachment"
+	natip "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/natip"
+	natipcidr "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/natipcidr"
+	table "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/table"
+	tableattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/tableattachment"
 	vpc "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpc"
+	vpcpeerconnection "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpcpeerconnection"
+	vpcpeerconnectionaccepter "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpcpeerconnectionaccepter"
+	vpcrouteentry "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpcrouteentry"
 	vswitch "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vswitch"
 )
 
@@ -190,6 +207,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		rule.Setup,
 		securitypolicy.Setup,
 		servergroup.Setup,
+		eip.Setup,
 		addresspool.Setup,
 		customline.Setup,
 		domain.Setup,
@@ -241,6 +259,9 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		snapshot.Setup,
 		snapshotgroup.Setup,
 		storagecapacityunit.Setup,
+		address.Setup,
+		association.Setup,
+		entry.Setup,
 		alias.Setup,
 		instancekms.Setup,
 		key.Setup,
@@ -250,6 +271,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		queue.Setup,
 		subscription.Setup,
 		topic.Setup,
+		gateway.Setup,
 		accesspoint.Setup,
 		accountpublicaccessblock.Setup,
 		bucket.Setup,
@@ -314,12 +336,24 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		user.Setup,
 		usergroupattachment.Setup,
 		userpolicyattachment.Setup,
+		entrysnat.Setup,
 		accounttair.Setup,
 		auditlogconfig.Setup,
 		connection.Setup,
 		instancetair.Setup,
 		tairinstance.Setup,
+		entryvpc.Setup,
+		gatewayendpoint.Setup,
+		gatewayendpointroutetableattachment.Setup,
+		gatewayroutetableattachment.Setup,
+		natip.Setup,
+		natipcidr.Setup,
+		table.Setup,
+		tableattachment.Setup,
 		vpc.Setup,
+		vpcpeerconnection.Setup,
+		vpcpeerconnectionaccepter.Setup,
+		vpcrouteentry.Setup,
 		vswitch.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

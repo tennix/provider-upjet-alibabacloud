@@ -1,0 +1,56 @@
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPCPeerConnection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/vpcpeerconnection
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    acceptingAliUid: ${data.alicloud_account.default.id}
+    acceptingRegionId: ${var.accepting_region}
+    acceptingVpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: accepting_vpc
+    description: terraform-example
+    peerConnectionName: terraform-example
+    provider: ${alicloud.local}
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: local_vpc
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/vpcpeerconnection
+  labels:
+    testing.upbound.io/example-name: accepting_vpc
+  name: accepting-vpc
+spec:
+  forProvider:
+    cidrBlock: 172.17.3.0/24
+    provider: ${alicloud.accepting}
+    region: cn-beijing
+    vpcName: terraform-example
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/vpcpeerconnection
+  labels:
+    testing.upbound.io/example-name: local_vpc
+  name: local-vpc
+spec:
+  forProvider:
+    cidrBlock: 172.17.3.0/24
+    provider: ${alicloud.local}
+    region: cn-beijing
+    vpcName: terraform-example

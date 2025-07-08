@@ -13,17 +13,22 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ack/v1alpha1"
 	v1alpha1ackone "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ackone/v1alpha1"
 	v1alpha1alb "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/alb/v1alpha1"
+	v1alpha1alicloud "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/alicloud/v1alpha1"
 	v1alpha1alidns "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/alidns/v1alpha1"
 	v1alpha1cdn "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/cdn/v1alpha1"
 	v1alpha1cloudmonitorservice "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/cloudmonitorservice/v1alpha1"
 	v1alpha1ecs "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ecs/v1alpha1"
+	v1alpha1eip "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1"
+	v1alpha1forward "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/forward/v1alpha1"
 	v1alpha1kms "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/kms/v1alpha1"
 	v1alpha1messageservice "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/messageservice/v1alpha1"
+	v1alpha1nat "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/nat/v1alpha1"
 	v1alpha1oss "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1"
 	v1alpha1polardb "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/polardb/v1alpha1"
 	v1alpha1privatelink "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/privatelink/v1alpha1"
 	v1alpha1quotas "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/quotas/v1alpha1"
 	v1alpha1ram "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ram/v1alpha1"
+	v1alpha1snat "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/snat/v1alpha1"
 	v1alpha1tair "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/tair/v1alpha1"
 	v1alpha1apis "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/v1beta1"
@@ -36,17 +41,22 @@ func init() {
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1ackone.SchemeBuilder.AddToScheme,
 		v1alpha1alb.SchemeBuilder.AddToScheme,
+		v1alpha1alicloud.SchemeBuilder.AddToScheme,
 		v1alpha1alidns.SchemeBuilder.AddToScheme,
 		v1alpha1cdn.SchemeBuilder.AddToScheme,
 		v1alpha1cloudmonitorservice.SchemeBuilder.AddToScheme,
 		v1alpha1ecs.SchemeBuilder.AddToScheme,
+		v1alpha1eip.SchemeBuilder.AddToScheme,
+		v1alpha1forward.SchemeBuilder.AddToScheme,
 		v1alpha1kms.SchemeBuilder.AddToScheme,
 		v1alpha1messageservice.SchemeBuilder.AddToScheme,
+		v1alpha1nat.SchemeBuilder.AddToScheme,
 		v1alpha1oss.SchemeBuilder.AddToScheme,
 		v1alpha1polardb.SchemeBuilder.AddToScheme,
 		v1alpha1privatelink.SchemeBuilder.AddToScheme,
 		v1alpha1quotas.SchemeBuilder.AddToScheme,
 		v1alpha1ram.SchemeBuilder.AddToScheme,
+		v1alpha1snat.SchemeBuilder.AddToScheme,
 		v1alpha1tair.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,

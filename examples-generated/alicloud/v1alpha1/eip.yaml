@@ -1,0 +1,13 @@
+apiVersion: alicloud.alibabacloud.crossplane.io/v1alpha1
+kind: EIP
+metadata:
+  annotations:
+    meta.upbound.io/example-id: alicloud/v1alpha1/eip
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    bandwidth: "10"
+    internetChargeType: PayByBandwidth
+    region: cn-beijing

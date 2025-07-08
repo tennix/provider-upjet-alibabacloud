@@ -19,4 +19,6 @@ const (
 	SLS                 = ShortGroup("sls")
 	Tair                = ShortGroup("tair")
 	VPC                 = ShortGroup("vpc")
+	EIP                 = ShortGroup("eip")
+	NATGateway          = ShortGroup("natgateway")
 )
