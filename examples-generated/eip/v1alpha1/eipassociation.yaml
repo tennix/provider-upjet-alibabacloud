@@ -1,0 +1,114 @@
+apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
+kind: EIPAssociation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allocationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    instanceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    region: cn-beijing
+
+---
+
+apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
+kind: EIPAddress
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    addressName: ${var.name}
+    region: cn-beijing
+
+---
+
+apiVersion: ecs.alibabacloud.crossplane.io/v1alpha1
+kind: Instance
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    availabilityZone: ${data.alicloud_zones.example.zones.0.id}
+    imageIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: alicloud_images
+    instanceName: ${var.name}
+    instanceType: ${data.alicloud_instance_types.example.instance_types.0.id}
+    region: cn-beijing
+    securityGroupRefs:
+    - name: example
+    tags:
+      Created: TF
+      For: example
+    vswitchIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: ecs.alibabacloud.crossplane.io/v1alpha1
+kind: SecurityGroup
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: ${var.name}
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cidrBlock: 10.4.0.0/16
+    region: cn-beijing
+    vpcName: ${var.name}
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: Vswitch
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipassociation
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cidrBlock: 10.4.0.0/24
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    vswitchName: ${var.name}
+    zoneId: ${data.alicloud_zones.example.zones.0.id}

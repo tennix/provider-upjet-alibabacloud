@@ -7,7 +7,22 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *GatewayEndpoint) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *GatewayEndpointRouteTableAttachment) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *IPv4Gateway) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RouteEntry) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *RouteTable) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *RouteTableAttachment) Hub() {}
 
 // Hub marks this type as a conversion hub.
 func (tr *VPC) Hub() {}

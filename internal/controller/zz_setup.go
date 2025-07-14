@@ -82,6 +82,8 @@ import (
 	snapshot "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ecs/snapshot"
 	snapshotgroup "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ecs/snapshotgroup"
 	storagecapacityunit "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ecs/storagecapacityunit"
+	eipaddress "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/eip/eipaddress"
+	eipassociation "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/eip/eipassociation"
 	alias "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/fcv3/alias"
 	asyncinvokeconfig "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/fcv3/asyncinvokeconfig"
 	concurrencyconfig "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/fcv3/concurrencyconfig"
@@ -101,6 +103,10 @@ import (
 	queue "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/messageservice/queue"
 	subscription "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/messageservice/subscription"
 	topic "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/messageservice/topic"
+	forwardentry "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/natgateway/forwardentry"
+	natgateway "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/natgateway/natgateway"
+	snatentry "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/natgateway/snatentry"
+	vpcnatip "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/natgateway/vpcnatip"
 	accesspoint "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/oss/accesspoint"
 	accountpublicaccessblock "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/oss/accountpublicaccessblock"
 	bucket "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/oss/bucket"
@@ -165,12 +171,19 @@ import (
 	user "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ram/user"
 	usergroupattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ram/usergroupattachment"
 	userpolicyattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ram/userpolicyattachment"
+	aclslb "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/slb/acl"
+	aclentryattachmentslb "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/slb/aclentryattachment"
 	accounttair "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/account"
 	auditlogconfig "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/auditlogconfig"
 	connection "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/connection"
 	instancetair "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/instance"
 	tairinstance "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/tair/tairinstance"
+	gatewayendpoint "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/gatewayendpoint"
+	gatewayendpointroutetableattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/gatewayendpointroutetableattachment"
+	ipv4gateway "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/ipv4gateway"
+	routeentry "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/routeentry"
 	routetable "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/routetable"
+	routetableattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/routetableattachment"
 	vpc "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpc"
 	vswitch "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vswitch"
 )
@@ -252,6 +265,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		snapshot.Setup,
 		snapshotgroup.Setup,
 		storagecapacityunit.Setup,
+		eipaddress.Setup,
+		eipassociation.Setup,
 		alias.Setup,
 		asyncinvokeconfig.Setup,
 		concurrencyconfig.Setup,
@@ -271,6 +286,10 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		queue.Setup,
 		subscription.Setup,
 		topic.Setup,
+		forwardentry.Setup,
+		natgateway.Setup,
+		snatentry.Setup,
+		vpcnatip.Setup,
 		accesspoint.Setup,
 		accountpublicaccessblock.Setup,
 		bucket.Setup,
@@ -335,12 +354,19 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		user.Setup,
 		usergroupattachment.Setup,
 		userpolicyattachment.Setup,
+		aclslb.Setup,
+		aclentryattachmentslb.Setup,
 		accounttair.Setup,
 		auditlogconfig.Setup,
 		connection.Setup,
 		instancetair.Setup,
 		tairinstance.Setup,
+		gatewayendpoint.Setup,
+		gatewayendpointroutetableattachment.Setup,
+		ipv4gateway.Setup,
+		routeentry.Setup,
 		routetable.Setup,
+		routetableattachment.Setup,
 		vpc.Setup,
 		vswitch.Setup,
 	} {
