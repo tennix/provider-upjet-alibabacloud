@@ -1,0 +1,19 @@
+apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
+kind: EIPAddress
+metadata:
+  annotations:
+    meta.upbound.io/example-id: eip/v1alpha1/eipaddress
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    addressName: ${var.name}
+    bandwidth: "1"
+    description: ${var.name}
+    isp: BGP
+    netmode: public
+    paymentType: PayAsYouGo
+    region: cn-beijing
+    securityProtectionTypes:
+    - AntiDDoS_Enhanced

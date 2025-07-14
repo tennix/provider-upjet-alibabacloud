@@ -1,0 +1,115 @@
+apiVersion: natgateway.alibabacloud.crossplane.io/v1alpha1
+kind: ForwardEntry
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    externalIpSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    externalPort: "80"
+    forwardTableIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    internalIp: 172.16.0.3
+    internalPort: "8080"
+    ipProtocol: tcp
+    region: cn-beijing
+
+---
+
+apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
+kind: EIPAddress
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    addressName: ${var.name}
+    region: cn-beijing
+
+---
+
+apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
+kind: EIPAssociation
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    allocationIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    instanceIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    region: cn-beijing
+
+---
+
+apiVersion: natgateway.alibabacloud.crossplane.io/v1alpha1
+kind: NATGateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    internetChargeType: PayByLcu
+    natGatewayName: ${var.name}
+    natType: Enhanced
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    vswitchIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    cidrBlock: 172.16.0.0/12
+    region: cn-beijing
+    vpcName: ${var.name}
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: Vswitch
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    cidrBlock: 172.16.0.0/21
+    region: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    vswitchName: ${var.name}
+    zoneId: ${data.alicloud_zones.default.zones[0].id}

@@ -1,0 +1,33 @@
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: IPv4Gateway
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/ipv4gateway
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    ipv4GatewayDescription: ${var.name}
+    ipv4GatewayName: ${var.name}
+    region: cn-beijing
+    resourceGroupId: ${alicloud_resource_manager_resource_group.default.id}
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+
+---
+
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/ipv4gateway
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    cidrBlock: 10.0.0.0/8
+    region: cn-beijing
+    vpcName: ${var.name}2

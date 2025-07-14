@@ -17,14 +17,17 @@ import (
 	v1alpha1cdn "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/cdn/v1alpha1"
 	v1alpha1cloudmonitorservice "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/cloudmonitorservice/v1alpha1"
 	v1alpha1ecs "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ecs/v1alpha1"
+	v1alpha1eip "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1"
 	v1alpha1fcv3 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/fcv3/v1alpha1"
 	v1alpha1kms "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/kms/v1alpha1"
 	v1alpha1messageservice "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/messageservice/v1alpha1"
+	v1alpha1natgateway "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1"
 	v1alpha1oss "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1"
 	v1alpha1polardb "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/polardb/v1alpha1"
 	v1alpha1privatelink "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/privatelink/v1alpha1"
 	v1alpha1quotas "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/quotas/v1alpha1"
 	v1alpha1ram "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ram/v1alpha1"
+	v1alpha1slb "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/slb/v1alpha1"
 	v1alpha1tair "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/tair/v1alpha1"
 	v1alpha1apis "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/v1beta1"
@@ -41,14 +44,17 @@ func init() {
 		v1alpha1cdn.SchemeBuilder.AddToScheme,
 		v1alpha1cloudmonitorservice.SchemeBuilder.AddToScheme,
 		v1alpha1ecs.SchemeBuilder.AddToScheme,
+		v1alpha1eip.SchemeBuilder.AddToScheme,
 		v1alpha1fcv3.SchemeBuilder.AddToScheme,
 		v1alpha1kms.SchemeBuilder.AddToScheme,
 		v1alpha1messageservice.SchemeBuilder.AddToScheme,
+		v1alpha1natgateway.SchemeBuilder.AddToScheme,
 		v1alpha1oss.SchemeBuilder.AddToScheme,
 		v1alpha1polardb.SchemeBuilder.AddToScheme,
 		v1alpha1privatelink.SchemeBuilder.AddToScheme,
 		v1alpha1quotas.SchemeBuilder.AddToScheme,
 		v1alpha1ram.SchemeBuilder.AddToScheme,
+		v1alpha1slb.SchemeBuilder.AddToScheme,
 		v1alpha1tair.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
