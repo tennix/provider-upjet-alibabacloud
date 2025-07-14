@@ -33,6 +33,8 @@ func Configure(p *config.Provider) {
 		// this resource, which would be "ram"
 		r.ShortGroup = "ram"
 
+		delete(r.TerraformResource.Schema, "document")
+		delete(r.TerraformResource.Schema, "name")
 		delete(r.TerraformResource.Schema, "ram_users")
 		delete(r.TerraformResource.Schema, "services")
 		delete(r.TerraformResource.Schema, "version")

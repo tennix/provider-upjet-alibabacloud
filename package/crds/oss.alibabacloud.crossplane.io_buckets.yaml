@@ -428,6 +428,11 @@ spec:
                           type: string
                       type: object
                     type: array
+                  policy:
+                    description: Json format text of bucket policy bucket policy management.
+                      This property has been deprecated since 1.220.0, please use
+                      the resource alicloud_oss_bucket_policy instead.
+                    type: string
                   redundancyType:
                     description: The redundancy type to enable. Can be "LRS", and
                       "ZRS". Defaults to "LRS".
@@ -950,6 +955,11 @@ spec:
                           type: string
                       type: object
                     type: array
+                  policy:
+                    description: Json format text of bucket policy bucket policy management.
+                      This property has been deprecated since 1.220.0, please use
+                      the resource alicloud_oss_bucket_policy instead.
+                    type: string
                   redundancyType:
                     description: The redundancy type to enable. Can be "LRS", and
                       "ZRS". Defaults to "LRS".
@@ -1571,6 +1581,11 @@ spec:
                     type: array
                   owner:
                     description: The bucket owner.
+                    type: string
+                  policy:
+                    description: Json format text of bucket policy bucket policy management.
+                      This property has been deprecated since 1.220.0, please use
+                      the resource alicloud_oss_bucket_policy instead.
                     type: string
                   redundancyType:
                     description: The redundancy type to enable. Can be "LRS", and

@@ -27,7 +27,6 @@ func Configure(p *config.Provider) {
 		delete(r.TerraformResource.Schema, "acl")
 		delete(r.TerraformResource.Schema, "logging_isenable")
 		delete(r.TerraformResource.Schema, "referer_config")
-		delete(r.TerraformResource.Schema, "policy")
 	})
 	p.AddResourceConfigurator("alicloud_oss_bucket_access_monitor", func(r *config.Resource) {
 		r.ShortGroup = string(common.OSS)

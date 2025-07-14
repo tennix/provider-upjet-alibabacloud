@@ -1,0 +1,32 @@
+apiVersion: slb.alibabacloud.crossplane.io/v1alpha1
+kind: AclEntryAttachment
+metadata:
+  annotations:
+    meta.upbound.io/example-id: slb/v1alpha1/aclentryattachment
+  labels:
+    testing.upbound.io/example-name: attachment
+  name: attachment
+spec:
+  forProvider:
+    aclIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: attachment
+    comment: second
+    entry: 168.10.10.0/24
+    region: cn-beijing
+
+---
+
+apiVersion: slb.alibabacloud.crossplane.io/v1alpha1
+kind: Acl
+metadata:
+  annotations:
+    meta.upbound.io/example-id: slb/v1alpha1/aclentryattachment
+  labels:
+    testing.upbound.io/example-name: attachment
+  name: attachment
+spec:
+  forProvider:
+    ipVersion: ipv4
+    name: forSlbAclEntryAttachment
+    region: cn-beijing

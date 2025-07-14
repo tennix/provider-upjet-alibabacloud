@@ -2381,6 +2381,11 @@ func (in *BucketInitParameters) DeepCopyInto(out *BucketInitParameters) {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Policy != nil {
+		in, out := &in.Policy, &out.Policy
+		*out = new(string)
+		**out = **in
+	}
 	if in.RedundancyType != nil {
 		in, out := &in.RedundancyType, &out.RedundancyType
 		*out = new(string)
@@ -3387,6 +3392,11 @@ func (in *BucketObservation) DeepCopyInto(out *BucketObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Policy != nil {
+		in, out := &in.Policy, &out.Policy
+		*out = new(string)
+		**out = **in
+	}
 	if in.RedundancyType != nil {
 		in, out := &in.RedundancyType, &out.RedundancyType
 		*out = new(string)
@@ -3503,6 +3513,11 @@ func (in *BucketParameters) DeepCopyInto(out *BucketParameters) {
 		for i := range *in {
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
+	}
+	if in.Policy != nil {
+		in, out := &in.Policy, &out.Policy
+		*out = new(string)
+		**out = **in
 	}
 	if in.RedundancyType != nil {
 		in, out := &in.RedundancyType, &out.RedundancyType

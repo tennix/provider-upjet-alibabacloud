@@ -84,6 +84,9 @@ type BucketInitParameters struct {
 	// A Settings of bucket logging. See logging below.
 	Logging []LoggingInitParameters `json:"logging,omitempty" tf:"logging,omitempty"`
 
+	// Json format text of bucket policy bucket policy management. This property has been deprecated since 1.220.0, please use the resource alicloud_oss_bucket_policy instead.
+	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
+
 	// The redundancy type to enable. Can be "LRS", and "ZRS". Defaults to "LRS".
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
@@ -151,6 +154,9 @@ type BucketObservation struct {
 	// The bucket owner.
 	Owner *string `json:"owner,omitempty" tf:"owner,omitempty"`
 
+	// Json format text of bucket policy bucket policy management. This property has been deprecated since 1.220.0, please use the resource alicloud_oss_bucket_policy instead.
+	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
+
 	// The redundancy type to enable. Can be "LRS", and "ZRS". Defaults to "LRS".
 	RedundancyType *string `json:"redundancyType,omitempty" tf:"redundancy_type,omitempty"`
 
@@ -206,6 +212,10 @@ type BucketParameters struct {
 	// A Settings of bucket logging. See logging below.
 	// +kubebuilder:validation:Optional
 	Logging []LoggingParameters `json:"logging,omitempty" tf:"logging,omitempty"`
+
+	// Json format text of bucket policy bucket policy management. This property has been deprecated since 1.220.0, please use the resource alicloud_oss_bucket_policy instead.
+	// +kubebuilder:validation:Optional
+	Policy *string `json:"policy,omitempty" tf:"policy,omitempty"`
 
 	// The redundancy type to enable. Can be "LRS", and "ZRS". Defaults to "LRS".
 	// +kubebuilder:validation:Optional
