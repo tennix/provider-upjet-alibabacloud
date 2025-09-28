@@ -107,11 +107,16 @@ func main() {
 			},
 		},
 		Provider: config.GetProvider(),
-		// use the following WorkspaceStoreOption to enable the shared gRPC mode
-		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-		WorkspaceStore: terraform.NewWorkspaceStore(log),
-		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
+		SetupFn:  clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
 	}
+
+	if *enableManagementPolicies {
+		o.Features.Enable(features.EnableBetaManagementPolicies)
+		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
+	}
+	// use the following WorkspaceStoreOption to enable the shared gRPC mode
+	// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
+	o.WorkspaceStore = terraform.NewWorkspaceStore(log, terraform.WithProcessReportInterval(*pollInterval), terraform.WithFeatures(o.Features))
 
 	if *enableExternalSecretStores {
 		o.Features.Enable(features.EnableAlphaExternalSecretStores)
@@ -140,11 +145,6 @@ func main() {
 				},
 			},
 		})), "cannot create default store config")
-	}
-
-	if *enableManagementPolicies {
-		o.Features.Enable(features.EnableBetaManagementPolicies)
-		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
 
 	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup AlibabaCloud controllers")
