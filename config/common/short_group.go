@@ -23,4 +23,5 @@ const (
 	SLS                 = ShortGroup("sls")
 	Tair                = ShortGroup("tair")
 	VPC                 = ShortGroup("vpc")
+	PVTZ                = ShortGroup("pvtz")
 )

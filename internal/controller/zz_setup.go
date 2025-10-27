@@ -150,6 +150,13 @@ import (
 	vpcendpointserviceuser "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/privatelink/vpcendpointserviceuser"
 	vpcendpointzone "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/privatelink/vpcendpointzone"
 	providerconfig "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/providerconfig"
+	endpointpvtz "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/endpoint"
+	rulepvtz "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/rule"
+	ruleattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/ruleattachment"
+	uservpcauthorization "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/uservpcauthorization"
+	zone "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/zone"
+	zoneattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/zoneattachment"
+	zonerecord "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/pvtz/zonerecord"
 	quotaalarm "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/quotas/quotaalarm"
 	quotaapplication "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/quotas/quotaapplication"
 	templateapplications "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/quotas/templateapplications"
@@ -333,6 +340,13 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		vpcendpointserviceuser.Setup,
 		vpcendpointzone.Setup,
 		providerconfig.Setup,
+		endpointpvtz.Setup,
+		rulepvtz.Setup,
+		ruleattachment.Setup,
+		uservpcauthorization.Setup,
+		zone.Setup,
+		zoneattachment.Setup,
+		zonerecord.Setup,
 		quotaalarm.Setup,
 		quotaapplication.Setup,
 		templateapplications.Setup,

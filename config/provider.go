@@ -7,7 +7,6 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
-	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/fcv3"
 
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ack"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ackone"
@@ -17,12 +16,14 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/cloudmonitorservice"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ecs"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/eip"
+	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/fcv3"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/kms"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/messageservice"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/natgateway"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/oss"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/polardb"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/privatelink"
+	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/pvtz"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/quotas"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ram"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/slb"
@@ -86,6 +87,7 @@ func GetProvider() *ujconfig.Provider {
 		slb.Configure,
 		tair.Configure,
 		vpc.Configure,
+		pvtz.Configure,
 	} {
 		configure(pc)
 	}
