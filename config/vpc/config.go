@@ -81,6 +81,24 @@ func Configure(p *config.Provider) {
 			TerraformName: "alicloud_vpc",
 		}
 	})
+	p.AddResourceConfigurator("alicloud_vpc_peer_connection", func(r *config.Resource) {
+		// We need to override the default group that upjet generated for
+		// this resource, which would be "vpc"
+		r.ShortGroup = string(common.VPC)
+		r.Kind = "VPCPeerConnection"
+
+		// vpc_id will automatically get a reference to alicloud_vpc (via KnownReferences)
+		// accepting_vpc_id is not configured with a reference, users manually specify the ID
+		// This is because accepting_vpc_id may point to a VPC in a different region or account
+
+		// Configure LateInitializer to ignore behavioral control fields
+		r.LateInitializer = config.LateInitializer{
+			IgnoredFields: []string{
+				"dry_run",      // Pre-check field, no need for late initialization
+				"force_delete", // Behavioral control field
+			},
+		}
+	})
 	p.AddResourceConfigurator("alicloud_vswitch", func(r *config.Resource) {
 		// We need to override the default group that upjet generated for
 		// this resource, which would be "vpc"
