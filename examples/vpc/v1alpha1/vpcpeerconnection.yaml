@@ -1,0 +1,40 @@
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPCPeerConnection
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/vpcpeerconnection
+  labels:
+    testing.upbound.io/example-name: peer-connection
+  name: peer-connection
+spec:
+  forProvider:
+    region: cn-beijing
+    peerConnectionName: crossplane-example-peer
+    acceptingRegionId: cn-beijing
+    vpcIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: peer-vpc-local
+    # Note: acceptingVpcId should be replaced with an actual VPC ID
+    # For same-region peering, you can use another VPC in the same region
+    # For cross-region peering, specify a VPC ID from the accepting region
+    acceptingVpcId: vpc-xxxxxxxxxxxx
+    bandwidth: 100
+    description: Example VPC peering connection created by Crossplane
+    tags:
+      From: Crossplane
+      Purpose: Example
+---
+apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
+kind: VPC
+metadata:
+  annotations:
+    meta.upbound.io/example-id: vpc/v1alpha1/vpcpeerconnection
+  labels:
+    testing.upbound.io/example-name: peer-vpc-local
+  name: peer-vpc-local
+spec:
+  forProvider:
+    region: cn-beijing
+    cidrBlock: 172.16.0.0/16
+    vpcName: crossplane-peer-vpc-local
+    description: Local VPC for peering connection example

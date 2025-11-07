@@ -224,6 +224,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"alicloud_vpc_gateway_endpoint":                        config.IdentifierFromProvider,
 	"alicloud_vpc_gateway_endpoint_route_table_attachment": config.IdentifierFromProvider,
 	"alicloud_vpc_ipv4_gateway":                            config.IdentifierFromProvider,
+	"alicloud_vpc_peer_connection":                         config.IdentifierFromProvider,
 	"alicloud_vswitch":                                     config.IdentifierFromProvider,
 
 	// NAT Gateway

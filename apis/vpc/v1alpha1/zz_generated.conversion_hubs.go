@@ -28,4 +28,7 @@ func (tr *RouteTableAttachment) Hub() {}
 func (tr *VPC) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *VPCPeerConnection) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Vswitch) Hub() {}

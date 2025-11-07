@@ -192,6 +192,7 @@ import (
 	routetable "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/routetable"
 	routetableattachment "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/routetableattachment"
 	vpc "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpc"
+	vpcpeerconnection "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vpcpeerconnection"
 	vswitch "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/vpc/vswitch"
 )
 
@@ -382,6 +383,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		routetable.Setup,
 		routetableattachment.Setup,
 		vpc.Setup,
+		vpcpeerconnection.Setup,
 		vswitch.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
