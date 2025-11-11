@@ -96,6 +96,8 @@ func Configure(p *config.Provider) {
 			IgnoredFields: []string{
 				"dry_run",      // Pre-check field, no need for late initialization
 				"force_delete", // Behavioral control field
+				"bandwidth",    // Conditional field: only applicable for cross-region peering
+				                // For same-region peering, API returns -1 which fails validation
 			},
 		}
 	})

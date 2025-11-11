@@ -18,7 +18,12 @@ spec:
     # For same-region peering, you can use another VPC in the same region
     # For cross-region peering, specify a VPC ID from the accepting region
     acceptingVpcId: vpc-xxxxxxxxxxxx
-    bandwidth: 100
+    # IMPORTANT: bandwidth field is ONLY required for cross-region VPC peering
+    # - For same-region peering (acceptingRegionId == region): DO NOT set bandwidth
+    # - For cross-region peering (acceptingRegionId != region): bandwidth must be >= 1
+    # Example for cross-region peering:
+    #   acceptingRegionId: cn-shanghai  # Different from region
+    #   bandwidth: 100                   # Required, unit: Mbit/s
     description: Example VPC peering connection created by Crossplane
     tags:
       From: Crossplane
