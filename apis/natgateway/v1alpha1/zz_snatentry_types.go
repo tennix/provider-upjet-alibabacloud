@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type SNATEntryInitParameters struct {
@@ -23,7 +23,7 @@ type SNATEntryInitParameters struct {
 
 	// The IP of a SNAT entry. Separate multiple EIP or NAT IP addresses with commas (,). NOTE: From version 1.241.0, snat_ip can be modified.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("ip_address",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("ip_address",false)
 	SnatIP *string `json:"snatIp,omitempty" tf:"snat_ip,omitempty"`
 
 	// Reference to a EIPAddress in eip to populate snatIp.
@@ -36,7 +36,7 @@ type SNATEntryInitParameters struct {
 
 	// The ID of the SNAT table.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.NATGateway
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("snat_table_ids",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("snat_table_ids",true)
 	SnatTableID *string `json:"snatTableId,omitempty" tf:"snat_table_id,omitempty"`
 
 	// Reference to a NATGateway in natgateway to populate snatTableId.
@@ -111,7 +111,7 @@ type SNATEntryParameters struct {
 
 	// The IP of a SNAT entry. Separate multiple EIP or NAT IP addresses with commas (,). NOTE: From version 1.241.0, snat_ip can be modified.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("ip_address",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("ip_address",false)
 	// +kubebuilder:validation:Optional
 	SnatIP *string `json:"snatIp,omitempty" tf:"snat_ip,omitempty"`
 
@@ -125,7 +125,7 @@ type SNATEntryParameters struct {
 
 	// The ID of the SNAT table.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.NATGateway
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("snat_table_ids",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("snat_table_ids",true)
 	// +kubebuilder:validation:Optional
 	SnatTableID *string `json:"snatTableId,omitempty" tf:"snat_table_id,omitempty"`
 

@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type BindVpcsInitParameters struct {
@@ -169,7 +169,7 @@ type InstanceInitParameters struct {
 
 	// zone id
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1.Vswitch
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("zone_id",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("zone_id",false)
 	// +listType=set
 	ZoneIds []*string `json:"zoneIds,omitempty" tf:"zone_ids,omitempty"`
 
@@ -345,7 +345,7 @@ type InstanceParameters struct {
 
 	// zone id
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1.Vswitch
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("zone_id",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("zone_id",false)
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	ZoneIds []*string `json:"zoneIds,omitempty" tf:"zone_ids,omitempty"`

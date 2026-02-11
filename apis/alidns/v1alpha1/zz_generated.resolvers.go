@@ -9,8 +9,8 @@ package v1alpha1
 import (
 	"context"
 	v1alpha1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/cloudmonitorservice/v1alpha1"
-	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
-	resource "github.com/crossplane/upjet/pkg/resource"
+	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
+	resource "github.com/crossplane/upjet/v2/pkg/resource"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )

@@ -10,14 +10,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type GatewayEndpointRouteTableAttachmentInitParameters struct {
 
 	// The ID of the gateway endpoint instance to which you want to associate the route table.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1.GatewayEndpoint
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	GatewayEndpointID *string `json:"gatewayEndpointId,omitempty" tf:"gateway_endpoint_id,omitempty"`
 
 	// Reference to a GatewayEndpoint in vpc to populate gatewayEndpointId.
@@ -60,7 +60,7 @@ type GatewayEndpointRouteTableAttachmentParameters struct {
 
 	// The ID of the gateway endpoint instance to which you want to associate the route table.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1.GatewayEndpoint
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	GatewayEndpointID *string `json:"gatewayEndpointId,omitempty" tf:"gateway_endpoint_id,omitempty"`
 

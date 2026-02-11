@@ -10,14 +10,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type EIPAssociationInitParameters struct {
 
 	// The ID of the EIP instance.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	AllocationID *string `json:"allocationId,omitempty" tf:"allocation_id,omitempty"`
 
 	// Reference to a EIPAddress in eip to populate allocationId.
@@ -33,7 +33,7 @@ type EIPAssociationInitParameters struct {
 
 	// The ID of the instance with which you want to associate the EIP. You can enter the ID of a NAT gateway, CLB instance, ECS instance, secondary ENI, HAVIP, or IP address.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ecs/v1alpha1.Instance
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	InstanceID *string `json:"instanceId,omitempty" tf:"instance_id,omitempty"`
 
 	// Reference to a Instance in ecs to populate instanceId.
@@ -97,7 +97,7 @@ type EIPAssociationParameters struct {
 
 	// The ID of the EIP instance.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	AllocationID *string `json:"allocationId,omitempty" tf:"allocation_id,omitempty"`
 
@@ -115,7 +115,7 @@ type EIPAssociationParameters struct {
 
 	// The ID of the instance with which you want to associate the EIP. You can enter the ID of a NAT gateway, CLB instance, ECS instance, secondary ENI, HAVIP, or IP address.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ecs/v1alpha1.Instance
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	InstanceID *string `json:"instanceId,omitempty" tf:"instance_id,omitempty"`
 

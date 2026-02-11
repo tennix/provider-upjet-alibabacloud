@@ -10,14 +10,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type ForwardEntryInitParameters struct {
 
 	// The external ip address, the ip must along bandwidth package public ip which alicloud_nat_gateway argument bandwidth_packages.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("ip_address",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("ip_address",false)
 	ExternalIP *string `json:"externalIp,omitempty" tf:"external_ip,omitempty"`
 
 	// Reference to a EIPAddress in eip to populate externalIp.
@@ -36,7 +36,7 @@ type ForwardEntryInitParameters struct {
 
 	// The value can get from alicloud_nat_gateway Attributes "forward_table_ids".
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.NATGateway
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("forward_table_ids",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("forward_table_ids",true)
 	ForwardTableID *string `json:"forwardTableId,omitempty" tf:"forward_table_id,omitempty"`
 
 	// Reference to a NATGateway in natgateway to populate forwardTableId.
@@ -100,7 +100,7 @@ type ForwardEntryParameters struct {
 
 	// The external ip address, the ip must along bandwidth package public ip which alicloud_nat_gateway argument bandwidth_packages.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("ip_address",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("ip_address",false)
 	// +kubebuilder:validation:Optional
 	ExternalIP *string `json:"externalIp,omitempty" tf:"external_ip,omitempty"`
 
@@ -122,7 +122,7 @@ type ForwardEntryParameters struct {
 
 	// The value can get from alicloud_nat_gateway Attributes "forward_table_ids".
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.NATGateway
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("forward_table_ids",true)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("forward_table_ids",true)
 	// +kubebuilder:validation:Optional
 	ForwardTableID *string `json:"forwardTableId,omitempty" tf:"forward_table_id,omitempty"`
 

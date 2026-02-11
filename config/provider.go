@@ -6,7 +6,11 @@ package config
 
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
+	"context"
 	_ "embed"
+
+	fwprovider "github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ack"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ackone"
@@ -29,9 +33,10 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/slb"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/tair"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/vpc"
-	"github.com/crossplane/upjet/pkg/registry/reference"
+	"github.com/crossplane/upjet/v2/pkg/registry/reference"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	ujconfig "github.com/crossplane/upjet/pkg/config"
+	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
 )
 
 const (
@@ -46,7 +51,7 @@ var providerSchema string
 var providerMetadata string
 
 // GetProvider returns provider configuration
-func GetProvider() *ujconfig.Provider {
+func GetProvider(ctx context.Context, fwProvider fwprovider.Provider, sdkProvider *schema.Provider) (*ujconfig.Provider, error) {
 	defaultResourceOptions := []ujconfig.ResourceOption{
 		ExternalNameConfigurations(),
 		RegionAddition(),
@@ -63,6 +68,8 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
+		ujconfig.WithTerraformProvider(sdkProvider),
+		ujconfig.WithTerraformPluginFrameworkProvider(fwProvider),
 		ujconfig.WithDefaultResourceOptions(defaultResourceOptions...))
 
 	for _, configure := range []func(provider *ujconfig.Provider){
@@ -93,5 +100,5 @@ func GetProvider() *ujconfig.Provider {
 	}
 
 	pc.ConfigureResources()
-	return pc
+	return pc, nil
 }

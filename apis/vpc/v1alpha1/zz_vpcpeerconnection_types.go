@@ -10,7 +10,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 )
 
 type VPCPeerConnectionInitParameters struct {
@@ -23,7 +23,7 @@ type VPCPeerConnectionInitParameters struct {
 
 	// The ID of the accepter VPC.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1.VPC
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	AcceptingVPCID *string `json:"acceptingVpcId,omitempty" tf:"accepting_vpc_id,omitempty"`
 
 	// Reference to a VPC in vpc to populate acceptingVpcId.
@@ -143,7 +143,7 @@ type VPCPeerConnectionParameters struct {
 
 	// The ID of the accepter VPC.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1.VPC
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractResourceID()
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	AcceptingVPCID *string `json:"acceptingVpcId,omitempty" tf:"accepting_vpc_id,omitempty"`
 

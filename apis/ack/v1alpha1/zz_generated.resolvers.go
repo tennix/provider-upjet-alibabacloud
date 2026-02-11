@@ -11,7 +11,7 @@ import (
 	v1alpha1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ecs/v1alpha1"
 	v1alpha12 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ram/v1alpha1"
 	v1alpha11 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1"
-	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
+	reference "github.com/crossplane/crossplane-runtime/v2/pkg/reference"
 	errors "github.com/pkg/errors"
 	client "sigs.k8s.io/controller-runtime/pkg/client"
 )

@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/crossplane/crossplane-runtime/pkg/certificates"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/certificates"
 
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/apis"
@@ -19,16 +19,16 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/clients"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/features"
-	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
-	xpcontroller "github.com/crossplane/crossplane-runtime/pkg/controller"
-	"github.com/crossplane/crossplane-runtime/pkg/feature"
-	"github.com/crossplane/crossplane-runtime/pkg/logging"
-	"github.com/crossplane/crossplane-runtime/pkg/ratelimiter"
-	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
-	"github.com/crossplane/crossplane-runtime/pkg/resource"
-	"github.com/crossplane/crossplane-runtime/pkg/statemetrics"
-	tjcontroller "github.com/crossplane/upjet/pkg/controller"
-	"github.com/crossplane/upjet/pkg/terraform"
+	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/xpprovider"
+	xpv1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	xpcontroller "github.com/crossplane/crossplane-runtime/v2/pkg/controller"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/feature"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/ratelimiter"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/reconciler/managed"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/statemetrics"
+	tjcontroller "github.com/crossplane/upjet/v2/pkg/controller"
 	kerrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"
@@ -48,10 +48,6 @@ func main() {
 		leaderElection          = app.Flag("leader-election", "Use leader election for the controller manager.").Short('l').Default("false").OverrideDefaultFromEnvar("LEADER_ELECTION").Bool()
 		maxReconcileRate        = app.Flag("max-reconcile-rate", "The global maximum rate per second at which resources may be checked for drift from the desired state.").Default("10").Int()
 
-		terraformVersion = app.Flag("terraform-version", "Terraform version.").Required().Envar("TERRAFORM_VERSION").String()
-		providerSource   = app.Flag("terraform-provider-source", "Terraform provider source.").Required().Envar("TERRAFORM_PROVIDER_SOURCE").String()
-		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
-
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
 		enableManagementPolicies   = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
@@ -69,7 +65,9 @@ func main() {
 		ctrl.SetLogger(zl)
 	}
 
-	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "max-reconcile-rate", *maxReconcileRate)
+	// currently, we configure the jitter to be the 5% of the poll interval
+	pollJitter := time.Duration(float64(*pollInterval) * 0.05)
+	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "poll-jitter", pollJitter, "max-reconcile-rate", *maxReconcileRate)
 
 	cfg, err := ctrl.GetConfig()
 	kingpin.FatalIfError(err, "Cannot get API server rest config")
@@ -93,6 +91,18 @@ func main() {
 	metrics.Registry.MustRegister(metricRecorder)
 	metrics.Registry.MustRegister(stateMetrics)
 
+	ctx := context.Background()
+	fwProvider, sdkProvider, err := xpprovider.GetProvider(ctx)
+	kingpin.FatalIfError(err, "Cannot get the Terraform framework and SDK providers")
+
+	provider, err := config.GetProvider(ctx, fwProvider, sdkProvider)
+	kingpin.FatalIfError(err, "Cannot initialize the provider configuration")
+
+	setupConfig := &clients.SetupConfig{
+		Logger:            log,
+		TerraformProvider: provider.TerraformProvider,
+	}
+
 	o := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
@@ -106,17 +116,16 @@ func main() {
 				MRStateMetrics:          stateMetrics,
 			},
 		},
-		Provider: config.GetProvider(),
-		SetupFn:  clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
+		Provider:              provider,
+		SetupFn:               clients.SelectTerraformSetup(setupConfig),
+		PollJitter:            pollJitter,
+		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 	}
 
 	if *enableManagementPolicies {
 		o.Features.Enable(features.EnableBetaManagementPolicies)
 		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
-	// use the following WorkspaceStoreOption to enable the shared gRPC mode
-	// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
-	o.WorkspaceStore = terraform.NewWorkspaceStore(log, terraform.WithProcessReportInterval(*pollInterval), terraform.WithFeatures(o.Features))
 
 	if *enableExternalSecretStores {
 		o.Features.Enable(features.EnableAlphaExternalSecretStores)

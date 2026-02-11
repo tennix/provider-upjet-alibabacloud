@@ -8,17 +8,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/version"
-	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
-	"github.com/crossplane/crossplane-runtime/pkg/fieldpath"
-	"k8s.io/apimachinery/pkg/runtime"
 
-	"github.com/crossplane/crossplane-runtime/pkg/resource"
+	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/version"
+	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/xpprovider"
+	"github.com/crossplane/crossplane-runtime/pkg/logging"
+	v1 "github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/fieldpath"
+	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
+	"github.com/crossplane/upjet/v2/pkg/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/pkg/errors"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-
-	"github.com/crossplane/upjet/pkg/terraform"
 
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/v1beta1"
 )
@@ -32,8 +34,75 @@ const (
 	errUnmarshalCredentials = "cannot unmarshal alicloud credentials as JSON"
 )
 
-// TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
-// returns Terraform provider setup configuration
+// SetupConfig holds configuration for the Terraform provider setup.
+type SetupConfig struct {
+	TerraformProvider *schema.Provider
+	Logger            logging.Logger
+}
+
+// SelectTerraformSetup returns a Terraform setup function configured for upjet v2.
+func SelectTerraformSetup(config *SetupConfig) terraform.SetupFn {
+	return func(ctx context.Context, c client.Client, mg resource.Managed) (terraform.Setup, error) {
+		ps := terraform.Setup{}
+
+		configRef := mg.GetProviderConfigReference()
+		if configRef == nil {
+			return ps, errors.New(errNoProviderConfig)
+		}
+
+		t := resource.NewProviderConfigUsageTracker(c, &v1beta1.ProviderConfigUsage{})
+		if err := t.Track(ctx, mg); err != nil {
+			return ps, errors.Wrap(err, errTrackUsage)
+		}
+
+		// Extract credentials (existing logic)
+		creds, err := extractAndUnmarshalCredentials(ctx, c, configRef)
+		if err != nil {
+			return ps, errors.Wrap(err, errUnmarshalCredentials)
+		}
+
+		// Get region (existing logic)
+		region, err := getRegion(mg, creds)
+		if err != nil {
+			return ps, errors.Wrap(err, "cannot get region")
+		}
+
+		// Configure the embedded provider
+		if config.TerraformProvider == nil {
+			return ps, errors.New("terraform provider cannot be nil")
+		}
+
+		return ps, errors.Wrap(configureNoForkAlibabaCloudClient(ctx, &ps, config, region, creds),
+			"could not configure the no-fork Alibaba Cloud client")
+	}
+}
+
+// configureNoForkAlibabaCloudClient configures the embedded Terraform provider with credentials.
+func configureNoForkAlibabaCloudClient(ctx context.Context, ps *terraform.Setup, config *SetupConfig, region string, creds map[string]string) error {
+	// Configure provider with credentials
+	tfConfig := xpprovider.AlibabaCloudConfig{
+		AccessKey:           creds["access_key"],
+		SecretKey:           creds["secret_key"],
+		SecurityToken:       creds["security_token"],
+		Region:              region,
+		ConfigurationSource: getUserAgent(),
+	}
+
+	// Get the provider client/meta
+	tfClient, diags := tfConfig.GetClient(ctx, config.TerraformProvider)
+	if diags.HasError() {
+		return errors.Errorf("cannot construct TF Alibaba Cloud Client from TF Config, %v", diags)
+	}
+
+	ps.Meta = tfClient
+	// Note: FrameworkProvider is not needed as alicloud only uses SDK
+	// ps.FrameworkProvider = nil
+
+	return nil
+}
+
+// TerraformSetupBuilder is deprecated. Use SelectTerraformSetup instead.
+// Kept for backward compatibility during migration.
 func TerraformSetupBuilder(version, providerSource, providerVersion string) terraform.SetupFn {
 	return func(ctx context.Context, c client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{
