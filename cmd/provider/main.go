@@ -53,6 +53,7 @@ func main() {
 		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
 
 		nativeProviderPath = app.Flag("terraform-native-provider-path", "Terraform native provider path.").Default("").Envar("TERRAFORM_NATIVE_PROVIDER_PATH").String()
+		providerTTL        = app.Flag("provider-ttl", "TTL (must be >= 1) for the shared native provider before it is replaced. The count of invocations before the shared provider is scheduled for replacement.").Default("100").Envar("TERRAFORM_PROVIDER_TTL").Int()
 
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
@@ -61,6 +62,10 @@ func main() {
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+
+	if *providerTTL < 1 {
+		kingpin.Fatalf("--provider-ttl must be >= 1, got %d", *providerTTL)
+	}
 
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("provider-upjet-alibabacloud"))
@@ -97,7 +102,7 @@ func main() {
 
 	var nativeProviderScheduler terraform.ProviderScheduler
 	if len(*nativeProviderPath) != 0 {
-		nativeProviderScheduler = terraform.NewSharedProviderScheduler(log, *maxReconcileRate,
+		nativeProviderScheduler = terraform.NewSharedProviderScheduler(log, *providerTTL,
 			terraform.WithSharedProviderOptions(
 				terraform.WithNativeProviderPath(*nativeProviderPath),
 				terraform.WithNativeProviderName("registry.terraform.io/"+*providerSource),
@@ -118,9 +123,8 @@ func main() {
 				MRStateMetrics:          stateMetrics,
 			},
 		},
-		Provider:       config.GetProvider(),
-		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithDisableInit(len(*nativeProviderPath) != 0), terraform.WithProcessReportInterval(*pollInterval)),
-		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, nativeProviderScheduler),
+		Provider: config.GetProvider(),
+		SetupFn:  clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion, nativeProviderScheduler),
 	}
 
 	if *enableManagementPolicies {
