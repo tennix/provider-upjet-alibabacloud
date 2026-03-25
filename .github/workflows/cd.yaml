@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -29,7 +29,7 @@ jobs:
           git checkout pingcap || git checkout -b pingcap
 
       - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
 
@@ -75,7 +75,7 @@ jobs:
 
       - name: Extract metadata
         id: meta
-        uses: docker/metadata-action@501695520a3d80e7d8d3f69d72e6a7fc8f1b7e5b # v5
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -95,7 +95,7 @@ jobs:
           crossplane xpkg push -f _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@4a13e500e55cf33b7c6d7dae7d01bc1dffdef4f7 # v6
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: cluster/images/provider-upjet-alibabacloud/Dockerfile
