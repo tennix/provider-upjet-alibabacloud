@@ -54,6 +54,9 @@ jobs:
       - name: Update submodules
         run: make submodules
 
+      - name: Generate init (pull terraform provider schema and docs)
+        run: make generate.init
+
       - name: Generate
         run: make generate.run
 
