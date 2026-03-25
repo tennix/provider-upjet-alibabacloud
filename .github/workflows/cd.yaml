@@ -9,9 +9,9 @@ on:
 env:
   GO_VERSION: '1.24'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
+  CROSSPLANE_VERSION: '1.17.0'
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  VERSION: 20260323.1
 
 jobs:
   build-and-push:
@@ -81,14 +81,18 @@ jobs:
           tags: |
             type=ref,branch=pingcap
             type=sha,prefix=pingcap-
-            type=raw,value={{ env.VERSION }}
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Crossplane provider for AlibabaCloud
 
+      - name: Install Crossplane CLI
+        run: |
+          curl -sSL "https://github.com/crossplane/crossplane/releases/download/v${CROSSPLANE_VERSION}/crossplane-${CROSSPLANE_VERSION}-linux-amd64.tar.gz" | tar -xz
+          mv crossplane /usr/local/bin/crossplane
+
       - name: Build and push xpkg
         run: |
-          crossplane xpkg push -f _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          crossplane xpkg push -f _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@4a13e500e55cf33b7c6d7dae7d01bc1dffdef4f7 # v6
