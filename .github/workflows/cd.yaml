@@ -1,0 +1,108 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - pingcap
+  workflow_dispatch:
+
+env:
+  GO_VERSION: '1.24'
+  DOCKER_BUILDX_VERSION: 'v0.8.2'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  VERSION: 20260323.1
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Switch to pingcap branch
+        run: |
+          git checkout pingcap || git checkout -b pingcap
+
+      - name: Setup Go
+        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Find the Go Build Cache
+        id: go
+        run: echo "cache=$(make go.cachedir)" >> $GITHUB_OUTPUT
+
+      - name: Cache the Go Build Cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.go.outputs.cache }}
+          key: ${{ runner.os }}-build-cd-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-build-cd-
+
+      - name: Cache Go Dependencies
+        uses: actions/cache@v4
+        with:
+          path: .work/pkg
+          key: ${{ runner.os }}-pkg-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-pkg-
+
+      - name: Update submodules
+        run: make submodules
+
+      - name: Generate
+        run: make generate.run
+
+      - name: Build
+        run: make build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: ${{ env.DOCKER_BUILDX_VERSION }}
+          install: true
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@501695520a3d80e7d8d3f69d72e6a7fc8f1b7e5b # v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,branch=pingcap
+            type=sha,prefix=pingcap-
+            type=raw,value={{ env.VERSION }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=Crossplane provider for AlibabaCloud
+
+      - name: Build and push xpkg
+        run: |
+          crossplane xpkg push -f _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@4a13e500e55cf33b7c6d7dae7d01bc1dffdef4f7 # v6
+        with:
+          context: .
+          file: cluster/images/provider-upjet-alibabacloud/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            TERRAFORM_VERSION=1.5.7
+            TERRAFORM_PROVIDER_SOURCE=aliyun/alicloud
+            TERRAFORM_PROVIDER_VERSION=1.256.0
+            TERRAFORM_PROVIDER_DOWNLOAD_NAME=terraform-provider-alicloud
+            TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=https://releases.hashicorp.com/terraform-provider-alicloud
+            TERRAFORM_NATIVE_PROVIDER_BINARY=terraform-provider-alicloud_v1.256.0
