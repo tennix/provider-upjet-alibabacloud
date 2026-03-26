@@ -24,10 +24,6 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - name: Switch to pingcap branch
-        run: |
-          git checkout pingcap || git checkout -b pingcap
-
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
@@ -55,7 +51,7 @@ jobs:
         run: make submodules
 
       - name: Generate
-        run: make generate.run
+        run: make generate
 
       - name: Build
         run: make build
