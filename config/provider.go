@@ -7,6 +7,7 @@ package config
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
+	"strings"
 
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ack"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ackone"
@@ -45,6 +46,11 @@ var providerSchema string
 //go:embed provider-metadata.yaml
 var providerMetadata string
 
+var providerMetadataNormalizer = strings.NewReplacer(
+	"The value is formulated as ``.", "The value is formulated as an empty string.",
+	"The value is formulated as “.", "The value is formulated as an empty string.",
+)
+
 // GetProvider returns provider configuration
 func GetProvider() *ujconfig.Provider {
 	defaultResourceOptions := []ujconfig.ResourceOption{
@@ -57,7 +63,7 @@ func GetProvider() *ujconfig.Provider {
 		DocumentationForTags(),
 	}
 
-	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata),
+	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadataNormalizer.Replace(providerMetadata)),
 		ujconfig.WithShortName("alibabacloud"),
 		ujconfig.WithRootGroup("alibabacloud.crossplane.io"),
 		ujconfig.WithIncludeList(ExternalNameConfigured()),
