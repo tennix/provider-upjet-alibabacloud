@@ -62,7 +62,11 @@ jobs:
         run: make generate
 
       - name: Build
-        run: make build
+        run: make -j2 build.all
+        env:
+          # Keep CD aligned with CI so both provider architectures exist
+          # before the multi-arch image build runs.
+          BUILD_ARGS: "--load"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -99,7 +103,9 @@ jobs:
 
       - name: Verify xpkg artifact
         if: github.event_name != 'push'
-        run: ls -1 _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg
+        run: |
+          ls -1 _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg
+          ls -1 _output/xpkg/linux_arm64/provider-upjet-alibabacloud-*.xpkg
 
       - name: Prepare Docker build context
         run: |
