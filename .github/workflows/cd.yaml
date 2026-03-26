@@ -11,6 +11,10 @@ on:
       - .github/workflows/cd.yaml
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   GO_VERSION: '1.24'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
