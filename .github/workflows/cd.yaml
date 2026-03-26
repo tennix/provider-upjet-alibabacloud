@@ -101,6 +101,14 @@ jobs:
         if: github.event_name != 'push'
         run: ls -1 _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg
 
+      - name: Prepare Docker build context
+        run: |
+          rm -rf .work/docker-context
+          mkdir -p .work/docker-context
+          cp cluster/images/provider-upjet-alibabacloud/Dockerfile .work/docker-context/Dockerfile
+          cp cluster/images/provider-upjet-alibabacloud/terraformrc.hcl .work/docker-context/terraformrc.hcl
+          cp -r _output/bin .work/docker-context/bin
+
       - name: Build and push xpkg
         if: github.event_name == 'push'
         run: |
@@ -109,8 +117,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: cluster/images/provider-upjet-alibabacloud/Dockerfile
+          context: .work/docker-context
+          file: .work/docker-context/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
