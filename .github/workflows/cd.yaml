@@ -69,7 +69,7 @@ jobs:
             awk -F' = ' -v key="${key}" '$1 == key { print $2; exit }' "${make_db}"
           }
 
-          echo "up=$(make build.vars | sed -nr 's/^UP=(.*)/\\1/p')" >> "${GITHUB_OUTPUT}"
+          echo "up=$(make build.vars | sed -n 's/^UP=//p')" >> "${GITHUB_OUTPUT}"
           echo "terraform_version=$(get_make_var TERRAFORM_VERSION)" >> "${GITHUB_OUTPUT}"
           echo "terraform_provider_source=$(get_make_var TERRAFORM_PROVIDER_SOURCE)" >> "${GITHUB_OUTPUT}"
           echo "terraform_provider_version=$(get_make_var TERRAFORM_PROVIDER_VERSION)" >> "${GITHUB_OUTPUT}"
