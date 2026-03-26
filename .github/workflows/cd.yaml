@@ -4,12 +4,16 @@ on:
   push:
     branches:
       - pingcap
+  pull_request:
+    branches:
+      - pingcap
+    paths:
+      - .github/workflows/cd.yaml
   workflow_dispatch:
 
 env:
   GO_VERSION: '1.24'
   DOCKER_BUILDX_VERSION: 'v0.8.2'
-  CROSSPLANE_VERSION: '1.17.0'
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -53,11 +57,34 @@ jobs:
       - name: Update submodules
         run: make submodules
 
+      - name: Load build vars
+        id: build_vars
+        shell: bash
+        run: |
+          make_db="$(mktemp)"
+          make -pn > "${make_db}" 2>/dev/null
+
+          get_make_var() {
+            local key="$1"
+            awk -F' = ' -v key="${key}" '$1 == key { print $2; exit }' "${make_db}"
+          }
+
+          echo "up=$(make build.vars | sed -nr 's/^UP=(.*)/\\1/p')" >> "${GITHUB_OUTPUT}"
+          echo "terraform_version=$(get_make_var TERRAFORM_VERSION)" >> "${GITHUB_OUTPUT}"
+          echo "terraform_provider_source=$(get_make_var TERRAFORM_PROVIDER_SOURCE)" >> "${GITHUB_OUTPUT}"
+          echo "terraform_provider_version=$(get_make_var TERRAFORM_PROVIDER_VERSION)" >> "${GITHUB_OUTPUT}"
+          echo "terraform_provider_download_name=$(get_make_var TERRAFORM_PROVIDER_DOWNLOAD_NAME)" >> "${GITHUB_OUTPUT}"
+          echo "terraform_provider_download_url_prefix=$(get_make_var TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX)" >> "${GITHUB_OUTPUT}"
+          echo "terraform_native_provider_binary=$(get_make_var TERRAFORM_NATIVE_PROVIDER_BINARY)" >> "${GITHUB_OUTPUT}"
+          rm -f "${make_db}"
+
       - name: Generate
         run: make generate
 
-      - name: Build
-        run: make build
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -65,7 +92,15 @@ jobs:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
           install: true
 
+      - name: Build
+        run: make -j2 build.all
+        env:
+          # Keep CD aligned with CI so both provider architectures exist
+          # before the multi-arch image build runs.
+          BUILD_ARGS: "--load"
+
       - name: Login to GitHub Container Registry
+        if: github.event_name == 'push'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -78,34 +113,48 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,branch=pingcap
+            type=ref,event=branch
+            type=ref,event=pr
             type=sha,prefix=pingcap-
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Crossplane provider for AlibabaCloud
 
-      - name: Install Crossplane CLI
+      - name: Verify xpkg artifact
+        if: github.event_name != 'push'
         run: |
-          curl -sSL "https://github.com/crossplane/crossplane/releases/download/v${CROSSPLANE_VERSION}/crossplane-${CROSSPLANE_VERSION}-linux-amd64.tar.gz" | tar -xz
-          mv crossplane /usr/local/bin/crossplane
+          ls -1 _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg
+          ls -1 _output/xpkg/linux_arm64/provider-upjet-alibabacloud-*.xpkg
+
+      - name: Prepare Docker build context
+        run: |
+          rm -rf .work/docker-context
+          mkdir -p .work/docker-context
+          cp cluster/images/provider-upjet-alibabacloud/Dockerfile .work/docker-context/Dockerfile
+          cp cluster/images/provider-upjet-alibabacloud/terraformrc.hcl .work/docker-context/terraformrc.hcl
+          cp -r _output/bin .work/docker-context/bin
 
       - name: Build and push xpkg
+        if: github.event_name == 'push'
         run: |
-          crossplane xpkg push -f _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
+          "${{ steps.build_vars.outputs.up }}" xpkg push \
+            --package _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg \
+            --package _output/xpkg/linux_arm64/provider-upjet-alibabacloud-*.xpkg \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: cluster/images/provider-upjet-alibabacloud/Dockerfile
+          context: .work/docker-context
+          file: .work/docker-context/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            TERRAFORM_VERSION=1.5.7
-            TERRAFORM_PROVIDER_SOURCE=aliyun/alicloud
-            TERRAFORM_PROVIDER_VERSION=1.256.0
-            TERRAFORM_PROVIDER_DOWNLOAD_NAME=terraform-provider-alicloud
-            TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=https://releases.hashicorp.com/terraform-provider-alicloud
-            TERRAFORM_NATIVE_PROVIDER_BINARY=terraform-provider-alicloud_v1.256.0
+            TERRAFORM_VERSION=${{ steps.build_vars.outputs.terraform_version }}
+            TERRAFORM_PROVIDER_SOURCE=${{ steps.build_vars.outputs.terraform_provider_source }}
+            TERRAFORM_PROVIDER_VERSION=${{ steps.build_vars.outputs.terraform_provider_version }}
+            TERRAFORM_PROVIDER_DOWNLOAD_NAME=${{ steps.build_vars.outputs.terraform_provider_download_name }}
+            TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=${{ steps.build_vars.outputs.terraform_provider_download_url_prefix }}
+            TERRAFORM_NATIVE_PROVIDER_BINARY=${{ steps.build_vars.outputs.terraform_native_provider_binary }}
