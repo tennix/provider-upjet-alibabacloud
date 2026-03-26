@@ -47,8 +47,8 @@ var providerSchema string
 var providerMetadata string
 
 var providerMetadataNormalizer = strings.NewReplacer(
-	"The value is formulated as ``.", "The value is formulated as an empty string.",
-	"The value is formulated as “.", "The value is formulated as an empty string.",
+	"The ID of the resource supplied above.The value is formulated as ``.",
+	"The ID of the resource supplied above. The value is formulated as an empty string.",
 )
 
 // GetProvider returns provider configuration

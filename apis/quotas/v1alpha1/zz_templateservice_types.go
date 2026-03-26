@@ -21,7 +21,7 @@ type TemplateServiceInitParameters struct {
 
 type TemplateServiceObservation struct {
 
-	// The ID of the resource supplied above.The value is formulated as an empty string.
+	// The ID of the resource supplied above. The value is formulated as an empty string.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// Status of the quota template. Valid values:
