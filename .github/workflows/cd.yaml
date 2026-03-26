@@ -108,8 +108,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.GHCR_USERNAME || github.actor }}
+          password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata
         id: meta
@@ -138,14 +138,6 @@ jobs:
           cp cluster/images/provider-upjet-alibabacloud/terraformrc.hcl .work/docker-context/terraformrc.hcl
           cp -r _output/bin .work/docker-context/bin
 
-      - name: Build and push xpkg
-        if: github.event_name == 'push'
-        run: |
-          "${{ steps.build_vars.outputs.up }}" xpkg push \
-            --package _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg \
-            --package _output/xpkg/linux_arm64/provider-upjet-alibabacloud-*.xpkg \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
@@ -162,3 +154,13 @@ jobs:
             TERRAFORM_PROVIDER_DOWNLOAD_NAME=${{ steps.build_vars.outputs.terraform_provider_download_name }}
             TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX=${{ steps.build_vars.outputs.terraform_provider_download_url_prefix }}
             TERRAFORM_NATIVE_PROVIDER_BINARY=${{ steps.build_vars.outputs.terraform_native_provider_binary }}
+
+      - name: Build and push xpkg
+        if: github.event_name == 'push'
+        run: |
+          # Publish the repo-linked image first so GHCR access is already established
+          # before pushing the xpkg OCI artifact to the same package namespace.
+          "${{ steps.build_vars.outputs.up }}" xpkg push \
+            --package _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg \
+            --package _output/xpkg/linux_arm64/provider-upjet-alibabacloud-*.xpkg \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
