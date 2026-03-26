@@ -61,18 +61,23 @@ jobs:
       - name: Generate
         run: make generate
 
-      - name: Build
-        run: make -j2 build.all
-        env:
-          # Keep CD aligned with CI so both provider architectures exist
-          # before the multi-arch image build runs.
-          BUILD_ARGS: "--load"
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
           install: true
+
+      - name: Build
+        run: make -j2 build.all
+        env:
+          # Keep CD aligned with CI so both provider architectures exist
+          # before the multi-arch image build runs.
+          BUILD_ARGS: "--load"
 
       - name: Login to GitHub Container Registry
         if: github.event_name == 'push'
