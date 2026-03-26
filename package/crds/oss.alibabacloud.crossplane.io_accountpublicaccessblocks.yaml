@@ -284,8 +284,8 @@ spec:
                       bucket policies for buckets in this account is enabled.
                     type: boolean
                   id:
-                    description: The ID of the resource supplied above.The value is
-                      formulated as ``.
+                    description: The ID of the resource supplied above. The value
+                      is formulated as an empty string.
                     type: string
                 type: object
               conditions:
