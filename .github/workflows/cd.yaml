@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - pingcap
+  pull_request:
+    branches:
+      - pingcap
+    paths:
+      - .github/workflows/cd.yaml
   workflow_dispatch:
 
 env:
@@ -66,6 +71,7 @@ jobs:
           install: true
 
       - name: Login to GitHub Container Registry
+        if: github.event_name == 'push'
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -79,17 +85,24 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
+            type=ref,event=pr
             type=sha,prefix=pingcap-
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.description=Crossplane provider for AlibabaCloud
 
       - name: Install Crossplane CLI
+        if: github.event_name == 'push'
         run: |
           curl -sSL "https://github.com/crossplane/crossplane/releases/download/v${CROSSPLANE_VERSION}/crossplane-${CROSSPLANE_VERSION}-linux-amd64.tar.gz" | tar -xz
           mv crossplane /usr/local/bin/crossplane
 
+      - name: Verify xpkg artifact
+        if: github.event_name != 'push'
+        run: ls -1 _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg
+
       - name: Build and push xpkg
+        if: github.event_name == 'push'
         run: |
           crossplane xpkg push -f _output/xpkg/linux_amd64/provider-upjet-alibabacloud-*.xpkg ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${GITHUB_SHA:0:8}
 
@@ -99,7 +112,7 @@ jobs:
           context: .
           file: cluster/images/provider-upjet-alibabacloud/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: ${{ github.event_name == 'push' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
