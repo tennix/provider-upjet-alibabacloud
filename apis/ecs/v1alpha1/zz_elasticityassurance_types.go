@@ -15,16 +15,16 @@ import (
 
 type ElasticityAssuranceInitParameters struct {
 
-	// (ForceNew,Optional) The total number of times that the elasticity assurance can be applied. Set the value to Unlimited. This value indicates that the elasticity assurance can be applied an unlimited number of times within its effective duration. Default value: Unlimited.
+	// The total number of times that the elasticity assurance can be applied. Set the value to Unlimited. This value indicates that the elasticity assurance can be applied an unlimited number of times within its effective duration. Default value: Unlimited.
 	AssuranceTimes *string `json:"assuranceTimes,omitempty" tf:"assurance_times,omitempty"`
 
 	// Description of flexible guarantee service.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The total number of instances for which to reserve the capacity of an instance type. Valid values: 1 to 1000.
+	// The total number of instances for which to reserve the capacity of an instance type. Valid values: 1 to 1000. NOTE: From version 1.261.0, instance_amount can be modified.
 	InstanceAmount *float64 `json:"instanceAmount,omitempty" tf:"instance_amount,omitempty"`
 
-	// (ForceNew,Required) Instance type. Currently, only one instance type is supported.
+	// Instance type. Currently, only one instance type is supported.
 	InstanceType []*string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
 	// Length of purchase. The unit of duration is determined by the 'period_unit' parameter. Default value: 1.
@@ -33,29 +33,29 @@ type ElasticityAssuranceInitParameters struct {
 	// parameter is set to Month, the valid values are 1, 2, 3, 4, 5, 6, 7, 8, and 9.
 	PeriodUnit *string `json:"periodUnit,omitempty" tf:"period_unit,omitempty"`
 
-	// (ForceNew,Optional,Computed) The matching mode of flexible guarantee service. Possible values:-Open: flexible guarantee service for Open mode.-Target: specifies the flexible guarantee service of the mode.
+	// The matching mode of flexible guarantee service. Possible values:-Open: flexible guarantee service for Open mode.-Target: specifies the flexible guarantee service of the mode.
 	PrivatePoolOptionsMatchCriteria *string `json:"privatePoolOptionsMatchCriteria,omitempty" tf:"private_pool_options_match_criteria,omitempty"`
 
 	// The name of the flexible protection service.
 	PrivatePoolOptionsName *string `json:"privatePoolOptionsName,omitempty" tf:"private_pool_options_name,omitempty"`
 
-	// (ForceNew,Optional) The ID of the resource group.
+	// The ID of the resource group.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// (ForceNew,Optional) Flexible guarantee service effective time.
+	// Flexible guarantee service effective time.
 	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// Key-value map of resource tags.
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// (ForceNew,Required) The zone ID of the region to which the elastic Protection Service belongs. Currently, only the creation of flexible protection services in one available area is supported.
+	// The zone ID of the region to which the elastic Protection Service belongs. Currently, only the creation of flexible protection services in one available area is supported.
 	ZoneIds []*string `json:"zoneIds,omitempty" tf:"zone_ids,omitempty"`
 }
 
 type ElasticityAssuranceObservation struct {
 
-	// (ForceNew,Optional) The total number of times that the elasticity assurance can be applied. Set the value to Unlimited. This value indicates that the elasticity assurance can be applied an unlimited number of times within its effective duration. Default value: Unlimited.
+	// The total number of times that the elasticity assurance can be applied. Set the value to Unlimited. This value indicates that the elasticity assurance can be applied an unlimited number of times within its effective duration. Default value: Unlimited.
 	AssuranceTimes *string `json:"assuranceTimes,omitempty" tf:"assurance_times,omitempty"`
 
 	// Description of flexible guarantee service.
@@ -70,13 +70,13 @@ type ElasticityAssuranceObservation struct {
 	// The key of the resource supplied above.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The total number of instances for which to reserve the capacity of an instance type. Valid values: 1 to 1000.
+	// The total number of instances for which to reserve the capacity of an instance type. Valid values: 1 to 1000. NOTE: From version 1.261.0, instance_amount can be modified.
 	InstanceAmount *float64 `json:"instanceAmount,omitempty" tf:"instance_amount,omitempty"`
 
 	// The billing method of the instance. Possible value: PostPaid. Currently, only pay-as-you-go is supported.
 	InstanceChargeType *string `json:"instanceChargeType,omitempty" tf:"instance_charge_type,omitempty"`
 
-	// (ForceNew,Required) Instance type. Currently, only one instance type is supported.
+	// Instance type. Currently, only one instance type is supported.
 	InstanceType []*string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
 	// Length of purchase. The unit of duration is determined by the 'period_unit' parameter. Default value: 1.
@@ -85,16 +85,16 @@ type ElasticityAssuranceObservation struct {
 	// parameter is set to Month, the valid values are 1, 2, 3, 4, 5, 6, 7, 8, and 9.
 	PeriodUnit *string `json:"periodUnit,omitempty" tf:"period_unit,omitempty"`
 
-	// (ForceNew,Optional,Computed) The matching mode of flexible guarantee service. Possible values:-Open: flexible guarantee service for Open mode.-Target: specifies the flexible guarantee service of the mode.
+	// The matching mode of flexible guarantee service. Possible values:-Open: flexible guarantee service for Open mode.-Target: specifies the flexible guarantee service of the mode.
 	PrivatePoolOptionsMatchCriteria *string `json:"privatePoolOptionsMatchCriteria,omitempty" tf:"private_pool_options_match_criteria,omitempty"`
 
 	// The name of the flexible protection service.
 	PrivatePoolOptionsName *string `json:"privatePoolOptionsName,omitempty" tf:"private_pool_options_name,omitempty"`
 
-	// (ForceNew,Optional) The ID of the resource group.
+	// The ID of the resource group.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// (ForceNew,Optional) Flexible guarantee service effective time.
+	// Flexible guarantee service effective time.
 	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
 	// Flexible guarantee effective way. Possible values:-Now: Effective immediately.-Later: the specified time takes effect.
@@ -110,13 +110,13 @@ type ElasticityAssuranceObservation struct {
 	// This parameter is not yet available.
 	UsedAssuranceTimes *float64 `json:"usedAssuranceTimes,omitempty" tf:"used_assurance_times,omitempty"`
 
-	// (ForceNew,Required) The zone ID of the region to which the elastic Protection Service belongs. Currently, only the creation of flexible protection services in one available area is supported.
+	// The zone ID of the region to which the elastic Protection Service belongs. Currently, only the creation of flexible protection services in one available area is supported.
 	ZoneIds []*string `json:"zoneIds,omitempty" tf:"zone_ids,omitempty"`
 }
 
 type ElasticityAssuranceParameters struct {
 
-	// (ForceNew,Optional) The total number of times that the elasticity assurance can be applied. Set the value to Unlimited. This value indicates that the elasticity assurance can be applied an unlimited number of times within its effective duration. Default value: Unlimited.
+	// The total number of times that the elasticity assurance can be applied. Set the value to Unlimited. This value indicates that the elasticity assurance can be applied an unlimited number of times within its effective duration. Default value: Unlimited.
 	// +kubebuilder:validation:Optional
 	AssuranceTimes *string `json:"assuranceTimes,omitempty" tf:"assurance_times,omitempty"`
 
@@ -124,11 +124,11 @@ type ElasticityAssuranceParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The total number of instances for which to reserve the capacity of an instance type. Valid values: 1 to 1000.
+	// The total number of instances for which to reserve the capacity of an instance type. Valid values: 1 to 1000. NOTE: From version 1.261.0, instance_amount can be modified.
 	// +kubebuilder:validation:Optional
 	InstanceAmount *float64 `json:"instanceAmount,omitempty" tf:"instance_amount,omitempty"`
 
-	// (ForceNew,Required) Instance type. Currently, only one instance type is supported.
+	// Instance type. Currently, only one instance type is supported.
 	// +kubebuilder:validation:Optional
 	InstanceType []*string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
@@ -140,7 +140,7 @@ type ElasticityAssuranceParameters struct {
 	// +kubebuilder:validation:Optional
 	PeriodUnit *string `json:"periodUnit,omitempty" tf:"period_unit,omitempty"`
 
-	// (ForceNew,Optional,Computed) The matching mode of flexible guarantee service. Possible values:-Open: flexible guarantee service for Open mode.-Target: specifies the flexible guarantee service of the mode.
+	// The matching mode of flexible guarantee service. Possible values:-Open: flexible guarantee service for Open mode.-Target: specifies the flexible guarantee service of the mode.
 	// +kubebuilder:validation:Optional
 	PrivatePoolOptionsMatchCriteria *string `json:"privatePoolOptionsMatchCriteria,omitempty" tf:"private_pool_options_match_criteria,omitempty"`
 
@@ -153,11 +153,11 @@ type ElasticityAssuranceParameters struct {
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"-"`
 
-	// (ForceNew,Optional) The ID of the resource group.
+	// The ID of the resource group.
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// (ForceNew,Optional) Flexible guarantee service effective time.
+	// Flexible guarantee service effective time.
 	// +kubebuilder:validation:Optional
 	StartTime *string `json:"startTime,omitempty" tf:"start_time,omitempty"`
 
@@ -166,7 +166,7 @@ type ElasticityAssuranceParameters struct {
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// (ForceNew,Required) The zone ID of the region to which the elastic Protection Service belongs. Currently, only the creation of flexible protection services in one available area is supported.
+	// The zone ID of the region to which the elastic Protection Service belongs. Currently, only the creation of flexible protection services in one available area is supported.
 	// +kubebuilder:validation:Optional
 	ZoneIds []*string `json:"zoneIds,omitempty" tf:"zone_ids,omitempty"`
 }
@@ -198,7 +198,7 @@ type ElasticityAssuranceStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ElasticityAssurance is the Schema for the ElasticityAssurances API. Provides a Alicloud Ecs Elasticity Assurance resource.
+// ElasticityAssurance is the Schema for the ElasticityAssurances API. Provides a Alicloud ECS Elasticity Assurance resource.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
