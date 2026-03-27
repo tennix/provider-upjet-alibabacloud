@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: ElasticityAssurance is the Schema for the ElasticityAssurances
-          API. Provides a Alicloud ECS Elasticity Assurance resource.
+          API. Provides a Alicloud Ecs Elasticity Assurance resource.
         properties:
           apiVersion:
             description: |-
@@ -74,22 +74,22 @@ spec:
               forProvider:
                 properties:
                   assuranceTimes:
-                    description: 'The total number of times that the elasticity assurance
-                      can be applied. Set the value to Unlimited. This value indicates
-                      that the elasticity assurance can be applied an unlimited number
-                      of times within its effective duration. Default value: Unlimited.'
+                    description: '(ForceNew,Optional) The total number of times that
+                      the elasticity assurance can be applied. Set the value to Unlimited.
+                      This value indicates that the elasticity assurance can be applied
+                      an unlimited number of times within its effective duration.
+                      Default value: Unlimited.'
                     type: string
                   description:
                     description: Description of flexible guarantee service.
                     type: string
                   instanceAmount:
                     description: 'The total number of instances for which to reserve
-                      the capacity of an instance type. Valid values: 1 to 1000. NOTE:
-                      From version 1.261.0, instance_amount can be modified.'
+                      the capacity of an instance type. Valid values: 1 to 1000.'
                     type: number
                   instanceType:
-                    description: Instance type. Currently, only one instance type
-                      is supported.
+                    description: (ForceNew,Required) Instance type. Currently, only
+                      one instance type is supported.
                     items:
                       type: string
                     type: array
@@ -102,9 +102,10 @@ spec:
                       2, 3, 4, 5, 6, 7, 8, and 9.
                     type: string
                   privatePoolOptionsMatchCriteria:
-                    description: 'The matching mode of flexible guarantee service.
-                      Possible values:-Open: flexible guarantee service for Open mode.-Target:
-                      specifies the flexible guarantee service of the mode.'
+                    description: '(ForceNew,Optional,Computed) The matching mode of
+                      flexible guarantee service. Possible values:-Open: flexible
+                      guarantee service for Open mode.-Target: specifies the flexible
+                      guarantee service of the mode.'
                     type: string
                   privatePoolOptionsName:
                     description: The name of the flexible protection service.
@@ -114,10 +115,11 @@ spec:
                       be created in.
                     type: string
                   resourceGroupId:
-                    description: The ID of the resource group.
+                    description: (ForceNew,Optional) The ID of the resource group.
                     type: string
                   startTime:
-                    description: Flexible guarantee service effective time.
+                    description: (ForceNew,Optional) Flexible guarantee service effective
+                      time.
                     type: string
                   tags:
                     additionalProperties:
@@ -126,9 +128,10 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   zoneIds:
-                    description: The zone ID of the region to which the elastic Protection
-                      Service belongs. Currently, only the creation of flexible protection
-                      services in one available area is supported.
+                    description: (ForceNew,Required) The zone ID of the region to
+                      which the elastic Protection Service belongs. Currently, only
+                      the creation of flexible protection services in one available
+                      area is supported.
                     items:
                       type: string
                     type: array
@@ -147,22 +150,22 @@ spec:
                   autoscaler.
                 properties:
                   assuranceTimes:
-                    description: 'The total number of times that the elasticity assurance
-                      can be applied. Set the value to Unlimited. This value indicates
-                      that the elasticity assurance can be applied an unlimited number
-                      of times within its effective duration. Default value: Unlimited.'
+                    description: '(ForceNew,Optional) The total number of times that
+                      the elasticity assurance can be applied. Set the value to Unlimited.
+                      This value indicates that the elasticity assurance can be applied
+                      an unlimited number of times within its effective duration.
+                      Default value: Unlimited.'
                     type: string
                   description:
                     description: Description of flexible guarantee service.
                     type: string
                   instanceAmount:
                     description: 'The total number of instances for which to reserve
-                      the capacity of an instance type. Valid values: 1 to 1000. NOTE:
-                      From version 1.261.0, instance_amount can be modified.'
+                      the capacity of an instance type. Valid values: 1 to 1000.'
                     type: number
                   instanceType:
-                    description: Instance type. Currently, only one instance type
-                      is supported.
+                    description: (ForceNew,Required) Instance type. Currently, only
+                      one instance type is supported.
                     items:
                       type: string
                     type: array
@@ -175,18 +178,20 @@ spec:
                       2, 3, 4, 5, 6, 7, 8, and 9.
                     type: string
                   privatePoolOptionsMatchCriteria:
-                    description: 'The matching mode of flexible guarantee service.
-                      Possible values:-Open: flexible guarantee service for Open mode.-Target:
-                      specifies the flexible guarantee service of the mode.'
+                    description: '(ForceNew,Optional,Computed) The matching mode of
+                      flexible guarantee service. Possible values:-Open: flexible
+                      guarantee service for Open mode.-Target: specifies the flexible
+                      guarantee service of the mode.'
                     type: string
                   privatePoolOptionsName:
                     description: The name of the flexible protection service.
                     type: string
                   resourceGroupId:
-                    description: The ID of the resource group.
+                    description: (ForceNew,Optional) The ID of the resource group.
                     type: string
                   startTime:
-                    description: Flexible guarantee service effective time.
+                    description: (ForceNew,Optional) Flexible guarantee service effective
+                      time.
                     type: string
                   tags:
                     additionalProperties:
@@ -195,9 +200,10 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   zoneIds:
-                    description: The zone ID of the region to which the elastic Protection
-                      Service belongs. Currently, only the creation of flexible protection
-                      services in one available area is supported.
+                    description: (ForceNew,Required) The zone ID of the region to
+                      which the elastic Protection Service belongs. Currently, only
+                      the creation of flexible protection services in one available
+                      area is supported.
                     items:
                       type: string
                     type: array
@@ -388,10 +394,11 @@ spec:
               atProvider:
                 properties:
                   assuranceTimes:
-                    description: 'The total number of times that the elasticity assurance
-                      can be applied. Set the value to Unlimited. This value indicates
-                      that the elasticity assurance can be applied an unlimited number
-                      of times within its effective duration. Default value: Unlimited.'
+                    description: '(ForceNew,Optional) The total number of times that
+                      the elasticity assurance can be applied. Set the value to Unlimited.
+                      This value indicates that the elasticity assurance can be applied
+                      an unlimited number of times within its effective duration.
+                      Default value: Unlimited.'
                     type: string
                   description:
                     description: Description of flexible guarantee service.
@@ -407,16 +414,15 @@ spec:
                     type: string
                   instanceAmount:
                     description: 'The total number of instances for which to reserve
-                      the capacity of an instance type. Valid values: 1 to 1000. NOTE:
-                      From version 1.261.0, instance_amount can be modified.'
+                      the capacity of an instance type. Valid values: 1 to 1000.'
                     type: number
                   instanceChargeType:
                     description: 'The billing method of the instance. Possible value:
                       PostPaid. Currently, only pay-as-you-go is supported.'
                     type: string
                   instanceType:
-                    description: Instance type. Currently, only one instance type
-                      is supported.
+                    description: (ForceNew,Required) Instance type. Currently, only
+                      one instance type is supported.
                     items:
                       type: string
                     type: array
@@ -429,18 +435,20 @@ spec:
                       2, 3, 4, 5, 6, 7, 8, and 9.
                     type: string
                   privatePoolOptionsMatchCriteria:
-                    description: 'The matching mode of flexible guarantee service.
-                      Possible values:-Open: flexible guarantee service for Open mode.-Target:
-                      specifies the flexible guarantee service of the mode.'
+                    description: '(ForceNew,Optional,Computed) The matching mode of
+                      flexible guarantee service. Possible values:-Open: flexible
+                      guarantee service for Open mode.-Target: specifies the flexible
+                      guarantee service of the mode.'
                     type: string
                   privatePoolOptionsName:
                     description: The name of the flexible protection service.
                     type: string
                   resourceGroupId:
-                    description: The ID of the resource group.
+                    description: (ForceNew,Optional) The ID of the resource group.
                     type: string
                   startTime:
-                    description: Flexible guarantee service effective time.
+                    description: (ForceNew,Optional) Flexible guarantee service effective
+                      time.
                     type: string
                   startTimeType:
                     description: 'Flexible guarantee effective way. Possible values:-Now:
@@ -461,9 +469,10 @@ spec:
                     description: This parameter is not yet available.
                     type: number
                   zoneIds:
-                    description: The zone ID of the region to which the elastic Protection
-                      Service belongs. Currently, only the creation of flexible protection
-                      services in one available area is supported.
+                    description: (ForceNew,Required) The zone ID of the region to
+                      which the elastic Protection Service belongs. Currently, only
+                      the creation of flexible protection services in one available
+                      area is supported.
                     items:
                       type: string
                     type: array
