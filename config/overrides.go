@@ -17,11 +17,11 @@ import (
 	"github.com/pkg/errors"
 )
 
-// RegionAddition adds region to the spec of all resources except ram group which
-// does not have a region notion.
+// RegionAddition adds region to the spec of all resources except global
+// identity-management groups, which do not have a region notion.
 func RegionAddition() config.ResourceOption { //nolint:gocyclo
 	return func(r *config.Resource) {
-		if r.ShortGroup == "ram" {
+		if r.ShortGroup == "ram" || r.ShortGroup == string(common.IMS) {
 			return
 		}
 		c := "Region is the region you'd like your resource to be created in.\n"

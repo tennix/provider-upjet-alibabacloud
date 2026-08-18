@@ -123,6 +123,9 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 	"alicloud_eip_address":     config.IdentifierFromProvider,
 	"alicloud_eip_association": config.IdentifierFromProvider,
 
+	// IMS
+	"alicloud_ims_oidc_provider": config.IdentifierFromProvider,
+
 	// KMS
 	"alicloud_kms_alias":    config.IdentifierFromProvider,
 	"alicloud_kms_instance": config.IdentifierFromProvider,

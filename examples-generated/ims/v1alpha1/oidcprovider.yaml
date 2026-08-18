@@ -1,0 +1,19 @@
+apiVersion: ims.alibabacloud.crossplane.io/v1alpha1
+kind: OIDCProvider
+metadata:
+  annotations:
+    meta.upbound.io/example-id: ims/v1alpha1/oidcprovider
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    clientIds:
+    - "123"
+    - "456"
+    description: ${var.oidc_provider_name}
+    fingerprints:
+    - 902ef2deeb3c5b13ea4c3d5193629309e231ae55
+    issuanceLimitTime: "12"
+    issuerUrl: https://oauth.aliyun.com
+    oidcProviderName: ${var.name}

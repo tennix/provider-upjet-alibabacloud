@@ -94,6 +94,7 @@ import (
 	provisionconfig "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/fcv3/provisionconfig"
 	trigger "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/fcv3/trigger"
 	vpcbinding "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/fcv3/vpcbinding"
+	oidcprovider "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/ims/oidcprovider"
 	aliaskms "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/kms/alias"
 	instancekms "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/kms/instance"
 	key "github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/controller/kms/key"
@@ -285,6 +286,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		provisionconfig.Setup,
 		trigger.Setup,
 		vpcbinding.Setup,
+		oidcprovider.Setup,
 		aliaskms.Setup,
 		instancekms.Setup,
 		key.Setup,
