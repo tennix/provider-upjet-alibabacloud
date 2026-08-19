@@ -12,6 +12,7 @@ const (
 	ECS                 = ShortGroup("ecs")
 	FCV3                = ShortGroup("fcv3")
 	EIP                 = ShortGroup("eip")
+	IMS                 = ShortGroup("ims")
 	KMS                 = ShortGroup("kms")
 	MessageService      = ShortGroup("messageservice")
 	NATGateway          = ShortGroup("natgateway")

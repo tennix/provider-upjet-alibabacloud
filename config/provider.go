@@ -18,6 +18,7 @@ import (
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ecs"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/eip"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/fcv3"
+	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/ims"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/kms"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/messageservice"
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/config/natgateway"
@@ -82,6 +83,7 @@ func GetProvider() *ujconfig.Provider {
 		ecs.Configure,
 		eip.Configure,
 		fcv3.Configure,
+		ims.Configure,
 		kms.Configure,
 		messageservice.Configure,
 		natgateway.Configure,
