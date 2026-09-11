@@ -14,6 +14,14 @@ import (
 type ProviderConfigSpec struct {
 	// Credentials required to authenticate to this provider.
 	Credentials ProviderCredentials `json:"credentials"`
+
+	// AssumeRole defines the options for assuming a RAM role.
+	// +optional
+	AssumeRole *AssumeRoleOptions `json:"assumeRole,omitempty"`
+
+	// AssumeRoleWithOIDC defines the options for assuming a RAM role with an OIDC token.
+	// +optional
+	AssumeRoleWithOIDC *AssumeRoleWithOIDCOptions `json:"assumeRoleWithOIDC,omitempty"`
 }
 
 // ProviderCredentials required to authenticate.
@@ -23,6 +31,56 @@ type ProviderCredentials struct {
 	Source xpv1.CredentialsSource `json:"source"`
 
 	xpv1.CommonCredentialSelectors `json:",inline"`
+}
+
+// AssumeRoleOptions define the options for assuming a RAM role.
+type AssumeRoleOptions struct {
+	// RoleARN is the ARN of the RAM role to assume.
+	RoleARN string `json:"roleARN"`
+
+	// SessionName is the session name to use when assuming the role.
+	// +optional
+	SessionName *string `json:"sessionName,omitempty"`
+
+	// Policy is the RAM policy to apply when assuming the role.
+	// +optional
+	Policy *string `json:"policy,omitempty"`
+
+	// SessionExpiration is the validity period of the assumed role session, in seconds.
+	// +optional
+	// +kubebuilder:validation:Minimum=900
+	// +kubebuilder:validation:Maximum=3600
+	SessionExpiration *int `json:"sessionExpiration,omitempty"`
+
+	// ExternalID is the external ID used when assuming the role.
+	// +optional
+	ExternalID *string `json:"externalID,omitempty"`
+}
+
+// AssumeRoleWithOIDCOptions define the options for assuming a RAM role with an OIDC token.
+type AssumeRoleWithOIDCOptions struct {
+	// RoleARN is the ARN of the RAM role to assume.
+	RoleARN string `json:"roleARN"`
+
+	// OIDCProviderARN is the ARN of the OIDC identity provider.
+	OIDCProviderARN string `json:"oidcProviderARN"`
+
+	// OIDCTokenFile is the path of the OIDC token file.
+	OIDCTokenFile string `json:"oidcTokenFile"`
+
+	// RoleSessionName is the custom name of the role session.
+	// +optional
+	RoleSessionName *string `json:"roleSessionName,omitempty"`
+
+	// Policy is the RAM policy to apply when assuming the role.
+	// +optional
+	Policy *string `json:"policy,omitempty"`
+
+	// SessionExpiration is the validity period of the assumed role session, in seconds.
+	// +optional
+	// +kubebuilder:validation:Minimum=900
+	// +kubebuilder:validation:Maximum=43200
+	SessionExpiration *int `json:"sessionExpiration,omitempty"`
 }
 
 // A ProviderConfigStatus reflects the observed state of a ProviderConfig.

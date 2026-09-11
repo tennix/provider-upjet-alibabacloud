@@ -51,6 +51,64 @@ spec:
           spec:
             description: A ProviderConfigSpec defines the desired state of a ProviderConfig.
             properties:
+              assumeRole:
+                description: AssumeRole defines the options for assuming a RAM role.
+                properties:
+                  externalID:
+                    description: ExternalID is the external ID used when assuming
+                      the role.
+                    type: string
+                  policy:
+                    description: Policy is the RAM policy to apply when assuming the
+                      role.
+                    type: string
+                  roleARN:
+                    description: RoleARN is the ARN of the RAM role to assume.
+                    type: string
+                  sessionExpiration:
+                    description: SessionExpiration is the validity period of the assumed
+                      role session, in seconds.
+                    maximum: 3600
+                    minimum: 900
+                    type: integer
+                  sessionName:
+                    description: SessionName is the session name to use when assuming
+                      the role.
+                    type: string
+                required:
+                - roleARN
+                type: object
+              assumeRoleWithOIDC:
+                description: AssumeRoleWithOIDC defines the options for assuming a
+                  RAM role with an OIDC token.
+                properties:
+                  oidcProviderARN:
+                    description: OIDCProviderARN is the ARN of the OIDC identity provider.
+                    type: string
+                  oidcTokenFile:
+                    description: OIDCTokenFile is the path of the OIDC token file.
+                    type: string
+                  policy:
+                    description: Policy is the RAM policy to apply when assuming the
+                      role.
+                    type: string
+                  roleARN:
+                    description: RoleARN is the ARN of the RAM role to assume.
+                    type: string
+                  roleSessionName:
+                    description: RoleSessionName is the custom name of the role session.
+                    type: string
+                  sessionExpiration:
+                    description: SessionExpiration is the validity period of the assumed
+                      role session, in seconds.
+                    maximum: 43200
+                    minimum: 900
+                    type: integer
+                required:
+                - oidcProviderARN
+                - oidcTokenFile
+                - roleARN
+                type: object
               credentials:
                 description: Credentials required to authenticate to this provider.
                 properties:
