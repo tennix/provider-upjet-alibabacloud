@@ -8,6 +8,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strings"
+
 	"github.com/crossplane-contrib/provider-upjet-alibabacloud/internal/version"
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/pkg/fieldpath"
@@ -25,12 +27,24 @@ import (
 
 const (
 	// error messages
-	errNoProviderConfig     = "no providerConfigRef provided"
-	errGetProviderConfig    = "cannot get referenced ProviderConfig"
-	errTrackUsage           = "cannot track ProviderConfig usage"
-	errExtractCredentials   = "cannot extract credentials"
-	errUnmarshalCredentials = "cannot unmarshal alicloud credentials as JSON"
+	errNoProviderConfig      = "no providerConfigRef provided"
+	errGetProviderConfig     = "cannot get referenced ProviderConfig"
+	errTrackUsage            = "cannot track ProviderConfig usage"
+	errExtractCredentials    = "cannot extract credentials"
+	errInvalidProviderConfig = "invalid ProviderConfig"
+	errUnmarshalCredentials  = "cannot unmarshal alicloud credentials as JSON"
 )
+
+var providerCredentialKeys = []string{
+	"access_key",
+	"secret_key",
+	"security_token",
+}
+
+var providerSpecCredentialKeys = map[string]string{
+	"assume_role":           "spec.assumeRole",
+	"assume_role_with_oidc": "spec.assumeRoleWithOIDC",
+}
 
 // TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
 // returns Terraform provider setup configuration
@@ -55,9 +69,12 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string, sche
 			return ps, errors.Wrap(err, errTrackUsage)
 		}
 
-		creds, err := extractAndUnmarshalCredentials(ctx, c, configRef)
+		pc, creds, err := extractAndUnmarshalCredentials(ctx, c, configRef)
 		if err != nil {
 			return ps, errors.Wrap(err, errUnmarshalCredentials)
+		}
+		if validateErr := validateProviderConfig(pc, creds); validateErr != nil {
+			return ps, errors.Wrap(validateErr, errInvalidProviderConfig)
 		}
 
 		region, err := getRegion(mg, creds)
@@ -65,33 +82,133 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string, sche
 			return ps, errors.Wrap(err, "cannot get region")
 		}
 
-		// Set credentials in Terraform provider configuration.
-		ps.Configuration = map[string]any{
-			"region": region,
-		}
-		if v, ok := creds["access_key"]; ok {
-			ps.Configuration["access_key"] = v
-		}
-		if v, ok := creds["secret_key"]; ok {
-			ps.Configuration["secret_key"] = v
-		}
-		if v, ok := creds["security_token"]; ok {
-			ps.Configuration["security_token"] = v
-		}
+		ps.Configuration = buildProviderConfiguration(region, creds, pc)
 		ps.Configuration["configuration_source"] = getUserAgent()
 		return ps, nil
 	}
 }
 
-func getRegion(obj runtime.Object, creds map[string]string) (string, error) {
+func buildProviderConfiguration(region string, creds map[string]any, pc *v1beta1.ProviderConfig) terraform.ProviderConfiguration {
+	cfg := terraform.ProviderConfiguration{
+		"region": region,
+	}
+	for _, key := range providerCredentialKeys {
+		v, ok := creds[key]
+		if !ok {
+			continue
+		}
+		cfg[key] = v
+	}
+	if pc == nil {
+		return cfg
+	}
+	if pc.Spec.AssumeRole != nil {
+		cfg["assume_role"] = []any{assumeRoleConfiguration(pc.Spec.AssumeRole)}
+	}
+	if pc.Spec.AssumeRoleWithOIDC != nil {
+		cfg["assume_role_with_oidc"] = []any{assumeRoleWithOIDCConfiguration(pc.Spec.AssumeRoleWithOIDC)}
+	}
+	return cfg
+}
+
+func assumeRoleConfiguration(assumeRole *v1beta1.AssumeRoleOptions) map[string]any {
+	cfg := map[string]any{
+		"role_arn": assumeRole.RoleARN,
+	}
+	if assumeRole.SessionName != nil {
+		cfg["session_name"] = *assumeRole.SessionName
+	}
+	if assumeRole.Policy != nil {
+		cfg["policy"] = *assumeRole.Policy
+	}
+	if assumeRole.SessionExpiration != nil {
+		cfg["session_expiration"] = *assumeRole.SessionExpiration
+	}
+	if assumeRole.ExternalID != nil {
+		cfg["external_id"] = *assumeRole.ExternalID
+	}
+	return cfg
+}
+
+func assumeRoleWithOIDCConfiguration(assumeRole *v1beta1.AssumeRoleWithOIDCOptions) map[string]any {
+	cfg := map[string]any{
+		"role_arn":          assumeRole.RoleARN,
+		"oidc_provider_arn": assumeRole.OIDCProviderARN,
+		"oidc_token_file":   assumeRole.OIDCTokenFile,
+	}
+	if assumeRole.RoleSessionName != nil {
+		cfg["role_session_name"] = *assumeRole.RoleSessionName
+	}
+	if assumeRole.Policy != nil {
+		cfg["policy"] = *assumeRole.Policy
+	}
+	if assumeRole.SessionExpiration != nil {
+		cfg["session_expiration"] = *assumeRole.SessionExpiration
+	}
+	return cfg
+}
+
+func validateProviderConfig(pc *v1beta1.ProviderConfig, creds map[string]any) error {
+	for key, field := range providerSpecCredentialKeys {
+		if _, ok := creds[key]; ok {
+			return errors.Errorf("credentials JSON must not contain %q; use %s", key, field)
+		}
+	}
+	if pc == nil {
+		return nil
+	}
+	if ar := pc.Spec.AssumeRole; ar != nil {
+		if err := validateAssumeRole(ar); err != nil {
+			return err
+		}
+	}
+	if ar := pc.Spec.AssumeRoleWithOIDC; ar != nil {
+		if err := validateAssumeRoleWithOIDC(ar); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateAssumeRole(ar *v1beta1.AssumeRoleOptions) error {
+	if strings.TrimSpace(ar.RoleARN) == "" {
+		return errors.New("spec.assumeRole.roleARN is required")
+	}
+	return validateSessionExpiration("spec.assumeRole.sessionExpiration", ar.SessionExpiration, 3600)
+}
+
+func validateAssumeRoleWithOIDC(ar *v1beta1.AssumeRoleWithOIDCOptions) error {
+	if strings.TrimSpace(ar.RoleARN) == "" {
+		return errors.New("spec.assumeRoleWithOIDC.roleARN is required")
+	}
+	if strings.TrimSpace(ar.OIDCProviderARN) == "" {
+		return errors.New("spec.assumeRoleWithOIDC.oidcProviderARN is required")
+	}
+	if strings.TrimSpace(ar.OIDCTokenFile) == "" {
+		return errors.New("spec.assumeRoleWithOIDC.oidcTokenFile is required")
+	}
+	return validateSessionExpiration("spec.assumeRoleWithOIDC.sessionExpiration", ar.SessionExpiration, 43200)
+}
+
+func validateSessionExpiration(field string, v *int, max int) error {
+	if v == nil {
+		return nil
+	}
+	if *v < 900 || *v > max {
+		return errors.Errorf("%s must be between 900 and %d", field, max)
+	}
+	return nil
+}
+
+func getRegion(obj runtime.Object, creds map[string]any) (string, error) {
 	fromMap, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return "", errors.Wrap(err, "cannot convert to unstructured")
 	}
-	credsRegion := creds["region"]
+	credsRegion := stringCredential(creds, "region")
 	if credsRegion == "" {
 		// region_id is used as a fallback for old version
-		credsRegion = creds["region_id"]
+		credsRegion = stringCredential(creds, "region_id")
 	}
 	r, err := fieldpath.Pave(fromMap).GetString("spec.forProvider.region")
 	if fieldpath.IsNotFound(err) {
@@ -100,21 +217,35 @@ func getRegion(obj runtime.Object, creds map[string]string) (string, error) {
 	}
 	return r, err
 }
-func extractAndUnmarshalCredentials(ctx context.Context, c client.Client, configRef *v1.Reference) (map[string]string, error) {
+
+func stringCredential(creds map[string]any, key string) string {
+	v, ok := creds[key].(string)
+	if !ok {
+		return ""
+	}
+	return v
+}
+
+func extractAndUnmarshalCredentials(ctx context.Context, c client.Client, configRef *v1.Reference) (*v1beta1.ProviderConfig, map[string]any, error) {
 	pc := &v1beta1.ProviderConfig{}
-	creds := map[string]string{}
+	creds := map[string]any{}
 	if err := c.Get(ctx, types.NamespacedName{Name: configRef.Name}, pc); err != nil {
-		return creds, errors.Wrap(err, errGetProviderConfig)
+		return pc, creds, errors.Wrap(err, errGetProviderConfig)
+	}
+
+	if pc.Spec.Credentials.Source == v1.CredentialsSourceInjectedIdentity ||
+		pc.Spec.Credentials.Source == v1.CredentialsSourceNone {
+		return pc, creds, nil
 	}
 
 	data, err := resource.CommonCredentialExtractor(ctx, pc.Spec.Credentials.Source, c, pc.Spec.Credentials.CommonCredentialSelectors)
 	if err != nil {
-		return creds, errors.Wrap(err, errExtractCredentials)
+		return pc, creds, errors.Wrap(err, errExtractCredentials)
 	}
 	if err = json.Unmarshal(data, &creds); err != nil {
-		return creds, errors.Wrap(err, errUnmarshalCredentials)
+		return pc, creds, errors.Wrap(err, errUnmarshalCredentials)
 	}
-	return creds, nil
+	return pc, creds, nil
 }
 func getUserAgent() string {
 	// user agent formats as "crossplane/<CROSSPLANE_VERSION> <PROJECT_NAME>/<PROJECT_VERSION>"
