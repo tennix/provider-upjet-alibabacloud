@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: ParameterGroup is the Schema for the ParameterGroups API. Provides
-          a Alicloud PolarDB Parameter Group resource.
+          a Alicloud Polar Db Parameter Group resource.
         properties:
           apiVersion:
             description: |-
@@ -77,28 +77,29 @@ spec:
                     description: The type of the database engine. Only MySQL is supported.
                     type: string
                   dbVersion:
-                    description: 'The version number of the database engine. Valid
-                      values: 5.6, 5.7, 8.0.'
+                    description: 'The version of the database engine. Valid values:'
                     type: string
                   description:
-                    description: The description of the parameter template. It must
-                      be 0 to 200 characters in length.
+                    description: The description of the parameter template.
                     type: string
                   name:
-                    description: The name of the parameter template. It must be 8
-                      to 64 characters in length, and can contain letters, digits,
-                      and underscores (_). It must start with a letter and cannot
-                      contain Chinese characters.
+                    description: (Deprecated since v1.263.0). Field 'name' has been
+                      deprecated from provider version 1.263.0. New field 'parameter_group_name'
+                      instead.
+                    type: string
+                  parameterGroupName:
+                    description: 'The name of the parameter template. The name must
+                      meet the following requirements:'
                     type: string
                   parameters:
-                    description: The parameter template. See the following Block parameters.
+                    description: Details about the parameters. See parameters below.
                     items:
                       properties:
                         paramName:
-                          description: The name of a parameter in the parameter template.
+                          description: The name of the parameter.
                           type: string
                         paramValue:
-                          description: The value of a parameter in the parameter template.
+                          description: The value of the parameter.
                           type: string
                       type: object
                     type: array
@@ -124,28 +125,29 @@ spec:
                     description: The type of the database engine. Only MySQL is supported.
                     type: string
                   dbVersion:
-                    description: 'The version number of the database engine. Valid
-                      values: 5.6, 5.7, 8.0.'
+                    description: 'The version of the database engine. Valid values:'
                     type: string
                   description:
-                    description: The description of the parameter template. It must
-                      be 0 to 200 characters in length.
+                    description: The description of the parameter template.
                     type: string
                   name:
-                    description: The name of the parameter template. It must be 8
-                      to 64 characters in length, and can contain letters, digits,
-                      and underscores (_). It must start with a letter and cannot
-                      contain Chinese characters.
+                    description: (Deprecated since v1.263.0). Field 'name' has been
+                      deprecated from provider version 1.263.0. New field 'parameter_group_name'
+                      instead.
+                    type: string
+                  parameterGroupName:
+                    description: 'The name of the parameter template. The name must
+                      meet the following requirements:'
                     type: string
                   parameters:
-                    description: The parameter template. See the following Block parameters.
+                    description: Details about the parameters. See parameters below.
                     items:
                       properties:
                         paramName:
-                          description: The name of a parameter in the parameter template.
+                          description: The name of the parameter.
                           type: string
                         paramValue:
-                          description: The value of a parameter in the parameter template.
+                          description: The value of the parameter.
                           type: string
                       type: object
                     type: array
@@ -326,10 +328,6 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.dbVersion)
                 || (has(self.initProvider) && has(self.initProvider.dbVersion))'
-            - message: spec.forProvider.name is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
-                || (has(self.initProvider) && has(self.initProvider.name))'
             - message: spec.forProvider.parameters is a required parameter
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.parameters)
@@ -339,34 +337,41 @@ spec:
             properties:
               atProvider:
                 properties:
+                  createTime:
+                    description: The time when the parameter template was created.
+                      The time is in the yyyy-MM-ddTHH:mm:ssZ format. The time is
+                      displayed in UTC.
+                    type: string
                   dbType:
                     description: The type of the database engine. Only MySQL is supported.
                     type: string
                   dbVersion:
-                    description: 'The version number of the database engine. Valid
-                      values: 5.6, 5.7, 8.0.'
+                    description: 'The version of the database engine. Valid values:'
                     type: string
                   description:
-                    description: The description of the parameter template. It must
-                      be 0 to 200 characters in length.
+                    description: The description of the parameter template.
                     type: string
                   id:
+                    description: The ID of the resource supplied above.
                     type: string
                   name:
-                    description: The name of the parameter template. It must be 8
-                      to 64 characters in length, and can contain letters, digits,
-                      and underscores (_). It must start with a letter and cannot
-                      contain Chinese characters.
+                    description: (Deprecated since v1.263.0). Field 'name' has been
+                      deprecated from provider version 1.263.0. New field 'parameter_group_name'
+                      instead.
+                    type: string
+                  parameterGroupName:
+                    description: 'The name of the parameter template. The name must
+                      meet the following requirements:'
                     type: string
                   parameters:
-                    description: The parameter template. See the following Block parameters.
+                    description: Details about the parameters. See parameters below.
                     items:
                       properties:
                         paramName:
-                          description: The name of a parameter in the parameter template.
+                          description: The name of the parameter.
                           type: string
                         paramValue:
-                          description: The value of a parameter in the parameter template.
+                          description: The value of the parameter.
                           type: string
                       type: object
                     type: array

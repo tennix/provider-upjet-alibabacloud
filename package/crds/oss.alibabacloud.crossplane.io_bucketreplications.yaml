@@ -436,6 +436,19 @@ spec:
                     description: Region is the region you'd like your resource to
                       be created in.
                     type: string
+                  rtc:
+                    description: (Computed, Optional, Available since v1.262.0) Configures
+                      the Replication Time Control (RTC) feature for a data replication
+                      task of a bucket. See rtc below.
+                    items:
+                      properties:
+                        enabled:
+                          description: Specifies whether to enable the RTC feature.
+                            Set to true to enable or false to disable. This argument
+                            is required when the rtc block is defined.
+                          type: boolean
+                      type: object
+                    type: array
                   sourceSelectionCriteria:
                     description: Specifies other conditions used to filter the source
                       objects to replicate. See source_selection_criteria below.
@@ -906,6 +919,19 @@ spec:
                     items:
                       type: object
                     type: array
+                  rtc:
+                    description: (Computed, Optional, Available since v1.262.0) Configures
+                      the Replication Time Control (RTC) feature for a data replication
+                      task of a bucket. See rtc below.
+                    items:
+                      properties:
+                        enabled:
+                          description: Specifies whether to enable the RTC feature.
+                            Set to true to enable or false to disable. This argument
+                            is required when the rtc block is defined.
+                          type: boolean
+                      type: object
+                    type: array
                   sourceSelectionCriteria:
                     description: Specifies other conditions used to filter the source
                       objects to replicate. See source_selection_criteria below.
@@ -1257,6 +1283,23 @@ spec:
                             historical data. Data that is written to the source bucket
                             before the time is replicated to the destination bucket
                             as new data. The value of this element is in GMT.
+                          type: string
+                      type: object
+                    type: array
+                  rtc:
+                    description: (Computed, Optional, Available since v1.262.0) Configures
+                      the Replication Time Control (RTC) feature for a data replication
+                      task of a bucket. See rtc below.
+                    items:
+                      properties:
+                        enabled:
+                          description: Specifies whether to enable the RTC feature.
+                            Set to true to enable or false to disable. This argument
+                            is required when the rtc block is defined.
+                          type: boolean
+                        status:
+                          description: Specifies whether to replicate objects encrypted
+                            by using SSE-KMS. Can be Enabled or Disabled.
                           type: string
                       type: object
                     type: array

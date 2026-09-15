@@ -12,47 +12,13 @@ spec:
       matchLabels:
         testing.upbound.io/example-name: default
     externalPort: "80"
+    forwardEntryName: ${var.name}
     forwardTableIdSelector:
       matchLabels:
         testing.upbound.io/example-name: default
-    internalIp: 172.16.0.3
+    internalIp: 172.16.0.115
     internalPort: "8080"
     ipProtocol: tcp
-    region: cn-beijing
-
----
-
-apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
-kind: EIPAddress
-metadata:
-  annotations:
-    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
-  labels:
-    testing.upbound.io/example-name: default
-  name: default
-spec:
-  forProvider:
-    addressName: ${var.name}
-    region: cn-beijing
-
----
-
-apiVersion: eip.alibabacloud.crossplane.io/v1alpha1
-kind: EIPAssociation
-metadata:
-  annotations:
-    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
-  labels:
-    testing.upbound.io/example-name: default
-  name: default
-spec:
-  forProvider:
-    allocationIdSelector:
-      matchLabels:
-        testing.upbound.io/example-name: default
-    instanceIdSelector:
-      matchLabels:
-        testing.upbound.io/example-name: default
     region: cn-beijing
 
 ---
@@ -67,9 +33,9 @@ metadata:
   name: default
 spec:
   forProvider:
-    internetChargeType: PayByLcu
     natGatewayName: ${var.name}
     natType: Enhanced
+    networkType: intranet
     region: cn-beijing
     vpcIdSelector:
       matchLabels:
@@ -96,6 +62,26 @@ spec:
 
 ---
 
+apiVersion: natgateway.alibabacloud.crossplane.io/v1alpha1
+kind: VPCNATIP
+metadata:
+  annotations:
+    meta.upbound.io/example-id: natgateway/v1alpha1/forwardentry
+  labels:
+    testing.upbound.io/example-name: default
+  name: default
+spec:
+  forProvider:
+    natGatewayIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: default
+    natIp: 172.16.0.66
+    natIpCidr: 172.16.0.0/21
+    natIpName: ${var.name}
+    region: cn-beijing
+
+---
+
 apiVersion: vpc.alibabacloud.crossplane.io/v1alpha1
 kind: Vswitch
 metadata:
@@ -112,4 +98,4 @@ spec:
       matchLabels:
         testing.upbound.io/example-name: default
     vswitchName: ${var.name}
-    zoneId: ${data.alicloud_zones.default.zones[0].id}
+    zoneId: ${data.alicloud_zones.default.zones.0.id}

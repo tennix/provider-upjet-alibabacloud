@@ -8,8 +8,8 @@ package v1alpha1
 
 import (
 	"context"
-	v1alpha1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1"
-	v1alpha11 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1"
+	v1alpha11 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/vpc/v1alpha1"
 	reference "github.com/crossplane/crossplane-runtime/pkg/reference"
 	resource "github.com/crossplane/upjet/pkg/resource"
 	errors "github.com/pkg/errors"
@@ -25,12 +25,12 @@ func (mg *ForwardEntry) ResolveReferences(ctx context.Context, c client.Reader) 
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.ExternalIP),
-		Extract:      resource.ExtractParamPath("ip_address", false),
+		Extract:      resource.ExtractParamPath("nat_ip", false),
 		Reference:    mg.Spec.ForProvider.ExternalIPRef,
 		Selector:     mg.Spec.ForProvider.ExternalIPSelector,
 		To: reference.To{
-			List:    &v1alpha1.EIPAddressList{},
-			Managed: &v1alpha1.EIPAddress{},
+			List:    &VPCNATIPList{},
+			Managed: &VPCNATIP{},
 		},
 	})
 	if err != nil {
@@ -57,12 +57,12 @@ func (mg *ForwardEntry) ResolveReferences(ctx context.Context, c client.Reader) 
 
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.ExternalIP),
-		Extract:      resource.ExtractParamPath("ip_address", false),
+		Extract:      resource.ExtractParamPath("nat_ip", false),
 		Reference:    mg.Spec.InitProvider.ExternalIPRef,
 		Selector:     mg.Spec.InitProvider.ExternalIPSelector,
 		To: reference.To{
-			List:    &v1alpha1.EIPAddressList{},
-			Managed: &v1alpha1.EIPAddress{},
+			List:    &VPCNATIPList{},
+			Managed: &VPCNATIP{},
 		},
 	})
 	if err != nil {
@@ -103,8 +103,8 @@ func (mg *NATGateway) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.ForProvider.VPCIDRef,
 		Selector:     mg.Spec.ForProvider.VPCIDSelector,
 		To: reference.To{
-			List:    &v1alpha11.VPCList{},
-			Managed: &v1alpha11.VPC{},
+			List:    &v1alpha1.VPCList{},
+			Managed: &v1alpha1.VPC{},
 		},
 	})
 	if err != nil {
@@ -119,8 +119,8 @@ func (mg *NATGateway) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.ForProvider.VswitchIDRef,
 		Selector:     mg.Spec.ForProvider.VswitchIDSelector,
 		To: reference.To{
-			List:    &v1alpha11.VswitchList{},
-			Managed: &v1alpha11.Vswitch{},
+			List:    &v1alpha1.VswitchList{},
+			Managed: &v1alpha1.Vswitch{},
 		},
 	})
 	if err != nil {
@@ -135,8 +135,8 @@ func (mg *NATGateway) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.InitProvider.VPCIDRef,
 		Selector:     mg.Spec.InitProvider.VPCIDSelector,
 		To: reference.To{
-			List:    &v1alpha11.VPCList{},
-			Managed: &v1alpha11.VPC{},
+			List:    &v1alpha1.VPCList{},
+			Managed: &v1alpha1.VPC{},
 		},
 	})
 	if err != nil {
@@ -151,8 +151,8 @@ func (mg *NATGateway) ResolveReferences(ctx context.Context, c client.Reader) er
 		Reference:    mg.Spec.InitProvider.VswitchIDRef,
 		Selector:     mg.Spec.InitProvider.VswitchIDSelector,
 		To: reference.To{
-			List:    &v1alpha11.VswitchList{},
-			Managed: &v1alpha11.Vswitch{},
+			List:    &v1alpha1.VswitchList{},
+			Managed: &v1alpha1.Vswitch{},
 		},
 	})
 	if err != nil {
@@ -177,8 +177,8 @@ func (mg *SNATEntry) ResolveReferences(ctx context.Context, c client.Reader) err
 		Reference:    mg.Spec.ForProvider.SnatIPRef,
 		Selector:     mg.Spec.ForProvider.SnatIPSelector,
 		To: reference.To{
-			List:    &v1alpha1.EIPAddressList{},
-			Managed: &v1alpha1.EIPAddress{},
+			List:    &v1alpha11.EIPAddressList{},
+			Managed: &v1alpha11.EIPAddress{},
 		},
 	})
 	if err != nil {
@@ -209,8 +209,8 @@ func (mg *SNATEntry) ResolveReferences(ctx context.Context, c client.Reader) err
 		Reference:    mg.Spec.ForProvider.SourceVswitchIDRef,
 		Selector:     mg.Spec.ForProvider.SourceVswitchIDSelector,
 		To: reference.To{
-			List:    &v1alpha11.VswitchList{},
-			Managed: &v1alpha11.Vswitch{},
+			List:    &v1alpha1.VswitchList{},
+			Managed: &v1alpha1.Vswitch{},
 		},
 	})
 	if err != nil {
@@ -225,8 +225,8 @@ func (mg *SNATEntry) ResolveReferences(ctx context.Context, c client.Reader) err
 		Reference:    mg.Spec.InitProvider.SnatIPRef,
 		Selector:     mg.Spec.InitProvider.SnatIPSelector,
 		To: reference.To{
-			List:    &v1alpha1.EIPAddressList{},
-			Managed: &v1alpha1.EIPAddress{},
+			List:    &v1alpha11.EIPAddressList{},
+			Managed: &v1alpha11.EIPAddress{},
 		},
 	})
 	if err != nil {
@@ -257,8 +257,8 @@ func (mg *SNATEntry) ResolveReferences(ctx context.Context, c client.Reader) err
 		Reference:    mg.Spec.InitProvider.SourceVswitchIDRef,
 		Selector:     mg.Spec.InitProvider.SourceVswitchIDSelector,
 		To: reference.To{
-			List:    &v1alpha11.VswitchList{},
-			Managed: &v1alpha11.Vswitch{},
+			List:    &v1alpha1.VswitchList{},
+			Managed: &v1alpha1.Vswitch{},
 		},
 	})
 	if err != nil {

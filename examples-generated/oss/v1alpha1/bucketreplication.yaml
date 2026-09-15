@@ -114,13 +114,13 @@ metadata:
   name: role
 spec:
   forProvider:
+    assumeRolePolicyDocument: "\t\t{\n\t\t  \"Statement\": [\n\t\t\t{\n\t\t\t  \"Action\":
+      \"sts:AssumeRole\",\n\t\t\t  \"Effect\": \"Allow\",\n\t\t\t  \"Principal\":
+      {\n\t\t\t\t\"Service\": [\n\t\t\t\t  \"oss.aliyuncs.com\"\n\t\t\t\t]\n\t\t\t
+      \ }\n\t\t\t}\n\t\t  ],\n\t\t  \"Version\": \"1\"\n\t\t}\n"
     description: this is a test
-    document: "\t\t{\n\t\t  \"Statement\": [\n\t\t\t{\n\t\t\t  \"Action\": \"sts:AssumeRole\",\n\t\t\t
-      \ \"Effect\": \"Allow\",\n\t\t\t  \"Principal\": {\n\t\t\t\t\"Service\": [\n\t\t\t\t
-      \ \"oss.aliyuncs.com\"\n\t\t\t\t]\n\t\t\t  }\n\t\t\t}\n\t\t  ],\n\t\t  \"Version\":
-      \"1\"\n\t\t}\n"
     force: true
-    name: example-role-${random_integer.default.result}
+    roleName: example-role-${random_integer.default.result}
 
 ---
 

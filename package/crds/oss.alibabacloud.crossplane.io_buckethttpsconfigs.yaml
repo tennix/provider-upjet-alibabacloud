@@ -74,7 +74,7 @@ spec:
               forProvider:
                 properties:
                   bucket:
-                    description: The name of the bucket.
+                    description: The name of the bucket
                     type: string
                   bucketRef:
                     description: Reference to a Bucket in oss to populate bucket.
@@ -150,6 +150,40 @@ spec:
                             type: string
                         type: object
                     type: object
+                  cipherSuit:
+                    description: TLS encryption algorithm suite configuration See
+                      cipher_suit below.
+                    items:
+                      properties:
+                        customCipherSuite:
+                          description: This field is used to configure custom encryption
+                            algorithm suites for TLS 1.2.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        enable:
+                          description: |-
+                            Configures TLS encryption algorithm suites. Valid values:
+                            true: strong encryption algorithm suites or custom encryption algorithm suites.
+                            false: all encryption algorithm suites (default).
+                          type: boolean
+                        strongCipherSuite:
+                          description: |-
+                            Specifies whether to use strong encryption algorithm suites. Valid values:
+                            true: uses strong encryption algorithm suites.
+                            false: uses custom encryption algorithm suites.
+                          type: boolean
+                        tls13CustomCipherSuite:
+                          description: Specifies custom encryption algorithm suites.
+                            You can specify multiple suites. This field is used to
+                            configure custom encryption algorithm suites for TLS 1.3.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                      type: object
+                    type: array
                   enable:
                     description: 'Specifies whether to enable TLS version management
                       for the bucket. Valid values: true, false.'
@@ -180,7 +214,7 @@ spec:
                   autoscaler.
                 properties:
                   bucket:
-                    description: The name of the bucket.
+                    description: The name of the bucket
                     type: string
                   bucketRef:
                     description: Reference to a Bucket in oss to populate bucket.
@@ -256,6 +290,40 @@ spec:
                             type: string
                         type: object
                     type: object
+                  cipherSuit:
+                    description: TLS encryption algorithm suite configuration See
+                      cipher_suit below.
+                    items:
+                      properties:
+                        customCipherSuite:
+                          description: This field is used to configure custom encryption
+                            algorithm suites for TLS 1.2.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        enable:
+                          description: |-
+                            Configures TLS encryption algorithm suites. Valid values:
+                            true: strong encryption algorithm suites or custom encryption algorithm suites.
+                            false: all encryption algorithm suites (default).
+                          type: boolean
+                        strongCipherSuite:
+                          description: |-
+                            Specifies whether to use strong encryption algorithm suites. Valid values:
+                            true: uses strong encryption algorithm suites.
+                            false: uses custom encryption algorithm suites.
+                          type: boolean
+                        tls13CustomCipherSuite:
+                          description: Specifies custom encryption algorithm suites.
+                            You can specify multiple suites. This field is used to
+                            configure custom encryption algorithm suites for TLS 1.3.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                      type: object
+                    type: array
                   enable:
                     description: 'Specifies whether to enable TLS version management
                       for the bucket. Valid values: true, false.'
@@ -446,8 +514,42 @@ spec:
               atProvider:
                 properties:
                   bucket:
-                    description: The name of the bucket.
+                    description: The name of the bucket
                     type: string
+                  cipherSuit:
+                    description: TLS encryption algorithm suite configuration See
+                      cipher_suit below.
+                    items:
+                      properties:
+                        customCipherSuite:
+                          description: This field is used to configure custom encryption
+                            algorithm suites for TLS 1.2.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                        enable:
+                          description: |-
+                            Configures TLS encryption algorithm suites. Valid values:
+                            true: strong encryption algorithm suites or custom encryption algorithm suites.
+                            false: all encryption algorithm suites (default).
+                          type: boolean
+                        strongCipherSuite:
+                          description: |-
+                            Specifies whether to use strong encryption algorithm suites. Valid values:
+                            true: uses strong encryption algorithm suites.
+                            false: uses custom encryption algorithm suites.
+                          type: boolean
+                        tls13CustomCipherSuite:
+                          description: Specifies custom encryption algorithm suites.
+                            You can specify multiple suites. This field is used to
+                            configure custom encryption algorithm suites for TLS 1.3.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: set
+                      type: object
+                    type: array
                   enable:
                     description: 'Specifies whether to enable TLS version management
                       for the bucket. Valid values: true, false.'

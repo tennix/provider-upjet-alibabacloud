@@ -103,6 +103,9 @@ type InstanceInitParameters struct {
 	// Aucillary VPCs used to access this KMS instance See bind_vpcs below.
 	BindVpcs []BindVpcsInitParameters `json:"bindVpcs,omitempty" tf:"bind_vpcs,omitempty"`
 
+	// Specifies whether to enable deletion protection. Default value: false. Valid values:
+	DeletionProtection *bool `json:"deletionProtection,omitempty" tf:"deletion_protection,omitempty"`
+
 	// Whether to force deletion even without backup.
 	ForceDeleteWithoutBackup *string `json:"forceDeleteWithoutBackup,omitempty" tf:"force_delete_without_backup,omitempty"`
 
@@ -112,28 +115,28 @@ type InstanceInitParameters struct {
 	// Maximum number of stored keys. The attribute is valid when the attribute payment_type is Subscription.
 	KeyNum *float64 `json:"keyNum,omitempty" tf:"key_num,omitempty"`
 
-	// Instance Audit Log Switch. The attribute is valid when the attribute payment_type is Subscription.
+	// Instance Audit Log Switch. This attribute was limited to Subscription (prepaid) payment type before v1.264.0. As of v1.264.0, it is also supported for PayAsYouGo (postpaid) instances.
 	Log *string `json:"log,omitempty" tf:"log,omitempty"`
 
-	// Instance log capacity. The attribute is valid when the attribute payment_type is Subscription.
+	// Instance log capacity. This attribute was limited to Subscription (prepaid) payment type before v1.264.0. As of v1.264.0, it is also supported for PayAsYouGo (postpaid) instances.
 	LogStorage *float64 `json:"logStorage,omitempty" tf:"log_storage,omitempty"`
 
-	// Payment type, valid values:
+	// The billing method. Valid values:
 	PaymentType *string `json:"paymentType,omitempty" tf:"payment_type,omitempty"`
 
-	// Purchase cycle, in months. The attribute is valid when the attribute payment_type is Subscription.
+	// The subscription duration. Unit: month. The value must be an integral multiple of 12.
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
 	// KMS Instance commodity type (software/hardware)
 	ProductVersion *string `json:"productVersion,omitempty" tf:"product_version,omitempty"`
 
-	// Automatic renewal period, in months. The attribute is valid when the attribute payment_type is Subscription.
+	// The auto-renewal period. Unit: month.
 	RenewPeriod *float64 `json:"renewPeriod,omitempty" tf:"renew_period,omitempty"`
 
-	// Renewal options. Valid values: AutoRenewal, ManualRenewal. The attribute is valid when the attribute payment_type is Subscription.
+	// The renewal status of the specified instance. Valid values:
 	RenewStatus *string `json:"renewStatus,omitempty" tf:"renew_status,omitempty"`
 
-	// Automatic renewal period unit, valid value:
+	// Automatic renewal period unit, value:
 	RenewalPeriodUnit *string `json:"renewalPeriodUnit,omitempty" tf:"renewal_period_unit,omitempty"`
 
 	// Maximum number of Secrets. The attribute is valid when the attribute payment_type is Subscription.
@@ -200,6 +203,9 @@ type InstanceObservation struct {
 	// The creation time of the resource.
 	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
 
+	// Specifies whether to enable deletion protection. Default value: false. Valid values:
+	DeletionProtection *bool `json:"deletionProtection,omitempty" tf:"deletion_protection,omitempty"`
+
 	// (Available since v1.233.1) Instance expiration time.
 	EndDate *string `json:"endDate,omitempty" tf:"end_date,omitempty"`
 
@@ -215,28 +221,28 @@ type InstanceObservation struct {
 	// Maximum number of stored keys. The attribute is valid when the attribute payment_type is Subscription.
 	KeyNum *float64 `json:"keyNum,omitempty" tf:"key_num,omitempty"`
 
-	// Instance Audit Log Switch. The attribute is valid when the attribute payment_type is Subscription.
+	// Instance Audit Log Switch. This attribute was limited to Subscription (prepaid) payment type before v1.264.0. As of v1.264.0, it is also supported for PayAsYouGo (postpaid) instances.
 	Log *string `json:"log,omitempty" tf:"log,omitempty"`
 
-	// Instance log capacity. The attribute is valid when the attribute payment_type is Subscription.
+	// Instance log capacity. This attribute was limited to Subscription (prepaid) payment type before v1.264.0. As of v1.264.0, it is also supported for PayAsYouGo (postpaid) instances.
 	LogStorage *float64 `json:"logStorage,omitempty" tf:"log_storage,omitempty"`
 
-	// Payment type, valid values:
+	// The billing method. Valid values:
 	PaymentType *string `json:"paymentType,omitempty" tf:"payment_type,omitempty"`
 
-	// Purchase cycle, in months. The attribute is valid when the attribute payment_type is Subscription.
+	// The subscription duration. Unit: month. The value must be an integral multiple of 12.
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
 	// KMS Instance commodity type (software/hardware)
 	ProductVersion *string `json:"productVersion,omitempty" tf:"product_version,omitempty"`
 
-	// Automatic renewal period, in months. The attribute is valid when the attribute payment_type is Subscription.
+	// The auto-renewal period. Unit: month.
 	RenewPeriod *float64 `json:"renewPeriod,omitempty" tf:"renew_period,omitempty"`
 
-	// Renewal options. Valid values: AutoRenewal, ManualRenewal. The attribute is valid when the attribute payment_type is Subscription.
+	// The renewal status of the specified instance. Valid values:
 	RenewStatus *string `json:"renewStatus,omitempty" tf:"renew_status,omitempty"`
 
-	// Automatic renewal period unit, valid value:
+	// Automatic renewal period unit, value:
 	RenewalPeriodUnit *string `json:"renewalPeriodUnit,omitempty" tf:"renewal_period_unit,omitempty"`
 
 	// Maximum number of Secrets. The attribute is valid when the attribute payment_type is Subscription.
@@ -273,6 +279,10 @@ type InstanceParameters struct {
 	// +kubebuilder:validation:Optional
 	BindVpcs []BindVpcsParameters `json:"bindVpcs,omitempty" tf:"bind_vpcs,omitempty"`
 
+	// Specifies whether to enable deletion protection. Default value: false. Valid values:
+	// +kubebuilder:validation:Optional
+	DeletionProtection *bool `json:"deletionProtection,omitempty" tf:"deletion_protection,omitempty"`
+
 	// Whether to force deletion even without backup.
 	// +kubebuilder:validation:Optional
 	ForceDeleteWithoutBackup *string `json:"forceDeleteWithoutBackup,omitempty" tf:"force_delete_without_backup,omitempty"`
@@ -285,19 +295,19 @@ type InstanceParameters struct {
 	// +kubebuilder:validation:Optional
 	KeyNum *float64 `json:"keyNum,omitempty" tf:"key_num,omitempty"`
 
-	// Instance Audit Log Switch. The attribute is valid when the attribute payment_type is Subscription.
+	// Instance Audit Log Switch. This attribute was limited to Subscription (prepaid) payment type before v1.264.0. As of v1.264.0, it is also supported for PayAsYouGo (postpaid) instances.
 	// +kubebuilder:validation:Optional
 	Log *string `json:"log,omitempty" tf:"log,omitempty"`
 
-	// Instance log capacity. The attribute is valid when the attribute payment_type is Subscription.
+	// Instance log capacity. This attribute was limited to Subscription (prepaid) payment type before v1.264.0. As of v1.264.0, it is also supported for PayAsYouGo (postpaid) instances.
 	// +kubebuilder:validation:Optional
 	LogStorage *float64 `json:"logStorage,omitempty" tf:"log_storage,omitempty"`
 
-	// Payment type, valid values:
+	// The billing method. Valid values:
 	// +kubebuilder:validation:Optional
 	PaymentType *string `json:"paymentType,omitempty" tf:"payment_type,omitempty"`
 
-	// Purchase cycle, in months. The attribute is valid when the attribute payment_type is Subscription.
+	// The subscription duration. Unit: month. The value must be an integral multiple of 12.
 	// +kubebuilder:validation:Optional
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
@@ -310,15 +320,15 @@ type InstanceParameters struct {
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"-"`
 
-	// Automatic renewal period, in months. The attribute is valid when the attribute payment_type is Subscription.
+	// The auto-renewal period. Unit: month.
 	// +kubebuilder:validation:Optional
 	RenewPeriod *float64 `json:"renewPeriod,omitempty" tf:"renew_period,omitempty"`
 
-	// Renewal options. Valid values: AutoRenewal, ManualRenewal. The attribute is valid when the attribute payment_type is Subscription.
+	// The renewal status of the specified instance. Valid values:
 	// +kubebuilder:validation:Optional
 	RenewStatus *string `json:"renewStatus,omitempty" tf:"renew_status,omitempty"`
 
-	// Automatic renewal period unit, valid value:
+	// Automatic renewal period unit, value:
 	// +kubebuilder:validation:Optional
 	RenewalPeriodUnit *string `json:"renewalPeriodUnit,omitempty" tf:"renewal_period_unit,omitempty"`
 

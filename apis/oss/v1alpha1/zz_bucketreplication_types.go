@@ -45,12 +45,15 @@ type BucketReplicationInitParameters struct {
 	// Specifies the progress for querying the progress of a data replication task of a bucket.
 	Progress []ProgressInitParameters `json:"progress,omitempty" tf:"progress,omitempty"`
 
+	// (Computed, Optional, Available since v1.262.0) Configures the Replication Time Control (RTC) feature for a data replication task of a bucket. See rtc below.
+	Rtc []RtcInitParameters `json:"rtc,omitempty" tf:"rtc,omitempty"`
+
 	// Specifies other conditions used to filter the source objects to replicate. See source_selection_criteria below.
 	SourceSelectionCriteria []SourceSelectionCriteriaInitParameters `json:"sourceSelectionCriteria,omitempty" tf:"source_selection_criteria,omitempty"`
 
 	// Specifies the role that you authorize OSS to use to replicate data. If SSE-KMS is specified to encrypt the objects replicated to the destination bucket, it must be specified.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ram/v1alpha1.Role
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role_name",false)
 	SyncRole *string `json:"syncRole,omitempty" tf:"sync_role,omitempty"`
 
 	// Reference to a Role in ram to populate syncRole.
@@ -87,6 +90,9 @@ type BucketReplicationObservation struct {
 
 	// Specifies the progress for querying the progress of a data replication task of a bucket.
 	Progress []ProgressObservation `json:"progress,omitempty" tf:"progress,omitempty"`
+
+	// (Computed, Optional, Available since v1.262.0) Configures the Replication Time Control (RTC) feature for a data replication task of a bucket. See rtc below.
+	Rtc []RtcObservation `json:"rtc,omitempty" tf:"rtc,omitempty"`
 
 	// The ID of the data replication rule.
 	RuleID *string `json:"ruleId,omitempty" tf:"rule_id,omitempty"`
@@ -145,13 +151,17 @@ type BucketReplicationParameters struct {
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"-"`
 
+	// (Computed, Optional, Available since v1.262.0) Configures the Replication Time Control (RTC) feature for a data replication task of a bucket. See rtc below.
+	// +kubebuilder:validation:Optional
+	Rtc []RtcParameters `json:"rtc,omitempty" tf:"rtc,omitempty"`
+
 	// Specifies other conditions used to filter the source objects to replicate. See source_selection_criteria below.
 	// +kubebuilder:validation:Optional
 	SourceSelectionCriteria []SourceSelectionCriteriaParameters `json:"sourceSelectionCriteria,omitempty" tf:"source_selection_criteria,omitempty"`
 
 	// Specifies the role that you authorize OSS to use to replicate data. If SSE-KMS is specified to encrypt the objects replicated to the destination bucket, it must be specified.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/ram/v1alpha1.Role
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("name",false)
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("role_name",false)
 	// +kubebuilder:validation:Optional
 	SyncRole *string `json:"syncRole,omitempty" tf:"sync_role,omitempty"`
 
@@ -312,6 +322,28 @@ type ProgressObservation struct {
 }
 
 type ProgressParameters struct {
+}
+
+type RtcInitParameters struct {
+
+	// Specifies whether to enable the RTC feature. Set to true to enable or false to disable. This argument is required when the rtc block is defined.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+}
+
+type RtcObservation struct {
+
+	// Specifies whether to enable the RTC feature. Set to true to enable or false to disable. This argument is required when the rtc block is defined.
+	Enabled *bool `json:"enabled,omitempty" tf:"enabled,omitempty"`
+
+	// Specifies whether to replicate objects encrypted by using SSE-KMS. Can be Enabled or Disabled.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
+}
+
+type RtcParameters struct {
+
+	// Specifies whether to enable the RTC feature. Set to true to enable or false to disable. This argument is required when the rtc block is defined.
+	// +kubebuilder:validation:Optional
+	Enabled *bool `json:"enabled" tf:"enabled,omitempty"`
 }
 
 type SourceSelectionCriteriaInitParameters struct {

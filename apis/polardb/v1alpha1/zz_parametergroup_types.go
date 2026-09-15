@@ -18,36 +18,46 @@ type ParameterGroupInitParameters struct {
 	// The type of the database engine. Only MySQL is supported.
 	DBType *string `json:"dbType,omitempty" tf:"db_type,omitempty"`
 
-	// The version number of the database engine. Valid values: 5.6, 5.7, 8.0.
+	// The version of the database engine. Valid values:
 	DBVersion *string `json:"dbVersion,omitempty" tf:"db_version,omitempty"`
 
-	// The description of the parameter template. It must be 0 to 200 characters in length.
+	// The description of the parameter template.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The name of the parameter template. It must be 8 to 64 characters in length, and can contain letters, digits, and underscores (_). It must start with a letter and cannot contain Chinese characters.
+	// (Deprecated since v1.263.0). Field 'name' has been deprecated from provider version 1.263.0. New field 'parameter_group_name' instead.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The parameter template. See the following Block parameters.
+	// The name of the parameter template. The name must meet the following requirements:
+	ParameterGroupName *string `json:"parameterGroupName,omitempty" tf:"parameter_group_name,omitempty"`
+
+	// Details about the parameters. See parameters below.
 	Parameters []ParameterGroupParametersInitParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
 }
 
 type ParameterGroupObservation struct {
 
+	// The time when the parameter template was created. The time is in the yyyy-MM-ddTHH:mm:ssZ format. The time is displayed in UTC.
+	CreateTime *string `json:"createTime,omitempty" tf:"create_time,omitempty"`
+
 	// The type of the database engine. Only MySQL is supported.
 	DBType *string `json:"dbType,omitempty" tf:"db_type,omitempty"`
 
-	// The version number of the database engine. Valid values: 5.6, 5.7, 8.0.
+	// The version of the database engine. Valid values:
 	DBVersion *string `json:"dbVersion,omitempty" tf:"db_version,omitempty"`
 
-	// The description of the parameter template. It must be 0 to 200 characters in length.
+	// The description of the parameter template.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
+	// The ID of the resource supplied above.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The name of the parameter template. It must be 8 to 64 characters in length, and can contain letters, digits, and underscores (_). It must start with a letter and cannot contain Chinese characters.
+	// (Deprecated since v1.263.0). Field 'name' has been deprecated from provider version 1.263.0. New field 'parameter_group_name' instead.
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The parameter template. See the following Block parameters.
+	// The name of the parameter template. The name must meet the following requirements:
+	ParameterGroupName *string `json:"parameterGroupName,omitempty" tf:"parameter_group_name,omitempty"`
+
+	// Details about the parameters. See parameters below.
 	Parameters []ParameterGroupParametersObservation `json:"parameters,omitempty" tf:"parameters,omitempty"`
 }
 
@@ -57,19 +67,23 @@ type ParameterGroupParameters struct {
 	// +kubebuilder:validation:Optional
 	DBType *string `json:"dbType,omitempty" tf:"db_type,omitempty"`
 
-	// The version number of the database engine. Valid values: 5.6, 5.7, 8.0.
+	// The version of the database engine. Valid values:
 	// +kubebuilder:validation:Optional
 	DBVersion *string `json:"dbVersion,omitempty" tf:"db_version,omitempty"`
 
-	// The description of the parameter template. It must be 0 to 200 characters in length.
+	// The description of the parameter template.
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The name of the parameter template. It must be 8 to 64 characters in length, and can contain letters, digits, and underscores (_). It must start with a letter and cannot contain Chinese characters.
+	// (Deprecated since v1.263.0). Field 'name' has been deprecated from provider version 1.263.0. New field 'parameter_group_name' instead.
 	// +kubebuilder:validation:Optional
 	Name *string `json:"name,omitempty" tf:"name,omitempty"`
 
-	// The parameter template. See the following Block parameters.
+	// The name of the parameter template. The name must meet the following requirements:
+	// +kubebuilder:validation:Optional
+	ParameterGroupName *string `json:"parameterGroupName,omitempty" tf:"parameter_group_name,omitempty"`
+
+	// Details about the parameters. See parameters below.
 	// +kubebuilder:validation:Optional
 	Parameters []ParameterGroupParametersParameters `json:"parameters,omitempty" tf:"parameters,omitempty"`
 
@@ -81,31 +95,31 @@ type ParameterGroupParameters struct {
 
 type ParameterGroupParametersInitParameters struct {
 
-	// The name of a parameter in the parameter template.
+	// The name of the parameter.
 	ParamName *string `json:"paramName,omitempty" tf:"param_name,omitempty"`
 
-	// The value of a parameter in the parameter template.
+	// The value of the parameter.
 	ParamValue *string `json:"paramValue,omitempty" tf:"param_value,omitempty"`
 }
 
 type ParameterGroupParametersObservation struct {
 
-	// The name of a parameter in the parameter template.
+	// The name of the parameter.
 	ParamName *string `json:"paramName,omitempty" tf:"param_name,omitempty"`
 
-	// The value of a parameter in the parameter template.
+	// The value of the parameter.
 	ParamValue *string `json:"paramValue,omitempty" tf:"param_value,omitempty"`
 }
 
 type ParameterGroupParametersParameters struct {
 
-	// The name of a parameter in the parameter template.
+	// The name of the parameter.
 	// +kubebuilder:validation:Optional
-	ParamName *string `json:"paramName" tf:"param_name,omitempty"`
+	ParamName *string `json:"paramName,omitempty" tf:"param_name,omitempty"`
 
-	// The value of a parameter in the parameter template.
+	// The value of the parameter.
 	// +kubebuilder:validation:Optional
-	ParamValue *string `json:"paramValue" tf:"param_value,omitempty"`
+	ParamValue *string `json:"paramValue,omitempty" tf:"param_value,omitempty"`
 }
 
 // ParameterGroupSpec defines the desired state of ParameterGroup
@@ -135,7 +149,7 @@ type ParameterGroupStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ParameterGroup is the Schema for the ParameterGroups API. Provides a Alicloud PolarDB Parameter Group resource.
+// ParameterGroup is the Schema for the ParameterGroups API. Provides a Alicloud Polar Db Parameter Group resource.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -146,7 +160,6 @@ type ParameterGroup struct {
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dbType) || (has(self.initProvider) && has(self.initProvider.dbType))",message="spec.forProvider.dbType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.dbVersion) || (has(self.initProvider) && has(self.initProvider.dbVersion))",message="spec.forProvider.dbVersion is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.parameters) || (has(self.initProvider) && has(self.initProvider.parameters))",message="spec.forProvider.parameters is a required parameter"
 	Spec   ParameterGroupSpec   `json:"spec"`
 	Status ParameterGroupStatus `json:"status,omitempty"`

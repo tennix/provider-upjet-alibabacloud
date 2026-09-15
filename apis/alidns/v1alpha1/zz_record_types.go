@@ -48,7 +48,7 @@ type RecordInitParameters struct {
 	// The effective time of domain record. Its scope depends on the edition of the cloud resolution. Free is [600, 86400], Basic is [120, 86400], Standard is [60, 86400], Ultimate is [10, 86400], Exclusive is [1, 86400]. Default value is 600.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// The type of domain record. Valid values: A,NS,MX,TXT,CNAME,SRV,AAAA,CAA, REDIRECT_URL and FORWORD_URL.
+	// The type of domain record. For more information, see How to use it.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The IP address of the client.
@@ -87,7 +87,7 @@ type RecordObservation struct {
 	// The effective time of domain record. Its scope depends on the edition of the cloud resolution. Free is [600, 86400], Basic is [120, 86400], Standard is [60, 86400], Ultimate is [10, 86400], Exclusive is [1, 86400]. Default value is 600.
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// The type of domain record. Valid values: A,NS,MX,TXT,CNAME,SRV,AAAA,CAA, REDIRECT_URL and FORWORD_URL.
+	// The type of domain record. For more information, see How to use it.
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 
 	// The IP address of the client.
@@ -145,7 +145,7 @@ type RecordParameters struct {
 	// +kubebuilder:validation:Optional
 	TTL *float64 `json:"ttl,omitempty" tf:"ttl,omitempty"`
 
-	// The type of domain record. Valid values: A,NS,MX,TXT,CNAME,SRV,AAAA,CAA, REDIRECT_URL and FORWORD_URL.
+	// The type of domain record. For more information, see How to use it.
 	// +kubebuilder:validation:Optional
 	Type *string `json:"type,omitempty" tf:"type,omitempty"`
 

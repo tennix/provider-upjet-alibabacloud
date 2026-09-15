@@ -15,7 +15,7 @@ import (
 
 type VPCNATIPInitParameters struct {
 
-	// Specifies whether to check the validity of the request without actually making the request.
+	// Specifies whether to only precheck the request. Valid values:
 	DryRun *bool `json:"dryRun,omitempty" tf:"dry_run,omitempty"`
 
 	// The ID of the Virtual Private Cloud (VPC) NAT gateway for which you want to create the NAT IP address.
@@ -30,58 +30,58 @@ type VPCNATIPInitParameters struct {
 	// +kubebuilder:validation:Optional
 	NATGatewayIDSelector *v1.Selector `json:"natGatewayIdSelector,omitempty" tf:"-"`
 
-	// The NAT IP address that you want to create. If you do not specify an IP address, the system selects a random IP address from the specified CIDR block.
+	// The NAT IP address to be created.
 	NATIP *string `json:"natIp,omitempty" tf:"nat_ip,omitempty"`
 
-	// NAT IP ADDRESS of the address segment.
+	// The CIDR block to which the NAT IP address belongs.
 	NATIPCidr *string `json:"natIpCidr,omitempty" tf:"nat_ip_cidr,omitempty"`
 
-	// The ID of the CIDR block to which the NAT IP address belongs.
+	// (Removed since v1.274.0) Field nat_ip_cidr_id has been removed from provider version 1.274.0.
 	NATIPCidrID *string `json:"natIpCidrId,omitempty" tf:"nat_ip_cidr_id,omitempty"`
 
-	// NAT IP ADDRESS description of information. Length is from 2 to 256 characters, must start with a letter or the Chinese at the beginning, but not at the http:// Or https:// at the beginning.
+	// The description of the NAT IP address. The description must be 2 to 256 characters in length and start with a letter. The description cannot start with http:// or https://.
 	NATIPDescription *string `json:"natIpDescription,omitempty" tf:"nat_ip_description,omitempty"`
 
-	// NAT IP ADDRESS the name of the root directory. Length is from 2 to 128 characters, must start with a letter or the Chinese at the beginning can contain numbers, half a period (.), underscore (_) and dash (-). But do not start with http:// or https:// at the beginning.
+	// The name of the NAT IP address. The name must be 2 to 128 characters in length, and can contain letters, digits, periods (.), underscores (_), and hyphens (-). It must start with a letter. The name must start with a letter and cannot start with http:// or https://.
 	NATIPName *string `json:"natIpName,omitempty" tf:"nat_ip_name,omitempty"`
 }
 
 type VPCNATIPObservation struct {
 
-	// Specifies whether to check the validity of the request without actually making the request.
+	// Specifies whether to only precheck the request. Valid values:
 	DryRun *bool `json:"dryRun,omitempty" tf:"dry_run,omitempty"`
 
-	// The value formats as <nat_gateway_id>:<nat_ip_id>.
+	// The ID of the resource supplied above. The value is formulated as <nat_gateway_id>:<nat_ip_id>.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// The ID of the Virtual Private Cloud (VPC) NAT gateway for which you want to create the NAT IP address.
 	NATGatewayID *string `json:"natGatewayId,omitempty" tf:"nat_gateway_id,omitempty"`
 
-	// The NAT IP address that you want to create. If you do not specify an IP address, the system selects a random IP address from the specified CIDR block.
+	// The NAT IP address to be created.
 	NATIP *string `json:"natIp,omitempty" tf:"nat_ip,omitempty"`
 
-	// NAT IP ADDRESS of the address segment.
+	// The CIDR block to which the NAT IP address belongs.
 	NATIPCidr *string `json:"natIpCidr,omitempty" tf:"nat_ip_cidr,omitempty"`
 
-	// The ID of the CIDR block to which the NAT IP address belongs.
+	// (Removed since v1.274.0) Field nat_ip_cidr_id has been removed from provider version 1.274.0.
 	NATIPCidrID *string `json:"natIpCidrId,omitempty" tf:"nat_ip_cidr_id,omitempty"`
 
-	// NAT IP ADDRESS description of information. Length is from 2 to 256 characters, must start with a letter or the Chinese at the beginning, but not at the http:// Or https:// at the beginning.
+	// The description of the NAT IP address. The description must be 2 to 256 characters in length and start with a letter. The description cannot start with http:// or https://.
 	NATIPDescription *string `json:"natIpDescription,omitempty" tf:"nat_ip_description,omitempty"`
 
 	// Ihe ID of the Nat Ip.
 	NATIPID *string `json:"natIpId,omitempty" tf:"nat_ip_id,omitempty"`
 
-	// NAT IP ADDRESS the name of the root directory. Length is from 2 to 128 characters, must start with a letter or the Chinese at the beginning can contain numbers, half a period (.), underscore (_) and dash (-). But do not start with http:// or https:// at the beginning.
+	// The name of the NAT IP address. The name must be 2 to 128 characters in length, and can contain letters, digits, periods (.), underscores (_), and hyphens (-). It must start with a letter. The name must start with a letter and cannot start with http:// or https://.
 	NATIPName *string `json:"natIpName,omitempty" tf:"nat_ip_name,omitempty"`
 
-	// The status of the NAT IP address. Valid values: Available, Deleting, Creating and Deleted.
+	// The status of the NAT IP address.
 	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type VPCNATIPParameters struct {
 
-	// Specifies whether to check the validity of the request without actually making the request.
+	// Specifies whether to only precheck the request. Valid values:
 	// +kubebuilder:validation:Optional
 	DryRun *bool `json:"dryRun,omitempty" tf:"dry_run,omitempty"`
 
@@ -98,23 +98,23 @@ type VPCNATIPParameters struct {
 	// +kubebuilder:validation:Optional
 	NATGatewayIDSelector *v1.Selector `json:"natGatewayIdSelector,omitempty" tf:"-"`
 
-	// The NAT IP address that you want to create. If you do not specify an IP address, the system selects a random IP address from the specified CIDR block.
+	// The NAT IP address to be created.
 	// +kubebuilder:validation:Optional
 	NATIP *string `json:"natIp,omitempty" tf:"nat_ip,omitempty"`
 
-	// NAT IP ADDRESS of the address segment.
+	// The CIDR block to which the NAT IP address belongs.
 	// +kubebuilder:validation:Optional
 	NATIPCidr *string `json:"natIpCidr,omitempty" tf:"nat_ip_cidr,omitempty"`
 
-	// The ID of the CIDR block to which the NAT IP address belongs.
+	// (Removed since v1.274.0) Field nat_ip_cidr_id has been removed from provider version 1.274.0.
 	// +kubebuilder:validation:Optional
 	NATIPCidrID *string `json:"natIpCidrId,omitempty" tf:"nat_ip_cidr_id,omitempty"`
 
-	// NAT IP ADDRESS description of information. Length is from 2 to 256 characters, must start with a letter or the Chinese at the beginning, but not at the http:// Or https:// at the beginning.
+	// The description of the NAT IP address. The description must be 2 to 256 characters in length and start with a letter. The description cannot start with http:// or https://.
 	// +kubebuilder:validation:Optional
 	NATIPDescription *string `json:"natIpDescription,omitempty" tf:"nat_ip_description,omitempty"`
 
-	// NAT IP ADDRESS the name of the root directory. Length is from 2 to 128 characters, must start with a letter or the Chinese at the beginning can contain numbers, half a period (.), underscore (_) and dash (-). But do not start with http:// or https:// at the beginning.
+	// The name of the NAT IP address. The name must be 2 to 128 characters in length, and can contain letters, digits, periods (.), underscores (_), and hyphens (-). It must start with a letter. The name must start with a letter and cannot start with http:// or https://.
 	// +kubebuilder:validation:Optional
 	NATIPName *string `json:"natIpName,omitempty" tf:"nat_ip_name,omitempty"`
 
@@ -151,7 +151,7 @@ type VPCNATIPStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// VPCNATIP is the Schema for the VPCNATIPs API. Provides a Alicloud VPC Nat Ip resource.
+// VPCNATIP is the Schema for the VPCNATIPs API. Provides a Alicloud Nat Gateway Nat Ip resource.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -160,8 +160,9 @@ type VPCNATIPStatus struct {
 type VPCNATIP struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              VPCNATIPSpec   `json:"spec"`
-	Status            VPCNATIPStatus `json:"status,omitempty"`
+	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.natIpCidr) || (has(self.initProvider) && has(self.initProvider.natIpCidr))",message="spec.forProvider.natIpCidr is a required parameter"
+	Spec   VPCNATIPSpec   `json:"spec"`
+	Status VPCNATIPStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true

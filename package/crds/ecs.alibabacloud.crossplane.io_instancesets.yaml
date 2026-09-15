@@ -81,20 +81,21 @@ spec:
                     description: The automatic release time of the PostPaid instance.
                     type: string
                   autoRenew:
-                    description: Whether to enable auto-renewal for the instance.
-                      This parameter is valid only when the instance_charge_type is
-                      set to PrePaid.
+                    description: 'Whether to enable auto-renewal for the instance.
+                      Note: auto_renew is valid only when instance_charge_type is
+                      set to PrePaid.'
                     type: boolean
                   autoRenewPeriod:
-                    description: Auto renewal period of an instance, in the unit of
-                      month. It is valid when instance_charge_type is PrePaid.
+                    description: 'Auto renewal period of an instance, in the unit
+                      of month. Valid values:'
                     type: number
                   bootCheckOsWithAssistant:
-                    description: Indicate how to check instance ready to use.
+                    description: 'Indicate how to check instance ready to use. Valid
+                      values:'
                     type: boolean
                   dataDisks:
                     description: The list of data disks created with instance. See
-                      data_disks below..
+                      data_disks below.
                     items:
                       properties:
                         autoSnapshotPolicyId:
@@ -112,7 +113,8 @@ spec:
                           description: The name of the data disk.
                           type: string
                         diskSize:
-                          description: 'The size of the data disk. Unit: GiB.'
+                          description: 'The size of the data disk. Unit: GiB. Valid
+                            values:'
                           type: number
                         encrypted:
                           description: 'Encrypted the data in this disk. Default value:
@@ -267,8 +269,8 @@ spec:
                     description: The type of instance to start.
                     type: string
                   internetChargeType:
-                    description: The Internet charge type of the instance. Valid values
-                      are PayByBandwidth, PayByTraffic.
+                    description: 'The Internet charge type of the instance. Valid
+                      values: PayByBandwidth, PayByTraffic.'
                     type: string
                   internetMaxBandwidthOut:
                     description: 'The Maximum outgoing bandwidth to the public network,
@@ -367,7 +369,7 @@ spec:
                     type: string
                   networkInterfaces:
                     description: A list of NetworkInterface. See network_interfaces
-                      below..
+                      below.
                     items:
                       properties:
                         description:
@@ -411,13 +413,13 @@ spec:
                     - namespace
                     type: object
                   period:
-                    description: The duration that you will buy the resource, in month.
-                      It is valid when instance_charge_type is PrePaid.
+                    description: 'The duration that you will buy the resource, in
+                      month. Valid values:'
                     type: number
                   periodUnit:
                     description: 'The duration unit that you will buy the resource.
-                      It is valid when instance_charge_type is ''PrePaid''. Valid
-                      value: Week, Month.'
+                      Valid values: Week, Month. Note: period_unit is valid only when
+                      instance_charge_type is set to PrePaid.'
                     type: string
                   ramRoleName:
                     description: The Instance RAM role name.
@@ -430,7 +432,7 @@ spec:
                     description: The ID of resource group which the instance belongs.
                     type: string
                   securityEnhancementStrategy:
-                    description: The security enhancement strategy.
+                    description: 'The security enhancement strategy. Valid values:'
                     type: string
                   securityGroupIdRefs:
                     description: References to SecurityGroup in ecs to populate securityGroupIds.
@@ -517,22 +519,21 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   spotPriceLimit:
-                    description: The hourly price threshold of a instance, and it
-                      takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'.
-                      Three decimals is allowed at most.
+                    description: 'The hourly price threshold of a instance. Three
+                      decimals is allowed at most. Note: spot_price_limit takes effect
+                      only if spot_strategy is set to SpotWithPriceLimit.'
                     type: number
                   spotStrategy:
-                    description: The spot strategy of a Pay-As-You-Go instance, and
-                      it takes effect only when parameter instance_charge_type is
-                      'PostPaid'.
+                    description: 'The spot strategy of a Pay-As-You-Go instance. Valid
+                      values:'
                     type: string
                   systemDiskAutoSnapshotPolicyId:
                     description: The ID of the automatic snapshot policy applied to
                       the system disk.
                     type: string
                   systemDiskCategory:
-                    description: The category of the system disk. Valid values are
-                      cloud_efficiency, cloud_ssd, cloud_essd, cloud.
+                    description: 'The category of the system disk. Valid values: cloud_efficiency,
+                      cloud_ssd, cloud_essd, cloud.'
                     type: string
                   systemDiskDescription:
                     description: The description of the system disk. The description
@@ -547,8 +548,8 @@ spec:
                       disk. Valid values: PL0, PL1, PL2, PL3.'
                     type: string
                   systemDiskSize:
-                    description: 'The size of the system disk, measured in GiB. Value
-                      range:  values: 20 to 500.'
+                    description: 'The size of the system disk, measured in GiB. Valid
+                      values: 20 to 500.'
                     type: number
                   tags:
                     additionalProperties:
@@ -665,20 +666,21 @@ spec:
                     description: The automatic release time of the PostPaid instance.
                     type: string
                   autoRenew:
-                    description: Whether to enable auto-renewal for the instance.
-                      This parameter is valid only when the instance_charge_type is
-                      set to PrePaid.
+                    description: 'Whether to enable auto-renewal for the instance.
+                      Note: auto_renew is valid only when instance_charge_type is
+                      set to PrePaid.'
                     type: boolean
                   autoRenewPeriod:
-                    description: Auto renewal period of an instance, in the unit of
-                      month. It is valid when instance_charge_type is PrePaid.
+                    description: 'Auto renewal period of an instance, in the unit
+                      of month. Valid values:'
                     type: number
                   bootCheckOsWithAssistant:
-                    description: Indicate how to check instance ready to use.
+                    description: 'Indicate how to check instance ready to use. Valid
+                      values:'
                     type: boolean
                   dataDisks:
                     description: The list of data disks created with instance. See
-                      data_disks below..
+                      data_disks below.
                     items:
                       properties:
                         autoSnapshotPolicyId:
@@ -696,7 +698,8 @@ spec:
                           description: The name of the data disk.
                           type: string
                         diskSize:
-                          description: 'The size of the data disk. Unit: GiB.'
+                          description: 'The size of the data disk. Unit: GiB. Valid
+                            values:'
                           type: number
                         encrypted:
                           description: 'Encrypted the data in this disk. Default value:
@@ -851,8 +854,8 @@ spec:
                     description: The type of instance to start.
                     type: string
                   internetChargeType:
-                    description: The Internet charge type of the instance. Valid values
-                      are PayByBandwidth, PayByTraffic.
+                    description: 'The Internet charge type of the instance. Valid
+                      values: PayByBandwidth, PayByTraffic.'
                     type: string
                   internetMaxBandwidthOut:
                     description: 'The Maximum outgoing bandwidth to the public network,
@@ -951,7 +954,7 @@ spec:
                     type: string
                   networkInterfaces:
                     description: A list of NetworkInterface. See network_interfaces
-                      below..
+                      below.
                     items:
                       properties:
                         description:
@@ -995,13 +998,13 @@ spec:
                     - namespace
                     type: object
                   period:
-                    description: The duration that you will buy the resource, in month.
-                      It is valid when instance_charge_type is PrePaid.
+                    description: 'The duration that you will buy the resource, in
+                      month. Valid values:'
                     type: number
                   periodUnit:
                     description: 'The duration unit that you will buy the resource.
-                      It is valid when instance_charge_type is ''PrePaid''. Valid
-                      value: Week, Month.'
+                      Valid values: Week, Month. Note: period_unit is valid only when
+                      instance_charge_type is set to PrePaid.'
                     type: string
                   ramRoleName:
                     description: The Instance RAM role name.
@@ -1010,7 +1013,7 @@ spec:
                     description: The ID of resource group which the instance belongs.
                     type: string
                   securityEnhancementStrategy:
-                    description: The security enhancement strategy.
+                    description: 'The security enhancement strategy. Valid values:'
                     type: string
                   securityGroupIdRefs:
                     description: References to SecurityGroup in ecs to populate securityGroupIds.
@@ -1097,22 +1100,21 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   spotPriceLimit:
-                    description: The hourly price threshold of a instance, and it
-                      takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'.
-                      Three decimals is allowed at most.
+                    description: 'The hourly price threshold of a instance. Three
+                      decimals is allowed at most. Note: spot_price_limit takes effect
+                      only if spot_strategy is set to SpotWithPriceLimit.'
                     type: number
                   spotStrategy:
-                    description: The spot strategy of a Pay-As-You-Go instance, and
-                      it takes effect only when parameter instance_charge_type is
-                      'PostPaid'.
+                    description: 'The spot strategy of a Pay-As-You-Go instance. Valid
+                      values:'
                     type: string
                   systemDiskAutoSnapshotPolicyId:
                     description: The ID of the automatic snapshot policy applied to
                       the system disk.
                     type: string
                   systemDiskCategory:
-                    description: The category of the system disk. Valid values are
-                      cloud_efficiency, cloud_ssd, cloud_essd, cloud.
+                    description: 'The category of the system disk. Valid values: cloud_efficiency,
+                      cloud_ssd, cloud_essd, cloud.'
                     type: string
                   systemDiskDescription:
                     description: The description of the system disk. The description
@@ -1127,8 +1129,8 @@ spec:
                       disk. Valid values: PL0, PL1, PL2, PL3.'
                     type: string
                   systemDiskSize:
-                    description: 'The size of the system disk, measured in GiB. Value
-                      range:  values: 20 to 500.'
+                    description: 'The size of the system disk, measured in GiB. Valid
+                      values: 20 to 500.'
                     type: number
                   tags:
                     additionalProperties:
@@ -1413,20 +1415,21 @@ spec:
                     description: The automatic release time of the PostPaid instance.
                     type: string
                   autoRenew:
-                    description: Whether to enable auto-renewal for the instance.
-                      This parameter is valid only when the instance_charge_type is
-                      set to PrePaid.
+                    description: 'Whether to enable auto-renewal for the instance.
+                      Note: auto_renew is valid only when instance_charge_type is
+                      set to PrePaid.'
                     type: boolean
                   autoRenewPeriod:
-                    description: Auto renewal period of an instance, in the unit of
-                      month. It is valid when instance_charge_type is PrePaid.
+                    description: 'Auto renewal period of an instance, in the unit
+                      of month. Valid values:'
                     type: number
                   bootCheckOsWithAssistant:
-                    description: Indicate how to check instance ready to use.
+                    description: 'Indicate how to check instance ready to use. Valid
+                      values:'
                     type: boolean
                   dataDisks:
                     description: The list of data disks created with instance. See
-                      data_disks below..
+                      data_disks below.
                     items:
                       properties:
                         autoSnapshotPolicyId:
@@ -1444,7 +1447,8 @@ spec:
                           description: The name of the data disk.
                           type: string
                         diskSize:
-                          description: 'The size of the data disk. Unit: GiB.'
+                          description: 'The size of the data disk. Unit: GiB. Valid
+                            values:'
                           type: number
                         encrypted:
                           description: 'Encrypted the data in this disk. Default value:
@@ -1534,8 +1538,8 @@ spec:
                     description: The type of instance to start.
                     type: string
                   internetChargeType:
-                    description: The Internet charge type of the instance. Valid values
-                      are PayByBandwidth, PayByTraffic.
+                    description: 'The Internet charge type of the instance. Valid
+                      values: PayByBandwidth, PayByTraffic.'
                     type: string
                   internetMaxBandwidthOut:
                     description: 'The Maximum outgoing bandwidth to the public network,
@@ -1558,7 +1562,7 @@ spec:
                     type: string
                   networkInterfaces:
                     description: A list of NetworkInterface. See network_interfaces
-                      below..
+                      below.
                     items:
                       properties:
                         description:
@@ -1583,13 +1587,13 @@ spec:
                     description: Whether to use the password preset in the image.
                     type: boolean
                   period:
-                    description: The duration that you will buy the resource, in month.
-                      It is valid when instance_charge_type is PrePaid.
+                    description: 'The duration that you will buy the resource, in
+                      month. Valid values:'
                     type: number
                   periodUnit:
                     description: 'The duration unit that you will buy the resource.
-                      It is valid when instance_charge_type is ''PrePaid''. Valid
-                      value: Week, Month.'
+                      Valid values: Week, Month. Note: period_unit is valid only when
+                      instance_charge_type is set to PrePaid.'
                     type: string
                   ramRoleName:
                     description: The Instance RAM role name.
@@ -1598,7 +1602,7 @@ spec:
                     description: The ID of resource group which the instance belongs.
                     type: string
                   securityEnhancementStrategy:
-                    description: The security enhancement strategy.
+                    description: 'The security enhancement strategy. Valid values:'
                     type: string
                   securityGroupIds:
                     description: A list of security group ids to associate with.
@@ -1607,22 +1611,21 @@ spec:
                     type: array
                     x-kubernetes-list-type: set
                   spotPriceLimit:
-                    description: The hourly price threshold of a instance, and it
-                      takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'.
-                      Three decimals is allowed at most.
+                    description: 'The hourly price threshold of a instance. Three
+                      decimals is allowed at most. Note: spot_price_limit takes effect
+                      only if spot_strategy is set to SpotWithPriceLimit.'
                     type: number
                   spotStrategy:
-                    description: The spot strategy of a Pay-As-You-Go instance, and
-                      it takes effect only when parameter instance_charge_type is
-                      'PostPaid'.
+                    description: 'The spot strategy of a Pay-As-You-Go instance. Valid
+                      values:'
                     type: string
                   systemDiskAutoSnapshotPolicyId:
                     description: The ID of the automatic snapshot policy applied to
                       the system disk.
                     type: string
                   systemDiskCategory:
-                    description: The category of the system disk. Valid values are
-                      cloud_efficiency, cloud_ssd, cloud_essd, cloud.
+                    description: 'The category of the system disk. Valid values: cloud_efficiency,
+                      cloud_ssd, cloud_essd, cloud.'
                     type: string
                   systemDiskDescription:
                     description: The description of the system disk. The description
@@ -1637,8 +1640,8 @@ spec:
                       disk. Valid values: PL0, PL1, PL2, PL3.'
                     type: string
                   systemDiskSize:
-                    description: 'The size of the system disk, measured in GiB. Value
-                      range:  values: 20 to 500.'
+                    description: 'The size of the system disk, measured in GiB. Valid
+                      values: 20 to 500.'
                     type: number
                   tags:
                     additionalProperties:

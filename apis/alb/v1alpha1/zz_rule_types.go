@@ -155,7 +155,8 @@ type ForwardGroupConfigServerGroupTuplesInitParameters struct {
 	// +kubebuilder:validation:Optional
 	ServerGroupIDSelector *v1.Selector `json:"serverGroupIdSelector,omitempty" tf:"-"`
 
-	// The Weight of server group. Default value: 100. NOTE: This attribute is required when the number of server_group_tuples is greater than 2.
+	// The Weight of server group. Default value: 100. Valid values: 0 to 100.
+	// NOTE: weight is required when the number of server_group_tuples is greater than 2. From version 1.264.0, weight can be set to 0.
 	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
@@ -164,7 +165,8 @@ type ForwardGroupConfigServerGroupTuplesObservation struct {
 	// The ID of the destination server group to which requests are forwarded.
 	ServerGroupID *string `json:"serverGroupId,omitempty" tf:"server_group_id,omitempty"`
 
-	// The Weight of server group. Default value: 100. NOTE: This attribute is required when the number of server_group_tuples is greater than 2.
+	// The Weight of server group. Default value: 100. Valid values: 0 to 100.
+	// NOTE: weight is required when the number of server_group_tuples is greater than 2. From version 1.264.0, weight can be set to 0.
 	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }
 
@@ -184,7 +186,8 @@ type ForwardGroupConfigServerGroupTuplesParameters struct {
 	// +kubebuilder:validation:Optional
 	ServerGroupIDSelector *v1.Selector `json:"serverGroupIdSelector,omitempty" tf:"-"`
 
-	// The Weight of server group. Default value: 100. NOTE: This attribute is required when the number of server_group_tuples is greater than 2.
+	// The Weight of server group. Default value: 100. Valid values: 0 to 100.
+	// NOTE: weight is required when the number of server_group_tuples is greater than 2. From version 1.264.0, weight can be set to 0.
 	// +kubebuilder:validation:Optional
 	Weight *float64 `json:"weight,omitempty" tf:"weight,omitempty"`
 }

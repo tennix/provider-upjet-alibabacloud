@@ -96,8 +96,9 @@ spec:
                       belongs.
                     type: string
                   routeTables:
-                    description: The ID list of the route table associated with the
-                      VPC gateway endpoint.
+                    description: 'The ID list of the route table associated with the
+                      VPC gateway endpoint. NOTE: this argument cannot be set at the
+                      same time as alicloud_vpc_gateway_endpoint_route_table_attachment.'
                     items:
                       type: string
                     type: array
@@ -221,8 +222,9 @@ spec:
                       belongs.
                     type: string
                   routeTables:
-                    description: The ID list of the route table associated with the
-                      VPC gateway endpoint.
+                    description: 'The ID list of the route table associated with the
+                      VPC gateway endpoint. NOTE: this argument cannot be set at the
+                      same time as alicloud_vpc_gateway_endpoint_route_table_attachment.'
                     items:
                       type: string
                     type: array
@@ -516,8 +518,9 @@ spec:
                       belongs.
                     type: string
                   routeTables:
-                    description: The ID list of the route table associated with the
-                      VPC gateway endpoint.
+                    description: 'The ID list of the route table associated with the
+                      VPC gateway endpoint. NOTE: this argument cannot be set at the
+                      same time as alicloud_vpc_gateway_endpoint_route_table_attachment.'
                     items:
                       type: string
                     type: array

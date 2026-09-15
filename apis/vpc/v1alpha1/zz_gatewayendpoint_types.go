@@ -28,7 +28,7 @@ type GatewayEndpointInitParameters struct {
 	// The ID of the resource group to which the instance belongs.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// The ID list of the route table associated with the VPC gateway endpoint.
+	// The ID list of the route table associated with the VPC gateway endpoint. NOTE: this argument cannot be set at the same time as alicloud_vpc_gateway_endpoint_route_table_attachment.
 	// +listType=set
 	RouteTables []*string `json:"routeTables,omitempty" tf:"route_tables,omitempty"`
 
@@ -73,7 +73,7 @@ type GatewayEndpointObservation struct {
 	// The ID of the resource group to which the instance belongs.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// The ID list of the route table associated with the VPC gateway endpoint.
+	// The ID list of the route table associated with the VPC gateway endpoint. NOTE: this argument cannot be set at the same time as alicloud_vpc_gateway_endpoint_route_table_attachment.
 	// +listType=set
 	RouteTables []*string `json:"routeTables,omitempty" tf:"route_tables,omitempty"`
 
@@ -115,7 +115,7 @@ type GatewayEndpointParameters struct {
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// The ID list of the route table associated with the VPC gateway endpoint.
+	// The ID list of the route table associated with the VPC gateway endpoint. NOTE: this argument cannot be set at the same time as alicloud_vpc_gateway_endpoint_route_table_attachment.
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	RouteTables []*string `json:"routeTables,omitempty" tf:"route_tables,omitempty"`

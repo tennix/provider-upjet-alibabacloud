@@ -11,7 +11,7 @@ spec:
     dbType: MySQL
     dbVersion: "8.0"
     description: example_value
-    name: example_value
+    parameterGroupName: example_value
     parameters:
     - paramName: wait_timeout
       paramValue: "86400"

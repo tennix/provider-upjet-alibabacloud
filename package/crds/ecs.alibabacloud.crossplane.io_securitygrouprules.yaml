@@ -84,7 +84,8 @@ spec:
                     type: string
                   ipProtocol:
                     description: 'The transport layer protocol of the Security Group
-                      Rule. Valid values: tcp, udp, icmp, gre, all.'
+                      Rule. Valid values: tcp, udp, icmp, icmpv6, gre, all. NOTE:
+                      From version 1.262.0, ip_protocol can be set to icmpv6.'
                     type: string
                   ipv6CidrIp:
                     description: 'Source IPv6 CIDR address block that requires access.
@@ -309,7 +310,8 @@ spec:
                     type: string
                   ipProtocol:
                     description: 'The transport layer protocol of the Security Group
-                      Rule. Valid values: tcp, udp, icmp, gre, all.'
+                      Rule. Valid values: tcp, udp, icmp, icmpv6, gre, all. NOTE:
+                      From version 1.262.0, ip_protocol can be set to icmpv6.'
                     type: string
                   ipv6CidrIp:
                     description: 'Source IPv6 CIDR address block that requires access.
@@ -700,7 +702,8 @@ spec:
                     type: string
                   ipProtocol:
                     description: 'The transport layer protocol of the Security Group
-                      Rule. Valid values: tcp, udp, icmp, gre, all.'
+                      Rule. Valid values: tcp, udp, icmp, icmpv6, gre, all. NOTE:
+                      From version 1.262.0, ip_protocol can be set to icmpv6.'
                     type: string
                   ipv6CidrIp:
                     description: 'Source IPv6 CIDR address block that requires access.

@@ -902,7 +902,7 @@ func (mg *BucketReplication) ResolveReferences(ctx context.Context, c client.Rea
 	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.ForProvider.SyncRole),
-		Extract:      resource.ExtractParamPath("name", false),
+		Extract:      resource.ExtractParamPath("role_name", false),
 		Reference:    mg.Spec.ForProvider.SyncRoleRef,
 		Selector:     mg.Spec.ForProvider.SyncRoleSelector,
 		To: reference.To{
@@ -988,7 +988,7 @@ func (mg *BucketReplication) ResolveReferences(ctx context.Context, c client.Rea
 	}
 	rsp, err = r.Resolve(ctx, reference.ResolutionRequest{
 		CurrentValue: reference.FromPtrValue(mg.Spec.InitProvider.SyncRole),
-		Extract:      resource.ExtractParamPath("name", false),
+		Extract:      resource.ExtractParamPath("role_name", false),
 		Reference:    mg.Spec.InitProvider.SyncRoleRef,
 		Selector:     mg.Spec.InitProvider.SyncRoleSelector,
 		To: reference.To{

@@ -13,7 +13,7 @@ spec:
     - "456"
     description: ${var.oidc_provider_name}
     fingerprints:
-    - 902ef2deeb3c5b13ea4c3d5193629309e231ae55
+    - 0BBFAB97059595E8D1EC48E89EB8657C0E5AAE71
     issuanceLimitTime: "12"
     issuerUrl: https://oauth.aliyun.com
-    oidcProviderName: ${var.name}
+    oidcProviderName: tfaccims89018

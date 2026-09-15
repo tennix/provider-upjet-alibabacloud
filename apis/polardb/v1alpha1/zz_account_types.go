@@ -15,19 +15,25 @@ import (
 
 type AccountInitParameters struct {
 
-	// Account description. It cannot begin with https://. It must start with a Chinese character or English letter. It can include Chinese and English characters, underlines (_), hyphens (-), and numbers. The length may be 2-256 characters.
+	// The description of the database account.
 	AccountDescription *string `json:"accountDescription,omitempty" tf:"account_description,omitempty"`
 
-	// Operation account requiring a uniqueness check. It may consist of lower case letters, numbers, and underlines, and must start with a letter and have no more than 16 characters.
+	// The lock status of the account. Valid values:
+	AccountLockState *string `json:"accountLockState,omitempty" tf:"account_lock_state,omitempty"`
+
+	// The account name. Must meet the following requirements:
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Operation password. It may consist of letters, digits, or underlines, with a length of 6 to 32 characters.
-	AccountPasswordSecretRef v1.SecretKeySelector `json:"accountPasswordSecretRef" tf:"-"`
+	// The account password. You have to specify one of account_password and kms_encrypted_password fields. Must  meet the following requirements:
+	AccountPasswordSecretRef *v1.SecretKeySelector `json:"accountPasswordSecretRef,omitempty" tf:"-"`
 
-	// Account type, Valid values are Normal, Super, Default to Normal.
+	// The time when the password for the database account expires.
+	AccountPasswordValidTime *string `json:"accountPasswordValidTime,omitempty" tf:"account_password_valid_time,omitempty"`
+
+	// The account type. Default value:Normal. Valid values: Normal, Super.
 	AccountType *string `json:"accountType,omitempty" tf:"account_type,omitempty"`
 
-	// The Id of cluster in which account belongs.
+	// The cluster ID.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/polardb/v1alpha1.Cluster
 	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upjet-alibabacloud/config/common.IdExtractor()
 	DBClusterID *string `json:"dbClusterId,omitempty" tf:"db_cluster_id,omitempty"`
@@ -50,19 +56,25 @@ type AccountInitParameters struct {
 
 type AccountObservation struct {
 
-	// Account description. It cannot begin with https://. It must start with a Chinese character or English letter. It can include Chinese and English characters, underlines (_), hyphens (-), and numbers. The length may be 2-256 characters.
+	// The description of the database account.
 	AccountDescription *string `json:"accountDescription,omitempty" tf:"account_description,omitempty"`
 
-	// Operation account requiring a uniqueness check. It may consist of lower case letters, numbers, and underlines, and must start with a letter and have no more than 16 characters.
+	// The lock status of the account. Valid values:
+	AccountLockState *string `json:"accountLockState,omitempty" tf:"account_lock_state,omitempty"`
+
+	// The account name. Must meet the following requirements:
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Account type, Valid values are Normal, Super, Default to Normal.
+	// The time when the password for the database account expires.
+	AccountPasswordValidTime *string `json:"accountPasswordValidTime,omitempty" tf:"account_password_valid_time,omitempty"`
+
+	// The account type. Default value:Normal. Valid values: Normal, Super.
 	AccountType *string `json:"accountType,omitempty" tf:"account_type,omitempty"`
 
-	// The Id of cluster in which account belongs.
+	// The cluster ID.
 	DBClusterID *string `json:"dbClusterId,omitempty" tf:"db_cluster_id,omitempty"`
 
-	// The current account resource ID. Composed of instance ID and account name with format <instance_id>:<name>.
+	// The ID of the resource supplied above.The value is formulated as <db_cluster_id>:<account_name>.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
 	// An KMS encrypts password used to a db account. If the account_password is filled in, this field will be ignored.
@@ -71,27 +83,38 @@ type AccountObservation struct {
 	// An KMS encryption context used to decrypt kms_encrypted_password before creating or updating a db account with kms_encrypted_password. See Encryption Context. It is valid when kms_encrypted_password is set.
 	// +mapType=granular
 	KMSEncryptionContext map[string]*string `json:"kmsEncryptionContext,omitempty" tf:"kms_encryption_context,omitempty"`
+
+	// (Available since v1.265.0) The status of the database account.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type AccountParameters struct {
 
-	// Account description. It cannot begin with https://. It must start with a Chinese character or English letter. It can include Chinese and English characters, underlines (_), hyphens (-), and numbers. The length may be 2-256 characters.
+	// The description of the database account.
 	// +kubebuilder:validation:Optional
 	AccountDescription *string `json:"accountDescription,omitempty" tf:"account_description,omitempty"`
 
-	// Operation account requiring a uniqueness check. It may consist of lower case letters, numbers, and underlines, and must start with a letter and have no more than 16 characters.
+	// The lock status of the account. Valid values:
+	// +kubebuilder:validation:Optional
+	AccountLockState *string `json:"accountLockState,omitempty" tf:"account_lock_state,omitempty"`
+
+	// The account name. Must meet the following requirements:
 	// +kubebuilder:validation:Optional
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Operation password. It may consist of letters, digits, or underlines, with a length of 6 to 32 characters.
+	// The account password. You have to specify one of account_password and kms_encrypted_password fields. Must  meet the following requirements:
 	// +kubebuilder:validation:Optional
-	AccountPasswordSecretRef v1.SecretKeySelector `json:"accountPasswordSecretRef" tf:"-"`
+	AccountPasswordSecretRef *v1.SecretKeySelector `json:"accountPasswordSecretRef,omitempty" tf:"-"`
 
-	// Account type, Valid values are Normal, Super, Default to Normal.
+	// The time when the password for the database account expires.
+	// +kubebuilder:validation:Optional
+	AccountPasswordValidTime *string `json:"accountPasswordValidTime,omitempty" tf:"account_password_valid_time,omitempty"`
+
+	// The account type. Default value:Normal. Valid values: Normal, Super.
 	// +kubebuilder:validation:Optional
 	AccountType *string `json:"accountType,omitempty" tf:"account_type,omitempty"`
 
-	// The Id of cluster in which account belongs.
+	// The cluster ID.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/polardb/v1alpha1.Cluster
 	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upjet-alibabacloud/config/common.IdExtractor()
 	// +kubebuilder:validation:Optional
@@ -147,7 +170,7 @@ type AccountStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Account is the Schema for the Accounts API. Provides a RDS account resource.
+// Account is the Schema for the Accounts API. Provides a Alicloud Polar Db Account resource.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
@@ -157,7 +180,6 @@ type Account struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.accountName) || (has(self.initProvider) && has(self.initProvider.accountName))",message="spec.forProvider.accountName is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.accountPasswordSecretRef)",message="spec.forProvider.accountPasswordSecretRef is a required parameter"
 	Spec   AccountSpec   `json:"spec"`
 	Status AccountStatus `json:"status,omitempty"`
 }

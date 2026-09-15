@@ -34,8 +34,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Account is the Schema for the Accounts API. Provides a RDS account
-          resource.
+        description: Account is the Schema for the Accounts API. Provides a Alicloud
+          Polar Db Account resource.
         properties:
           apiVersion:
             description: |-
@@ -74,19 +74,18 @@ spec:
               forProvider:
                 properties:
                   accountDescription:
-                    description: Account description. It cannot begin with https://.
-                      It must start with a Chinese character or English letter. It
-                      can include Chinese and English characters, underlines (_),
-                      hyphens (-), and numbers. The length may be 2-256 characters.
+                    description: The description of the database account.
+                    type: string
+                  accountLockState:
+                    description: 'The lock status of the account. Valid values:'
                     type: string
                   accountName:
-                    description: Operation account requiring a uniqueness check. It
-                      may consist of lower case letters, numbers, and underlines,
-                      and must start with a letter and have no more than 16 characters.
+                    description: 'The account name. Must meet the following requirements:'
                     type: string
                   accountPasswordSecretRef:
-                    description: Operation password. It may consist of letters, digits,
-                      or underlines, with a length of 6 to 32 characters.
+                    description: 'The account password. You have to specify one of
+                      account_password and kms_encrypted_password fields. Must  meet
+                      the following requirements:'
                     properties:
                       key:
                         description: The key to select.
@@ -102,12 +101,16 @@ spec:
                     - name
                     - namespace
                     type: object
+                  accountPasswordValidTime:
+                    description: The time when the password for the database account
+                      expires.
+                    type: string
                   accountType:
-                    description: Account type, Valid values are Normal, Super, Default
-                      to Normal.
+                    description: 'The account type. Default value:Normal. Valid values:
+                      Normal, Super.'
                     type: string
                   dbClusterId:
-                    description: The Id of cluster in which account belongs.
+                    description: The cluster ID.
                     type: string
                   dbClusterIdRef:
                     description: Reference to a Cluster in polardb to populate dbClusterId.
@@ -215,19 +218,18 @@ spec:
                   autoscaler.
                 properties:
                   accountDescription:
-                    description: Account description. It cannot begin with https://.
-                      It must start with a Chinese character or English letter. It
-                      can include Chinese and English characters, underlines (_),
-                      hyphens (-), and numbers. The length may be 2-256 characters.
+                    description: The description of the database account.
+                    type: string
+                  accountLockState:
+                    description: 'The lock status of the account. Valid values:'
                     type: string
                   accountName:
-                    description: Operation account requiring a uniqueness check. It
-                      may consist of lower case letters, numbers, and underlines,
-                      and must start with a letter and have no more than 16 characters.
+                    description: 'The account name. Must meet the following requirements:'
                     type: string
                   accountPasswordSecretRef:
-                    description: Operation password. It may consist of letters, digits,
-                      or underlines, with a length of 6 to 32 characters.
+                    description: 'The account password. You have to specify one of
+                      account_password and kms_encrypted_password fields. Must  meet
+                      the following requirements:'
                     properties:
                       key:
                         description: The key to select.
@@ -243,12 +245,16 @@ spec:
                     - name
                     - namespace
                     type: object
+                  accountPasswordValidTime:
+                    description: The time when the password for the database account
+                      expires.
+                    type: string
                   accountType:
-                    description: Account type, Valid values are Normal, Super, Default
-                      to Normal.
+                    description: 'The account type. Default value:Normal. Valid values:
+                      Normal, Super.'
                     type: string
                   dbClusterId:
-                    description: The Id of cluster in which account belongs.
+                    description: The cluster ID.
                     type: string
                   dbClusterIdRef:
                     description: Reference to a Cluster in polardb to populate dbClusterId.
@@ -337,8 +343,6 @@ spec:
                       is set.
                     type: object
                     x-kubernetes-map-type: granular
-                required:
-                - accountPasswordSecretRef
                 type: object
               managementPolicies:
                 default:
@@ -512,35 +516,34 @@ spec:
               rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
                 || ''Update'' in self.managementPolicies) || has(self.forProvider.accountName)
                 || (has(self.initProvider) && has(self.initProvider.accountName))'
-            - message: spec.forProvider.accountPasswordSecretRef is a required parameter
-              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
-                || ''Update'' in self.managementPolicies) || has(self.forProvider.accountPasswordSecretRef)'
           status:
             description: AccountStatus defines the observed state of Account.
             properties:
               atProvider:
                 properties:
                   accountDescription:
-                    description: Account description. It cannot begin with https://.
-                      It must start with a Chinese character or English letter. It
-                      can include Chinese and English characters, underlines (_),
-                      hyphens (-), and numbers. The length may be 2-256 characters.
+                    description: The description of the database account.
+                    type: string
+                  accountLockState:
+                    description: 'The lock status of the account. Valid values:'
                     type: string
                   accountName:
-                    description: Operation account requiring a uniqueness check. It
-                      may consist of lower case letters, numbers, and underlines,
-                      and must start with a letter and have no more than 16 characters.
+                    description: 'The account name. Must meet the following requirements:'
+                    type: string
+                  accountPasswordValidTime:
+                    description: The time when the password for the database account
+                      expires.
                     type: string
                   accountType:
-                    description: Account type, Valid values are Normal, Super, Default
-                      to Normal.
+                    description: 'The account type. Default value:Normal. Valid values:
+                      Normal, Super.'
                     type: string
                   dbClusterId:
-                    description: The Id of cluster in which account belongs.
+                    description: The cluster ID.
                     type: string
                   id:
-                    description: The current account resource ID. Composed of instance
-                      ID and account name with format <instance_id>:<name>.
+                    description: The ID of the resource supplied above.The value is
+                      formulated as <db_cluster_id>:<account_name>.
                     type: string
                   kmsEncryptedPassword:
                     description: An KMS encrypts password used to a db account. If
@@ -555,6 +558,10 @@ spec:
                       is set.
                     type: object
                     x-kubernetes-map-type: granular
+                  status:
+                    description: (Available since v1.265.0) The status of the database
+                      account.
+                    type: string
                 type: object
               conditions:
                 description: Conditions of the resource.

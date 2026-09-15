@@ -192,8 +192,8 @@ spec:
                       [10, 86400], Exclusive is [1, 86400]. Default value is 600.
                     type: number
                   type:
-                    description: 'The type of domain record. Valid values: A,NS,MX,TXT,CNAME,SRV,AAAA,CAA,
-                      REDIRECT_URL and FORWORD_URL.'
+                    description: The type of domain record. For more information,
+                      see How to use it.
                     type: string
                   userClientIp:
                     description: The IP address of the client.
@@ -332,8 +332,8 @@ spec:
                       [10, 86400], Exclusive is [1, 86400]. Default value is 600.
                     type: number
                   type:
-                    description: 'The type of domain record. Valid values: A,NS,MX,TXT,CNAME,SRV,AAAA,CAA,
-                      REDIRECT_URL and FORWORD_URL.'
+                    description: The type of domain record. For more information,
+                      see How to use it.
                     type: string
                   userClientIp:
                     description: The IP address of the client.
@@ -573,8 +573,8 @@ spec:
                       [10, 86400], Exclusive is [1, 86400]. Default value is 600.
                     type: number
                   type:
-                    description: 'The type of domain record. Valid values: A,NS,MX,TXT,CNAME,SRV,AAAA,CAA,
-                      REDIRECT_URL and FORWORD_URL.'
+                    description: The type of domain record. For more information,
+                      see How to use it.
                     type: string
                   userClientIp:
                     description: The IP address of the client.
