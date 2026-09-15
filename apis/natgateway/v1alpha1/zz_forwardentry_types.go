@@ -15,26 +15,26 @@ import (
 
 type ForwardEntryInitParameters struct {
 
-	// The external ip address, the ip must along bandwidth package public ip which alicloud_nat_gateway argument bandwidth_packages.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("ip_address",false)
+	// - When querying DNAT entries of an Internet NAT gateway, this parameter indicates the Elastic IP address used in the DNAT entry to provide public network access.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.VPCNATIP
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("nat_ip",false)
 	ExternalIP *string `json:"externalIp,omitempty" tf:"external_ip,omitempty"`
 
-	// Reference to a EIPAddress in eip to populate externalIp.
+	// Reference to a VPCNATIP in natgateway to populate externalIp.
 	// +kubebuilder:validation:Optional
 	ExternalIPRef *v1.Reference `json:"externalIpRef,omitempty" tf:"-"`
 
-	// Selector for a EIPAddress in eip to populate externalIp.
+	// Selector for a VPCNATIP in natgateway to populate externalIp.
 	// +kubebuilder:validation:Optional
 	ExternalIPSelector *v1.Selector `json:"externalIpSelector,omitempty" tf:"-"`
 
-	// The external port, valid value is 1~65535|any.
+	// - The external port or port range that is used for port forwarding when you query DNAT entries of Internet NAT gateways. Valid values: 1 to 65535.
 	ExternalPort *string `json:"externalPort,omitempty" tf:"external_port,omitempty"`
 
-	// The name of forward entry.
+	// The name of the DNAT entry.
 	ForwardEntryName *string `json:"forwardEntryName,omitempty" tf:"forward_entry_name,omitempty"`
 
-	// The value can get from alicloud_nat_gateway Attributes "forward_table_ids".
+	// The ID of the DNAT table to which the DNAT entry belongs.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.NATGateway
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("forward_table_ids",true)
 	ForwardTableID *string `json:"forwardTableId,omitempty" tf:"forward_table_id,omitempty"`
@@ -47,49 +47,49 @@ type ForwardEntryInitParameters struct {
 	// +kubebuilder:validation:Optional
 	ForwardTableIDSelector *v1.Selector `json:"forwardTableIdSelector,omitempty" tf:"-"`
 
-	// The ip protocol, valid value is tcp|udp|any.
+	// The protocol type. Valid values:
 	IPProtocol *string `json:"ipProtocol,omitempty" tf:"ip_protocol,omitempty"`
 
-	// The internal ip, must a private ip.
+	// - The private IP address.
 	InternalIP *string `json:"internalIp,omitempty" tf:"internal_ip,omitempty"`
 
-	// The internal port, valid value is 1~65535|any.
+	// - When you configure a DNAT entry for an Internet NAT gateway, this parameter specifies the internal port or port range that requires port forwarding. Valid values: 1 to 65535.
 	InternalPort *string `json:"internalPort,omitempty" tf:"internal_port,omitempty"`
 
-	// Specifies whether to remove limits on the port range. Default value is false.
+	// Specifies whether to enable port break. Valid values:
 	PortBreak *bool `json:"portBreak,omitempty" tf:"port_break,omitempty"`
 }
 
 type ForwardEntryObservation struct {
 
-	// The external ip address, the ip must along bandwidth package public ip which alicloud_nat_gateway argument bandwidth_packages.
+	// - When querying DNAT entries of an Internet NAT gateway, this parameter indicates the Elastic IP address used in the DNAT entry to provide public network access.
 	ExternalIP *string `json:"externalIp,omitempty" tf:"external_ip,omitempty"`
 
-	// The external port, valid value is 1~65535|any.
+	// - The external port or port range that is used for port forwarding when you query DNAT entries of Internet NAT gateways. Valid values: 1 to 65535.
 	ExternalPort *string `json:"externalPort,omitempty" tf:"external_port,omitempty"`
 
-	// The id of the forward entry on the server.
+	// (Available since v1.43.0) The id of the forward entry on the server.
 	ForwardEntryID *string `json:"forwardEntryId,omitempty" tf:"forward_entry_id,omitempty"`
 
-	// The name of forward entry.
+	// The name of the DNAT entry.
 	ForwardEntryName *string `json:"forwardEntryName,omitempty" tf:"forward_entry_name,omitempty"`
 
-	// The value can get from alicloud_nat_gateway Attributes "forward_table_ids".
+	// The ID of the DNAT table to which the DNAT entry belongs.
 	ForwardTableID *string `json:"forwardTableId,omitempty" tf:"forward_table_id,omitempty"`
 
-	// The ID of the forward entry. The value formats as <forward_table_id>:<forward_entry_id>
+	// The ID of the resource supplied above. The value is formulated as <forward_table_id>:<forward_entry_id>.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The ip protocol, valid value is tcp|udp|any.
+	// The protocol type. Valid values:
 	IPProtocol *string `json:"ipProtocol,omitempty" tf:"ip_protocol,omitempty"`
 
-	// The internal ip, must a private ip.
+	// - The private IP address.
 	InternalIP *string `json:"internalIp,omitempty" tf:"internal_ip,omitempty"`
 
-	// The internal port, valid value is 1~65535|any.
+	// - When you configure a DNAT entry for an Internet NAT gateway, this parameter specifies the internal port or port range that requires port forwarding. Valid values: 1 to 65535.
 	InternalPort *string `json:"internalPort,omitempty" tf:"internal_port,omitempty"`
 
-	// Specifies whether to remove limits on the port range. Default value is false.
+	// Specifies whether to enable port break. Valid values:
 	PortBreak *bool `json:"portBreak,omitempty" tf:"port_break,omitempty"`
 
 	// (Available since v1.119.1) The status of forward entry.
@@ -98,29 +98,29 @@ type ForwardEntryObservation struct {
 
 type ForwardEntryParameters struct {
 
-	// The external ip address, the ip must along bandwidth package public ip which alicloud_nat_gateway argument bandwidth_packages.
-	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/eip/v1alpha1.EIPAddress
-	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("ip_address",false)
+	// - When querying DNAT entries of an Internet NAT gateway, this parameter indicates the Elastic IP address used in the DNAT entry to provide public network access.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.VPCNATIP
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("nat_ip",false)
 	// +kubebuilder:validation:Optional
 	ExternalIP *string `json:"externalIp,omitempty" tf:"external_ip,omitempty"`
 
-	// Reference to a EIPAddress in eip to populate externalIp.
+	// Reference to a VPCNATIP in natgateway to populate externalIp.
 	// +kubebuilder:validation:Optional
 	ExternalIPRef *v1.Reference `json:"externalIpRef,omitempty" tf:"-"`
 
-	// Selector for a EIPAddress in eip to populate externalIp.
+	// Selector for a VPCNATIP in natgateway to populate externalIp.
 	// +kubebuilder:validation:Optional
 	ExternalIPSelector *v1.Selector `json:"externalIpSelector,omitempty" tf:"-"`
 
-	// The external port, valid value is 1~65535|any.
+	// - The external port or port range that is used for port forwarding when you query DNAT entries of Internet NAT gateways. Valid values: 1 to 65535.
 	// +kubebuilder:validation:Optional
 	ExternalPort *string `json:"externalPort,omitempty" tf:"external_port,omitempty"`
 
-	// The name of forward entry.
+	// The name of the DNAT entry.
 	// +kubebuilder:validation:Optional
 	ForwardEntryName *string `json:"forwardEntryName,omitempty" tf:"forward_entry_name,omitempty"`
 
-	// The value can get from alicloud_nat_gateway Attributes "forward_table_ids".
+	// The ID of the DNAT table to which the DNAT entry belongs.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/natgateway/v1alpha1.NATGateway
 	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/pkg/resource.ExtractParamPath("forward_table_ids",true)
 	// +kubebuilder:validation:Optional
@@ -134,19 +134,19 @@ type ForwardEntryParameters struct {
 	// +kubebuilder:validation:Optional
 	ForwardTableIDSelector *v1.Selector `json:"forwardTableIdSelector,omitempty" tf:"-"`
 
-	// The ip protocol, valid value is tcp|udp|any.
+	// The protocol type. Valid values:
 	// +kubebuilder:validation:Optional
 	IPProtocol *string `json:"ipProtocol,omitempty" tf:"ip_protocol,omitempty"`
 
-	// The internal ip, must a private ip.
+	// - The private IP address.
 	// +kubebuilder:validation:Optional
 	InternalIP *string `json:"internalIp,omitempty" tf:"internal_ip,omitempty"`
 
-	// The internal port, valid value is 1~65535|any.
+	// - When you configure a DNAT entry for an Internet NAT gateway, this parameter specifies the internal port or port range that requires port forwarding. Valid values: 1 to 65535.
 	// +kubebuilder:validation:Optional
 	InternalPort *string `json:"internalPort,omitempty" tf:"internal_port,omitempty"`
 
-	// Specifies whether to remove limits on the port range. Default value is false.
+	// Specifies whether to enable port break. Valid values:
 	// +kubebuilder:validation:Optional
 	PortBreak *bool `json:"portBreak,omitempty" tf:"port_break,omitempty"`
 
@@ -183,7 +183,7 @@ type ForwardEntryStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// ForwardEntry is the Schema for the ForwardEntrys API. Provides a Alicloud forward resource.
+// ForwardEntry is the Schema for the ForwardEntrys API. Provides a Alicloud Nat Gateway Forward Entry resource.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"

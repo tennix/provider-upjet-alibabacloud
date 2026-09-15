@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: VPCNATIP is the Schema for the VPCNATIPs API. Provides a Alicloud
-          VPC Nat Ip resource.
+          Nat Gateway Nat Ip resource.
         properties:
           apiVersion:
             description: |-
@@ -74,8 +74,8 @@ spec:
               forProvider:
                 properties:
                   dryRun:
-                    description: Specifies whether to check the validity of the request
-                      without actually making the request.
+                    description: 'Specifies whether to only precheck the request.
+                      Valid values:'
                     type: boolean
                   natGatewayId:
                     description: The ID of the Virtual Private Cloud (VPC) NAT gateway
@@ -158,29 +158,26 @@ spec:
                         type: object
                     type: object
                   natIp:
-                    description: The NAT IP address that you want to create. If you
-                      do not specify an IP address, the system selects a random IP
-                      address from the specified CIDR block.
+                    description: The NAT IP address to be created.
                     type: string
                   natIpCidr:
-                    description: NAT IP ADDRESS of the address segment.
+                    description: The CIDR block to which the NAT IP address belongs.
                     type: string
                   natIpCidrId:
-                    description: The ID of the CIDR block to which the NAT IP address
-                      belongs.
+                    description: (Removed since v1.274.0) Field nat_ip_cidr_id has
+                      been removed from provider version 1.274.0.
                     type: string
                   natIpDescription:
-                    description: NAT IP ADDRESS description of information. Length
-                      is from 2 to 256 characters, must start with a letter or the
-                      Chinese at the beginning, but not at the http:// Or https://
-                      at the beginning.
+                    description: The description of the NAT IP address. The description
+                      must be 2 to 256 characters in length and start with a letter.
+                      The description cannot start with http:// or https://.
                     type: string
                   natIpName:
-                    description: NAT IP ADDRESS the name of the root directory. Length
-                      is from 2 to 128 characters, must start with a letter or the
-                      Chinese at the beginning can contain numbers, half a period
-                      (.), underscore (_) and dash (-). But do not start with http://
-                      or https:// at the beginning.
+                    description: The name of the NAT IP address. The name must be
+                      2 to 128 characters in length, and can contain letters, digits,
+                      periods (.), underscores (_), and hyphens (-). It must start
+                      with a letter. The name must start with a letter and cannot
+                      start with http:// or https://.
                     type: string
                   region:
                     description: Region is the region you'd like your resource to
@@ -201,8 +198,8 @@ spec:
                   autoscaler.
                 properties:
                   dryRun:
-                    description: Specifies whether to check the validity of the request
-                      without actually making the request.
+                    description: 'Specifies whether to only precheck the request.
+                      Valid values:'
                     type: boolean
                   natGatewayId:
                     description: The ID of the Virtual Private Cloud (VPC) NAT gateway
@@ -285,29 +282,26 @@ spec:
                         type: object
                     type: object
                   natIp:
-                    description: The NAT IP address that you want to create. If you
-                      do not specify an IP address, the system selects a random IP
-                      address from the specified CIDR block.
+                    description: The NAT IP address to be created.
                     type: string
                   natIpCidr:
-                    description: NAT IP ADDRESS of the address segment.
+                    description: The CIDR block to which the NAT IP address belongs.
                     type: string
                   natIpCidrId:
-                    description: The ID of the CIDR block to which the NAT IP address
-                      belongs.
+                    description: (Removed since v1.274.0) Field nat_ip_cidr_id has
+                      been removed from provider version 1.274.0.
                     type: string
                   natIpDescription:
-                    description: NAT IP ADDRESS description of information. Length
-                      is from 2 to 256 characters, must start with a letter or the
-                      Chinese at the beginning, but not at the http:// Or https://
-                      at the beginning.
+                    description: The description of the NAT IP address. The description
+                      must be 2 to 256 characters in length and start with a letter.
+                      The description cannot start with http:// or https://.
                     type: string
                   natIpName:
-                    description: NAT IP ADDRESS the name of the root directory. Length
-                      is from 2 to 128 characters, must start with a letter or the
-                      Chinese at the beginning can contain numbers, half a period
-                      (.), underscore (_) and dash (-). But do not start with http://
-                      or https:// at the beginning.
+                    description: The name of the NAT IP address. The name must be
+                      2 to 128 characters in length, and can contain letters, digits,
+                      periods (.), underscores (_), and hyphens (-). It must start
+                      with a letter. The name must start with a letter and cannot
+                      start with http:// or https://.
                     type: string
                 type: object
               managementPolicies:
@@ -477,53 +471,55 @@ spec:
             required:
             - forProvider
             type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.natIpCidr is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.natIpCidr)
+                || (has(self.initProvider) && has(self.initProvider.natIpCidr))'
           status:
             description: VPCNATIPStatus defines the observed state of VPCNATIP.
             properties:
               atProvider:
                 properties:
                   dryRun:
-                    description: Specifies whether to check the validity of the request
-                      without actually making the request.
+                    description: 'Specifies whether to only precheck the request.
+                      Valid values:'
                     type: boolean
                   id:
-                    description: The value formats as <nat_gateway_id>:<nat_ip_id>.
+                    description: The ID of the resource supplied above. The value
+                      is formulated as <nat_gateway_id>:<nat_ip_id>.
                     type: string
                   natGatewayId:
                     description: The ID of the Virtual Private Cloud (VPC) NAT gateway
                       for which you want to create the NAT IP address.
                     type: string
                   natIp:
-                    description: The NAT IP address that you want to create. If you
-                      do not specify an IP address, the system selects a random IP
-                      address from the specified CIDR block.
+                    description: The NAT IP address to be created.
                     type: string
                   natIpCidr:
-                    description: NAT IP ADDRESS of the address segment.
+                    description: The CIDR block to which the NAT IP address belongs.
                     type: string
                   natIpCidrId:
-                    description: The ID of the CIDR block to which the NAT IP address
-                      belongs.
+                    description: (Removed since v1.274.0) Field nat_ip_cidr_id has
+                      been removed from provider version 1.274.0.
                     type: string
                   natIpDescription:
-                    description: NAT IP ADDRESS description of information. Length
-                      is from 2 to 256 characters, must start with a letter or the
-                      Chinese at the beginning, but not at the http:// Or https://
-                      at the beginning.
+                    description: The description of the NAT IP address. The description
+                      must be 2 to 256 characters in length and start with a letter.
+                      The description cannot start with http:// or https://.
                     type: string
                   natIpId:
                     description: Ihe ID of the Nat Ip.
                     type: string
                   natIpName:
-                    description: NAT IP ADDRESS the name of the root directory. Length
-                      is from 2 to 128 characters, must start with a letter or the
-                      Chinese at the beginning can contain numbers, half a period
-                      (.), underscore (_) and dash (-). But do not start with http://
-                      or https:// at the beginning.
+                    description: The name of the NAT IP address. The name must be
+                      2 to 128 characters in length, and can contain letters, digits,
+                      periods (.), underscores (_), and hyphens (-). It must start
+                      with a letter. The name must start with a letter and cannot
+                      start with http:// or https://.
                     type: string
                   status:
-                    description: 'The status of the NAT IP address. Valid values:
-                      Available, Deleting, Creating and Deleted.'
+                    description: The status of the NAT IP address.
                     type: string
                 type: object
               conditions:

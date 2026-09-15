@@ -35,7 +35,7 @@ spec:
     schema:
       openAPIV3Schema:
         description: ForwardEntry is the Schema for the ForwardEntrys API. Provides
-          a Alicloud forward resource.
+          a Alicloud Nat Gateway Forward Entry resource.
         properties:
           apiVersion:
             description: |-
@@ -74,11 +74,13 @@ spec:
               forProvider:
                 properties:
                   externalIp:
-                    description: The external ip address, the ip must along bandwidth
-                      package public ip which alicloud_nat_gateway argument bandwidth_packages.
+                    description: '- When querying DNAT entries of an Internet NAT
+                      gateway, this parameter indicates the Elastic IP address used
+                      in the DNAT entry to provide public network access.'
                     type: string
                   externalIpRef:
-                    description: Reference to a EIPAddress in eip to populate externalIp.
+                    description: Reference to a VPCNATIP in natgateway to populate
+                      externalIp.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -112,7 +114,8 @@ spec:
                     - name
                     type: object
                   externalIpSelector:
-                    description: Selector for a EIPAddress in eip to populate externalIp.
+                    description: Selector for a VPCNATIP in natgateway to populate
+                      externalIp.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -152,14 +155,16 @@ spec:
                         type: object
                     type: object
                   externalPort:
-                    description: The external port, valid value is 1~65535|any.
+                    description: '- The external port or port range that is used for
+                      port forwarding when you query DNAT entries of Internet NAT
+                      gateways. Valid values: 1 to 65535.'
                     type: string
                   forwardEntryName:
-                    description: The name of forward entry.
+                    description: The name of the DNAT entry.
                     type: string
                   forwardTableId:
-                    description: The value can get from alicloud_nat_gateway Attributes
-                      "forward_table_ids".
+                    description: The ID of the DNAT table to which the DNAT entry
+                      belongs.
                     type: string
                   forwardTableIdRef:
                     description: Reference to a NATGateway in natgateway to populate
@@ -238,17 +243,18 @@ spec:
                         type: object
                     type: object
                   internalIp:
-                    description: The internal ip, must a private ip.
+                    description: '- The private IP address.'
                     type: string
                   internalPort:
-                    description: The internal port, valid value is 1~65535|any.
+                    description: '- When you configure a DNAT entry for an Internet
+                      NAT gateway, this parameter specifies the internal port or port
+                      range that requires port forwarding. Valid values: 1 to 65535.'
                     type: string
                   ipProtocol:
-                    description: The ip protocol, valid value is tcp|udp|any.
+                    description: 'The protocol type. Valid values:'
                     type: string
                   portBreak:
-                    description: Specifies whether to remove limits on the port range.
-                      Default value is false.
+                    description: 'Specifies whether to enable port break. Valid values:'
                     type: boolean
                   region:
                     description: Region is the region you'd like your resource to
@@ -269,11 +275,13 @@ spec:
                   autoscaler.
                 properties:
                   externalIp:
-                    description: The external ip address, the ip must along bandwidth
-                      package public ip which alicloud_nat_gateway argument bandwidth_packages.
+                    description: '- When querying DNAT entries of an Internet NAT
+                      gateway, this parameter indicates the Elastic IP address used
+                      in the DNAT entry to provide public network access.'
                     type: string
                   externalIpRef:
-                    description: Reference to a EIPAddress in eip to populate externalIp.
+                    description: Reference to a VPCNATIP in natgateway to populate
+                      externalIp.
                     properties:
                       name:
                         description: Name of the referenced object.
@@ -307,7 +315,8 @@ spec:
                     - name
                     type: object
                   externalIpSelector:
-                    description: Selector for a EIPAddress in eip to populate externalIp.
+                    description: Selector for a VPCNATIP in natgateway to populate
+                      externalIp.
                     properties:
                       matchControllerRef:
                         description: |-
@@ -347,14 +356,16 @@ spec:
                         type: object
                     type: object
                   externalPort:
-                    description: The external port, valid value is 1~65535|any.
+                    description: '- The external port or port range that is used for
+                      port forwarding when you query DNAT entries of Internet NAT
+                      gateways. Valid values: 1 to 65535.'
                     type: string
                   forwardEntryName:
-                    description: The name of forward entry.
+                    description: The name of the DNAT entry.
                     type: string
                   forwardTableId:
-                    description: The value can get from alicloud_nat_gateway Attributes
-                      "forward_table_ids".
+                    description: The ID of the DNAT table to which the DNAT entry
+                      belongs.
                     type: string
                   forwardTableIdRef:
                     description: Reference to a NATGateway in natgateway to populate
@@ -433,17 +444,18 @@ spec:
                         type: object
                     type: object
                   internalIp:
-                    description: The internal ip, must a private ip.
+                    description: '- The private IP address.'
                     type: string
                   internalPort:
-                    description: The internal port, valid value is 1~65535|any.
+                    description: '- When you configure a DNAT entry for an Internet
+                      NAT gateway, this parameter specifies the internal port or port
+                      range that requires port forwarding. Valid values: 1 to 65535.'
                     type: string
                   ipProtocol:
-                    description: The ip protocol, valid value is tcp|udp|any.
+                    description: 'The protocol type. Valid values:'
                     type: string
                   portBreak:
-                    description: Specifies whether to remove limits on the port range.
-                      Default value is false.
+                    description: 'Specifies whether to enable port break. Valid values:'
                     type: boolean
                 type: object
               managementPolicies:
@@ -636,38 +648,43 @@ spec:
               atProvider:
                 properties:
                   externalIp:
-                    description: The external ip address, the ip must along bandwidth
-                      package public ip which alicloud_nat_gateway argument bandwidth_packages.
+                    description: '- When querying DNAT entries of an Internet NAT
+                      gateway, this parameter indicates the Elastic IP address used
+                      in the DNAT entry to provide public network access.'
                     type: string
                   externalPort:
-                    description: The external port, valid value is 1~65535|any.
+                    description: '- The external port or port range that is used for
+                      port forwarding when you query DNAT entries of Internet NAT
+                      gateways. Valid values: 1 to 65535.'
                     type: string
                   forwardEntryId:
-                    description: The id of the forward entry on the server.
+                    description: (Available since v1.43.0) The id of the forward entry
+                      on the server.
                     type: string
                   forwardEntryName:
-                    description: The name of forward entry.
+                    description: The name of the DNAT entry.
                     type: string
                   forwardTableId:
-                    description: The value can get from alicloud_nat_gateway Attributes
-                      "forward_table_ids".
+                    description: The ID of the DNAT table to which the DNAT entry
+                      belongs.
                     type: string
                   id:
-                    description: The ID of the forward entry. The value formats as
-                      <forward_table_id>:<forward_entry_id>
+                    description: The ID of the resource supplied above. The value
+                      is formulated as <forward_table_id>:<forward_entry_id>.
                     type: string
                   internalIp:
-                    description: The internal ip, must a private ip.
+                    description: '- The private IP address.'
                     type: string
                   internalPort:
-                    description: The internal port, valid value is 1~65535|any.
+                    description: '- When you configure a DNAT entry for an Internet
+                      NAT gateway, this parameter specifies the internal port or port
+                      range that requires port forwarding. Valid values: 1 to 65535.'
                     type: string
                   ipProtocol:
-                    description: The ip protocol, valid value is tcp|udp|any.
+                    description: 'The protocol type. Valid values:'
                     type: string
                   portBreak:
-                    description: Specifies whether to remove limits on the port range.
-                      Default value is false.
+                    description: 'Specifies whether to enable port break. Valid values:'
                     type: boolean
                   status:
                     description: (Available since v1.119.1) The status of forward

@@ -15,7 +15,7 @@ import (
 
 type BucketLoggingInitParameters struct {
 
-	// The name of the bucket.
+	// The name of the bucket
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1.Bucket
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
@@ -26,6 +26,9 @@ type BucketLoggingInitParameters struct {
 	// Selector for a Bucket in oss to populate bucket.
 	// +kubebuilder:validation:Optional
 	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
+
+	// Authorization role used for bucket logging
+	LoggingRole *string `json:"loggingRole,omitempty" tf:"logging_role,omitempty"`
 
 	// The bucket that stores access logs.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1.Bucket
@@ -45,11 +48,14 @@ type BucketLoggingInitParameters struct {
 
 type BucketLoggingObservation struct {
 
-	// The name of the bucket.
+	// The name of the bucket
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
 	// The ID of the resource supplied above.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// Authorization role used for bucket logging
+	LoggingRole *string `json:"loggingRole,omitempty" tf:"logging_role,omitempty"`
 
 	// The bucket that stores access logs.
 	TargetBucket *string `json:"targetBucket,omitempty" tf:"target_bucket,omitempty"`
@@ -60,7 +66,7 @@ type BucketLoggingObservation struct {
 
 type BucketLoggingParameters struct {
 
-	// The name of the bucket.
+	// The name of the bucket
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1.Bucket
 	// +kubebuilder:validation:Optional
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
@@ -72,6 +78,10 @@ type BucketLoggingParameters struct {
 	// Selector for a Bucket in oss to populate bucket.
 	// +kubebuilder:validation:Optional
 	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
+
+	// Authorization role used for bucket logging
+	// +kubebuilder:validation:Optional
+	LoggingRole *string `json:"loggingRole,omitempty" tf:"logging_role,omitempty"`
 
 	// Region is the region you'd like your resource to be created in.
 	// +upjet:crd:field:TFTag=-

@@ -2148,6 +2148,13 @@ func (in *BucketHTTPSConfigInitParameters) DeepCopyInto(out *BucketHTTPSConfigIn
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.CipherSuit != nil {
+		in, out := &in.CipherSuit, &out.CipherSuit
+		*out = make([]CipherSuitInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.Enable != nil {
 		in, out := &in.Enable, &out.Enable
 		*out = new(bool)
@@ -2216,6 +2223,13 @@ func (in *BucketHTTPSConfigObservation) DeepCopyInto(out *BucketHTTPSConfigObser
 		*out = new(string)
 		**out = **in
 	}
+	if in.CipherSuit != nil {
+		in, out := &in.CipherSuit, &out.CipherSuit
+		*out = make([]CipherSuitObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.Enable != nil {
 		in, out := &in.Enable, &out.Enable
 		*out = new(bool)
@@ -2266,6 +2280,13 @@ func (in *BucketHTTPSConfigParameters) DeepCopyInto(out *BucketHTTPSConfigParame
 		in, out := &in.BucketSelector, &out.BucketSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.CipherSuit != nil {
+		in, out := &in.CipherSuit, &out.CipherSuit
+		*out = make([]CipherSuitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.Enable != nil {
 		in, out := &in.Enable, &out.Enable
@@ -2534,6 +2555,11 @@ func (in *BucketLoggingInitParameters) DeepCopyInto(out *BucketLoggingInitParame
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
 	}
+	if in.LoggingRole != nil {
+		in, out := &in.LoggingRole, &out.LoggingRole
+		*out = new(string)
+		**out = **in
+	}
 	if in.TargetBucket != nil {
 		in, out := &in.TargetBucket, &out.TargetBucket
 		*out = new(string)
@@ -2611,6 +2637,11 @@ func (in *BucketLoggingObservation) DeepCopyInto(out *BucketLoggingObservation) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.LoggingRole != nil {
+		in, out := &in.LoggingRole, &out.LoggingRole
+		*out = new(string)
+		**out = **in
+	}
 	if in.TargetBucket != nil {
 		in, out := &in.TargetBucket, &out.TargetBucket
 		*out = new(string)
@@ -2650,6 +2681,11 @@ func (in *BucketLoggingParameters) DeepCopyInto(out *BucketLoggingParameters) {
 		in, out := &in.BucketSelector, &out.BucketSelector
 		*out = new(v1.Selector)
 		(*in).DeepCopyInto(*out)
+	}
+	if in.LoggingRole != nil {
+		in, out := &in.LoggingRole, &out.LoggingRole
+		*out = new(string)
+		**out = **in
 	}
 	if in.Region != nil {
 		in, out := &in.Region, &out.Region
@@ -3022,6 +3058,16 @@ func (in *BucketObjectInitParameters) DeepCopyInto(out *BucketObjectInitParamete
 		*out = new(string)
 		**out = **in
 	}
+	if in.ObjectWormMode != nil {
+		in, out := &in.ObjectWormMode, &out.ObjectWormMode
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObjectWormRetainUntilDate != nil {
+		in, out := &in.ObjectWormRetainUntilDate, &out.ObjectWormRetainUntilDate
+		*out = new(string)
+		**out = **in
+	}
 	if in.ServerSideEncryption != nil {
 		in, out := &in.ServerSideEncryption, &out.ServerSideEncryption
 		*out = new(string)
@@ -3149,6 +3195,16 @@ func (in *BucketObjectObservation) DeepCopyInto(out *BucketObjectObservation) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ObjectWormMode != nil {
+		in, out := &in.ObjectWormMode, &out.ObjectWormMode
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObjectWormRetainUntilDate != nil {
+		in, out := &in.ObjectWormRetainUntilDate, &out.ObjectWormRetainUntilDate
+		*out = new(string)
+		**out = **in
+	}
 	if in.ServerSideEncryption != nil {
 		in, out := &in.ServerSideEncryption, &out.ServerSideEncryption
 		*out = new(string)
@@ -3251,6 +3307,16 @@ func (in *BucketObjectParameters) DeepCopyInto(out *BucketObjectParameters) {
 	}
 	if in.Key != nil {
 		in, out := &in.Key, &out.Key
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObjectWormMode != nil {
+		in, out := &in.ObjectWormMode, &out.ObjectWormMode
+		*out = new(string)
+		**out = **in
+	}
+	if in.ObjectWormRetainUntilDate != nil {
+		in, out := &in.ObjectWormRetainUntilDate, &out.ObjectWormRetainUntilDate
 		*out = new(string)
 		**out = **in
 	}
@@ -4369,6 +4435,13 @@ func (in *BucketReplicationInitParameters) DeepCopyInto(out *BucketReplicationIn
 		*out = make([]ProgressInitParameters, len(*in))
 		copy(*out, *in)
 	}
+	if in.Rtc != nil {
+		in, out := &in.Rtc, &out.Rtc
+		*out = make([]RtcInitParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.SourceSelectionCriteria != nil {
 		in, out := &in.SourceSelectionCriteria, &out.SourceSelectionCriteria
 		*out = make([]SourceSelectionCriteriaInitParameters, len(*in))
@@ -4486,6 +4559,13 @@ func (in *BucketReplicationObservation) DeepCopyInto(out *BucketReplicationObser
 			(*in)[i].DeepCopyInto(&(*out)[i])
 		}
 	}
+	if in.Rtc != nil {
+		in, out := &in.Rtc, &out.Rtc
+		*out = make([]RtcObservation, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
+	}
 	if in.RuleID != nil {
 		in, out := &in.RuleID, &out.RuleID
 		*out = new(string)
@@ -4578,6 +4658,13 @@ func (in *BucketReplicationParameters) DeepCopyInto(out *BucketReplicationParame
 		in, out := &in.Region, &out.Region
 		*out = new(string)
 		**out = **in
+	}
+	if in.Rtc != nil {
+		in, out := &in.Rtc, &out.Rtc
+		*out = make([]RtcParameters, len(*in))
+		for i := range *in {
+			(*in)[i].DeepCopyInto(&(*out)[i])
+		}
 	}
 	if in.SourceSelectionCriteria != nil {
 		in, out := &in.SourceSelectionCriteria, &out.SourceSelectionCriteria
@@ -6590,6 +6677,147 @@ func (in *CertificateParameters) DeepCopy() *CertificateParameters {
 		return nil
 	}
 	out := new(CertificateParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *CipherSuitInitParameters) DeepCopyInto(out *CipherSuitInitParameters) {
+	*out = *in
+	if in.CustomCipherSuite != nil {
+		in, out := &in.CustomCipherSuite, &out.CustomCipherSuite
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.Enable != nil {
+		in, out := &in.Enable, &out.Enable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.StrongCipherSuite != nil {
+		in, out := &in.StrongCipherSuite, &out.StrongCipherSuite
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Tls13CustomCipherSuite != nil {
+		in, out := &in.Tls13CustomCipherSuite, &out.Tls13CustomCipherSuite
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new CipherSuitInitParameters.
+func (in *CipherSuitInitParameters) DeepCopy() *CipherSuitInitParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(CipherSuitInitParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *CipherSuitObservation) DeepCopyInto(out *CipherSuitObservation) {
+	*out = *in
+	if in.CustomCipherSuite != nil {
+		in, out := &in.CustomCipherSuite, &out.CustomCipherSuite
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.Enable != nil {
+		in, out := &in.Enable, &out.Enable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.StrongCipherSuite != nil {
+		in, out := &in.StrongCipherSuite, &out.StrongCipherSuite
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Tls13CustomCipherSuite != nil {
+		in, out := &in.Tls13CustomCipherSuite, &out.Tls13CustomCipherSuite
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new CipherSuitObservation.
+func (in *CipherSuitObservation) DeepCopy() *CipherSuitObservation {
+	if in == nil {
+		return nil
+	}
+	out := new(CipherSuitObservation)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *CipherSuitParameters) DeepCopyInto(out *CipherSuitParameters) {
+	*out = *in
+	if in.CustomCipherSuite != nil {
+		in, out := &in.CustomCipherSuite, &out.CustomCipherSuite
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+	if in.Enable != nil {
+		in, out := &in.Enable, &out.Enable
+		*out = new(bool)
+		**out = **in
+	}
+	if in.StrongCipherSuite != nil {
+		in, out := &in.StrongCipherSuite, &out.StrongCipherSuite
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Tls13CustomCipherSuite != nil {
+		in, out := &in.Tls13CustomCipherSuite, &out.Tls13CustomCipherSuite
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new CipherSuitParameters.
+func (in *CipherSuitParameters) DeepCopy() *CipherSuitParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(CipherSuitParameters)
 	in.DeepCopyInto(out)
 	return out
 }
@@ -9876,6 +10104,71 @@ func (in *RoutingRulesParameters) DeepCopy() *RoutingRulesParameters {
 		return nil
 	}
 	out := new(RoutingRulesParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RtcInitParameters) DeepCopyInto(out *RtcInitParameters) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RtcInitParameters.
+func (in *RtcInitParameters) DeepCopy() *RtcInitParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(RtcInitParameters)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RtcObservation) DeepCopyInto(out *RtcObservation) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+	if in.Status != nil {
+		in, out := &in.Status, &out.Status
+		*out = new(string)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RtcObservation.
+func (in *RtcObservation) DeepCopy() *RtcObservation {
+	if in == nil {
+		return nil
+	}
+	out := new(RtcObservation)
+	in.DeepCopyInto(out)
+	return out
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *RtcParameters) DeepCopyInto(out *RtcParameters) {
+	*out = *in
+	if in.Enabled != nil {
+		in, out := &in.Enabled, &out.Enabled
+		*out = new(bool)
+		**out = **in
+	}
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new RtcParameters.
+func (in *RtcParameters) DeepCopy() *RtcParameters {
+	if in == nil {
+		return nil
+	}
+	out := new(RtcParameters)
 	in.DeepCopyInto(out)
 	return out
 }

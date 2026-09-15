@@ -463,6 +463,11 @@ spec:
                     description: 'Function Handler: the call entry for the function
                       compute system to run your function.'
                     type: string
+                  idleTimeout:
+                    description: Destroy an instance when the instance no-request
+                      duration exceeds this attribute. - 1 means that the threshold
+                      is cleared and the system default behavior is used.
+                    type: number
                   instanceConcurrency:
                     description: Maximum instance concurrency.
                     type: number
@@ -710,7 +715,7 @@ spec:
                       be created in.
                     type: string
                   resourceGroupId:
-                    description: Resource Group ID.
+                    description: Resource Group ID
                     type: string
                   role:
                     description: The user is authorized to the RAM role of function
@@ -795,7 +800,7 @@ spec:
                         type: object
                     type: object
                   runtime:
-                    description: Function runtime type.
+                    description: Function runtime type
                     type: string
                   sessionAffinity:
                     description: The affinity policy of the function compute call
@@ -1475,6 +1480,11 @@ spec:
                     description: 'Function Handler: the call entry for the function
                       compute system to run your function.'
                     type: string
+                  idleTimeout:
+                    description: Destroy an instance when the instance no-request
+                      duration exceeds this attribute. - 1 means that the threshold
+                      is cleared and the system default behavior is used.
+                    type: number
                   instanceConcurrency:
                     description: Maximum instance concurrency.
                     type: number
@@ -1718,7 +1728,7 @@ spec:
                       type: object
                     type: array
                   resourceGroupId:
-                    description: Resource Group ID.
+                    description: Resource Group ID
                     type: string
                   role:
                     description: The user is authorized to the RAM role of function
@@ -1803,7 +1813,7 @@ spec:
                         type: object
                     type: object
                   runtime:
-                    description: Function runtime type.
+                    description: Function runtime type
                     type: string
                   sessionAffinity:
                     description: The affinity policy of the function compute call
@@ -2515,6 +2525,11 @@ spec:
                   id:
                     description: The ID of the resource supplied above.
                     type: string
+                  idleTimeout:
+                    description: Destroy an instance when the instance no-request
+                      duration exceeds this attribute. - 1 means that the threshold
+                      is cleared and the system default behavior is used.
+                    type: number
                   instanceConcurrency:
                     description: Maximum instance concurrency.
                     type: number
@@ -2699,7 +2714,7 @@ spec:
                       type: object
                     type: array
                   resourceGroupId:
-                    description: Resource Group ID.
+                    description: Resource Group ID
                     type: string
                   role:
                     description: The user is authorized to the RAM role of function
@@ -2710,7 +2725,7 @@ spec:
                       OTS
                     type: string
                   runtime:
-                    description: Function runtime type.
+                    description: Function runtime type
                     type: string
                   sessionAffinity:
                     description: The affinity policy of the function compute call

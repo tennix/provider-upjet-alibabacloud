@@ -27,7 +27,7 @@ type DataDisksInitParameters struct {
 	// The name of the data disk.
 	DiskName *string `json:"diskName,omitempty" tf:"disk_name,omitempty"`
 
-	// The size of the data disk. Unit: GiB.
+	// The size of the data disk. Unit: GiB. Valid values:
 	DiskSize *float64 `json:"diskSize,omitempty" tf:"disk_size,omitempty"`
 
 	// Encrypted the data in this disk. Default value: false.
@@ -57,7 +57,7 @@ type DataDisksObservation struct {
 	// The name of the data disk.
 	DiskName *string `json:"diskName,omitempty" tf:"disk_name,omitempty"`
 
-	// The size of the data disk. Unit: GiB.
+	// The size of the data disk. Unit: GiB. Valid values:
 	DiskSize *float64 `json:"diskSize,omitempty" tf:"disk_size,omitempty"`
 
 	// Encrypted the data in this disk. Default value: false.
@@ -91,7 +91,7 @@ type DataDisksParameters struct {
 	// +kubebuilder:validation:Optional
 	DiskName *string `json:"diskName,omitempty" tf:"disk_name,omitempty"`
 
-	// The size of the data disk. Unit: GiB.
+	// The size of the data disk. Unit: GiB. Valid values:
 	// +kubebuilder:validation:Optional
 	DiskSize *float64 `json:"diskSize" tf:"disk_size,omitempty"`
 
@@ -149,16 +149,16 @@ type InstanceSetInitParameters struct {
 	// The automatic release time of the PostPaid instance.
 	AutoReleaseTime *string `json:"autoReleaseTime,omitempty" tf:"auto_release_time,omitempty"`
 
-	// Whether to enable auto-renewal for the instance. This parameter is valid only when the instance_charge_type is set to PrePaid.
+	// Whether to enable auto-renewal for the instance. Note: auto_renew is valid only when instance_charge_type is set to PrePaid.
 	AutoRenew *bool `json:"autoRenew,omitempty" tf:"auto_renew,omitempty"`
 
-	// Auto renewal period of an instance, in the unit of month. It is valid when instance_charge_type is PrePaid.
+	// Auto renewal period of an instance, in the unit of month. Valid values:
 	AutoRenewPeriod *float64 `json:"autoRenewPeriod,omitempty" tf:"auto_renew_period,omitempty"`
 
-	// Indicate how to check instance ready to use.
+	// Indicate how to check instance ready to use. Valid values:
 	BootCheckOsWithAssistant *bool `json:"bootCheckOsWithAssistant,omitempty" tf:"boot_check_os_with_assistant,omitempty"`
 
-	// The list of data disks created with instance. See data_disks below..
+	// The list of data disks created with instance. See data_disks below.
 	DataDisks []DataDisksInitParameters `json:"dataDisks,omitempty" tf:"data_disks,omitempty"`
 
 	// The ID of the dedicated host on which to create the instance. If the dedicated_host_id is specified, the spot_strategy and spot_price_limit  are ignored. This is because preemptible instances cannot be created on dedicated hosts.
@@ -203,7 +203,7 @@ type InstanceSetInitParameters struct {
 	// The type of instance to start.
 	InstanceType *string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
-	// The Internet charge type of the instance. Valid values are PayByBandwidth, PayByTraffic.
+	// The Internet charge type of the instance. Valid values: PayByBandwidth, PayByTraffic.
 	InternetChargeType *string `json:"internetChargeType,omitempty" tf:"internet_charge_type,omitempty"`
 
 	// The Maximum outgoing bandwidth to the public network, measured in Mbps (Mega bit per second). Valid values: 1 to 100.
@@ -230,7 +230,7 @@ type InstanceSetInitParameters struct {
 	// The version of the launch template.
 	LaunchTemplateVersion *string `json:"launchTemplateVersion,omitempty" tf:"launch_template_version,omitempty"`
 
-	// A list of NetworkInterface. See network_interfaces below..
+	// A list of NetworkInterface. See network_interfaces below.
 	NetworkInterfaces []NetworkInterfacesInitParameters `json:"networkInterfaces,omitempty" tf:"network_interfaces,omitempty"`
 
 	// Whether to use the password preset in the image.
@@ -239,10 +239,10 @@ type InstanceSetInitParameters struct {
 	// The password to an instance is a string of 8 to 30 characters. It must contain uppercase/lowercase letters and numerals, but cannot contain special symbols.
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
-	// The duration that you will buy the resource, in month. It is valid when instance_charge_type is PrePaid.
+	// The duration that you will buy the resource, in month. Valid values:
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
-	// The duration unit that you will buy the resource. It is valid when instance_charge_type is 'PrePaid'. Valid value: Week, Month.
+	// The duration unit that you will buy the resource. Valid values: Week, Month. Note: period_unit is valid only when instance_charge_type is set to PrePaid.
 	PeriodUnit *string `json:"periodUnit,omitempty" tf:"period_unit,omitempty"`
 
 	// The Instance RAM role name.
@@ -251,7 +251,7 @@ type InstanceSetInitParameters struct {
 	// The ID of resource group which the instance belongs.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// The security enhancement strategy.
+	// The security enhancement strategy. Valid values:
 	SecurityEnhancementStrategy *string `json:"securityEnhancementStrategy,omitempty" tf:"security_enhancement_strategy,omitempty"`
 
 	// References to SecurityGroup in ecs to populate securityGroupIds.
@@ -269,16 +269,16 @@ type InstanceSetInitParameters struct {
 	// +listType=set
 	SecurityGroupIds []*string `json:"securityGroupIds,omitempty" tf:"security_group_ids,omitempty"`
 
-	// The hourly price threshold of a instance, and it takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'. Three decimals is allowed at most.
+	// The hourly price threshold of a instance. Three decimals is allowed at most. Note: spot_price_limit takes effect only if spot_strategy is set to SpotWithPriceLimit.
 	SpotPriceLimit *float64 `json:"spotPriceLimit,omitempty" tf:"spot_price_limit,omitempty"`
 
-	// The spot strategy of a Pay-As-You-Go instance, and it takes effect only when parameter instance_charge_type is 'PostPaid'.
+	// The spot strategy of a Pay-As-You-Go instance. Valid values:
 	SpotStrategy *string `json:"spotStrategy,omitempty" tf:"spot_strategy,omitempty"`
 
 	// The ID of the automatic snapshot policy applied to the system disk.
 	SystemDiskAutoSnapshotPolicyID *string `json:"systemDiskAutoSnapshotPolicyId,omitempty" tf:"system_disk_auto_snapshot_policy_id,omitempty"`
 
-	// The category of the system disk. Valid values are cloud_efficiency, cloud_ssd, cloud_essd, cloud.
+	// The category of the system disk. Valid values: cloud_efficiency, cloud_ssd, cloud_essd, cloud.
 	SystemDiskCategory *string `json:"systemDiskCategory,omitempty" tf:"system_disk_category,omitempty"`
 
 	// The description of the system disk. The description must be 2 to 256 characters in length and cannot start with http:// or https://.
@@ -290,7 +290,7 @@ type InstanceSetInitParameters struct {
 	// The performance level of the ESSD used as the system disk. Valid values: PL0, PL1, PL2, PL3.
 	SystemDiskPerformanceLevel *string `json:"systemDiskPerformanceLevel,omitempty" tf:"system_disk_performance_level,omitempty"`
 
-	// The size of the system disk, measured in GiB. Value range:  values: 20 to 500.
+	// The size of the system disk, measured in GiB. Valid values: 20 to 500.
 	SystemDiskSize *float64 `json:"systemDiskSize,omitempty" tf:"system_disk_size,omitempty"`
 
 	// Key-value map of resource tags.
@@ -324,16 +324,16 @@ type InstanceSetObservation struct {
 	// The automatic release time of the PostPaid instance.
 	AutoReleaseTime *string `json:"autoReleaseTime,omitempty" tf:"auto_release_time,omitempty"`
 
-	// Whether to enable auto-renewal for the instance. This parameter is valid only when the instance_charge_type is set to PrePaid.
+	// Whether to enable auto-renewal for the instance. Note: auto_renew is valid only when instance_charge_type is set to PrePaid.
 	AutoRenew *bool `json:"autoRenew,omitempty" tf:"auto_renew,omitempty"`
 
-	// Auto renewal period of an instance, in the unit of month. It is valid when instance_charge_type is PrePaid.
+	// Auto renewal period of an instance, in the unit of month. Valid values:
 	AutoRenewPeriod *float64 `json:"autoRenewPeriod,omitempty" tf:"auto_renew_period,omitempty"`
 
-	// Indicate how to check instance ready to use.
+	// Indicate how to check instance ready to use. Valid values:
 	BootCheckOsWithAssistant *bool `json:"bootCheckOsWithAssistant,omitempty" tf:"boot_check_os_with_assistant,omitempty"`
 
-	// The list of data disks created with instance. See data_disks below..
+	// The list of data disks created with instance. See data_disks below.
 	DataDisks []DataDisksObservation `json:"dataDisks,omitempty" tf:"data_disks,omitempty"`
 
 	// The ID of the dedicated host on which to create the instance. If the dedicated_host_id is specified, the spot_strategy and spot_price_limit  are ignored. This is because preemptible instances cannot be created on dedicated hosts.
@@ -375,7 +375,7 @@ type InstanceSetObservation struct {
 	// The type of instance to start.
 	InstanceType *string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
-	// The Internet charge type of the instance. Valid values are PayByBandwidth, PayByTraffic.
+	// The Internet charge type of the instance. Valid values: PayByBandwidth, PayByTraffic.
 	InternetChargeType *string `json:"internetChargeType,omitempty" tf:"internet_charge_type,omitempty"`
 
 	// The Maximum outgoing bandwidth to the public network, measured in Mbps (Mega bit per second). Valid values: 1 to 100.
@@ -393,16 +393,16 @@ type InstanceSetObservation struct {
 	// The version of the launch template.
 	LaunchTemplateVersion *string `json:"launchTemplateVersion,omitempty" tf:"launch_template_version,omitempty"`
 
-	// A list of NetworkInterface. See network_interfaces below..
+	// A list of NetworkInterface. See network_interfaces below.
 	NetworkInterfaces []NetworkInterfacesObservation `json:"networkInterfaces,omitempty" tf:"network_interfaces,omitempty"`
 
 	// Whether to use the password preset in the image.
 	PasswordInherit *bool `json:"passwordInherit,omitempty" tf:"password_inherit,omitempty"`
 
-	// The duration that you will buy the resource, in month. It is valid when instance_charge_type is PrePaid.
+	// The duration that you will buy the resource, in month. Valid values:
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
-	// The duration unit that you will buy the resource. It is valid when instance_charge_type is 'PrePaid'. Valid value: Week, Month.
+	// The duration unit that you will buy the resource. Valid values: Week, Month. Note: period_unit is valid only when instance_charge_type is set to PrePaid.
 	PeriodUnit *string `json:"periodUnit,omitempty" tf:"period_unit,omitempty"`
 
 	// The Instance RAM role name.
@@ -411,23 +411,23 @@ type InstanceSetObservation struct {
 	// The ID of resource group which the instance belongs.
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// The security enhancement strategy.
+	// The security enhancement strategy. Valid values:
 	SecurityEnhancementStrategy *string `json:"securityEnhancementStrategy,omitempty" tf:"security_enhancement_strategy,omitempty"`
 
 	// A list of security group ids to associate with.
 	// +listType=set
 	SecurityGroupIds []*string `json:"securityGroupIds,omitempty" tf:"security_group_ids,omitempty"`
 
-	// The hourly price threshold of a instance, and it takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'. Three decimals is allowed at most.
+	// The hourly price threshold of a instance. Three decimals is allowed at most. Note: spot_price_limit takes effect only if spot_strategy is set to SpotWithPriceLimit.
 	SpotPriceLimit *float64 `json:"spotPriceLimit,omitempty" tf:"spot_price_limit,omitempty"`
 
-	// The spot strategy of a Pay-As-You-Go instance, and it takes effect only when parameter instance_charge_type is 'PostPaid'.
+	// The spot strategy of a Pay-As-You-Go instance. Valid values:
 	SpotStrategy *string `json:"spotStrategy,omitempty" tf:"spot_strategy,omitempty"`
 
 	// The ID of the automatic snapshot policy applied to the system disk.
 	SystemDiskAutoSnapshotPolicyID *string `json:"systemDiskAutoSnapshotPolicyId,omitempty" tf:"system_disk_auto_snapshot_policy_id,omitempty"`
 
-	// The category of the system disk. Valid values are cloud_efficiency, cloud_ssd, cloud_essd, cloud.
+	// The category of the system disk. Valid values: cloud_efficiency, cloud_ssd, cloud_essd, cloud.
 	SystemDiskCategory *string `json:"systemDiskCategory,omitempty" tf:"system_disk_category,omitempty"`
 
 	// The description of the system disk. The description must be 2 to 256 characters in length and cannot start with http:// or https://.
@@ -439,7 +439,7 @@ type InstanceSetObservation struct {
 	// The performance level of the ESSD used as the system disk. Valid values: PL0, PL1, PL2, PL3.
 	SystemDiskPerformanceLevel *string `json:"systemDiskPerformanceLevel,omitempty" tf:"system_disk_performance_level,omitempty"`
 
-	// The size of the system disk, measured in GiB. Value range:  values: 20 to 500.
+	// The size of the system disk, measured in GiB. Valid values: 20 to 500.
 	SystemDiskSize *float64 `json:"systemDiskSize,omitempty" tf:"system_disk_size,omitempty"`
 
 	// Key-value map of resource tags.
@@ -466,19 +466,19 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	AutoReleaseTime *string `json:"autoReleaseTime,omitempty" tf:"auto_release_time,omitempty"`
 
-	// Whether to enable auto-renewal for the instance. This parameter is valid only when the instance_charge_type is set to PrePaid.
+	// Whether to enable auto-renewal for the instance. Note: auto_renew is valid only when instance_charge_type is set to PrePaid.
 	// +kubebuilder:validation:Optional
 	AutoRenew *bool `json:"autoRenew,omitempty" tf:"auto_renew,omitempty"`
 
-	// Auto renewal period of an instance, in the unit of month. It is valid when instance_charge_type is PrePaid.
+	// Auto renewal period of an instance, in the unit of month. Valid values:
 	// +kubebuilder:validation:Optional
 	AutoRenewPeriod *float64 `json:"autoRenewPeriod,omitempty" tf:"auto_renew_period,omitempty"`
 
-	// Indicate how to check instance ready to use.
+	// Indicate how to check instance ready to use. Valid values:
 	// +kubebuilder:validation:Optional
 	BootCheckOsWithAssistant *bool `json:"bootCheckOsWithAssistant,omitempty" tf:"boot_check_os_with_assistant,omitempty"`
 
-	// The list of data disks created with instance. See data_disks below..
+	// The list of data disks created with instance. See data_disks below.
 	// +kubebuilder:validation:Optional
 	DataDisks []DataDisksParameters `json:"dataDisks,omitempty" tf:"data_disks,omitempty"`
 
@@ -535,7 +535,7 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	InstanceType *string `json:"instanceType,omitempty" tf:"instance_type,omitempty"`
 
-	// The Internet charge type of the instance. Valid values are PayByBandwidth, PayByTraffic.
+	// The Internet charge type of the instance. Valid values: PayByBandwidth, PayByTraffic.
 	// +kubebuilder:validation:Optional
 	InternetChargeType *string `json:"internetChargeType,omitempty" tf:"internet_charge_type,omitempty"`
 
@@ -568,7 +568,7 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	LaunchTemplateVersion *string `json:"launchTemplateVersion,omitempty" tf:"launch_template_version,omitempty"`
 
-	// A list of NetworkInterface. See network_interfaces below..
+	// A list of NetworkInterface. See network_interfaces below.
 	// +kubebuilder:validation:Optional
 	NetworkInterfaces []NetworkInterfacesParameters `json:"networkInterfaces,omitempty" tf:"network_interfaces,omitempty"`
 
@@ -580,11 +580,11 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	PasswordSecretRef *v1.SecretKeySelector `json:"passwordSecretRef,omitempty" tf:"-"`
 
-	// The duration that you will buy the resource, in month. It is valid when instance_charge_type is PrePaid.
+	// The duration that you will buy the resource, in month. Valid values:
 	// +kubebuilder:validation:Optional
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
-	// The duration unit that you will buy the resource. It is valid when instance_charge_type is 'PrePaid'. Valid value: Week, Month.
+	// The duration unit that you will buy the resource. Valid values: Week, Month. Note: period_unit is valid only when instance_charge_type is set to PrePaid.
 	// +kubebuilder:validation:Optional
 	PeriodUnit *string `json:"periodUnit,omitempty" tf:"period_unit,omitempty"`
 
@@ -601,7 +601,7 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
-	// The security enhancement strategy.
+	// The security enhancement strategy. Valid values:
 	// +kubebuilder:validation:Optional
 	SecurityEnhancementStrategy *string `json:"securityEnhancementStrategy,omitempty" tf:"security_enhancement_strategy,omitempty"`
 
@@ -621,11 +621,11 @@ type InstanceSetParameters struct {
 	// +listType=set
 	SecurityGroupIds []*string `json:"securityGroupIds,omitempty" tf:"security_group_ids,omitempty"`
 
-	// The hourly price threshold of a instance, and it takes effect only when parameter 'spot_strategy' is 'SpotWithPriceLimit'. Three decimals is allowed at most.
+	// The hourly price threshold of a instance. Three decimals is allowed at most. Note: spot_price_limit takes effect only if spot_strategy is set to SpotWithPriceLimit.
 	// +kubebuilder:validation:Optional
 	SpotPriceLimit *float64 `json:"spotPriceLimit,omitempty" tf:"spot_price_limit,omitempty"`
 
-	// The spot strategy of a Pay-As-You-Go instance, and it takes effect only when parameter instance_charge_type is 'PostPaid'.
+	// The spot strategy of a Pay-As-You-Go instance. Valid values:
 	// +kubebuilder:validation:Optional
 	SpotStrategy *string `json:"spotStrategy,omitempty" tf:"spot_strategy,omitempty"`
 
@@ -633,7 +633,7 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	SystemDiskAutoSnapshotPolicyID *string `json:"systemDiskAutoSnapshotPolicyId,omitempty" tf:"system_disk_auto_snapshot_policy_id,omitempty"`
 
-	// The category of the system disk. Valid values are cloud_efficiency, cloud_ssd, cloud_essd, cloud.
+	// The category of the system disk. Valid values: cloud_efficiency, cloud_ssd, cloud_essd, cloud.
 	// +kubebuilder:validation:Optional
 	SystemDiskCategory *string `json:"systemDiskCategory,omitempty" tf:"system_disk_category,omitempty"`
 
@@ -649,7 +649,7 @@ type InstanceSetParameters struct {
 	// +kubebuilder:validation:Optional
 	SystemDiskPerformanceLevel *string `json:"systemDiskPerformanceLevel,omitempty" tf:"system_disk_performance_level,omitempty"`
 
-	// The size of the system disk, measured in GiB. Value range:  values: 20 to 500.
+	// The size of the system disk, measured in GiB. Valid values: 20 to 500.
 	// +kubebuilder:validation:Optional
 	SystemDiskSize *float64 `json:"systemDiskSize,omitempty" tf:"system_disk_size,omitempty"`
 

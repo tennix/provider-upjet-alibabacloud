@@ -414,6 +414,9 @@ type FunctionInitParameters struct {
 	// Function Handler: the call entry for the function compute system to run your function.
 	Handler *string `json:"handler,omitempty" tf:"handler,omitempty"`
 
+	// Destroy an instance when the instance no-request duration exceeds this attribute. - 1 means that the threshold is cleared and the system default behavior is used.
+	IdleTimeout *float64 `json:"idleTimeout,omitempty" tf:"idle_timeout,omitempty"`
+
 	// Maximum instance concurrency.
 	InstanceConcurrency *float64 `json:"instanceConcurrency,omitempty" tf:"instance_concurrency,omitempty"`
 
@@ -456,7 +459,7 @@ type FunctionInitParameters struct {
 	// OSS mount configuration See oss_mount_config below.
 	OssMountConfig []OssMountConfigInitParameters `json:"ossMountConfig,omitempty" tf:"oss_mount_config,omitempty"`
 
-	// Resource Group ID.
+	// Resource Group ID
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
 	// The user is authorized to the RAM role of function compute. After the configuration, function compute will assume this role to generate temporary access credentials. In the function, you can use the temporary access credentials of the role to access the specified Alibaba cloud service, such as OSS and OTS
@@ -471,7 +474,7 @@ type FunctionInitParameters struct {
 	// +kubebuilder:validation:Optional
 	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
 
-	// Function runtime type.
+	// Function runtime type
 	Runtime *string `json:"runtime,omitempty" tf:"runtime,omitempty"`
 
 	// The affinity policy of the function compute call request. To implement the request affinity of the MCP SSE protocol, set it to MCP_SSE. If Cookie affinity is used, it can be set to GENERATED_COOKIE. If Header affinity is used, it can be set to HEADER_FIELD. If it is not set or set to NONE, the affinity effect is not set, and the request is routed according to the default scheduling policy of the function calculation system.
@@ -542,6 +545,9 @@ type FunctionObservation struct {
 	// The ID of the resource supplied above.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
+	// Destroy an instance when the instance no-request duration exceeds this attribute. - 1 means that the threshold is cleared and the system default behavior is used.
+	IdleTimeout *float64 `json:"idleTimeout,omitempty" tf:"idle_timeout,omitempty"`
+
 	// Maximum instance concurrency.
 	InstanceConcurrency *float64 `json:"instanceConcurrency,omitempty" tf:"instance_concurrency,omitempty"`
 
@@ -584,13 +590,13 @@ type FunctionObservation struct {
 	// OSS mount configuration See oss_mount_config below.
 	OssMountConfig []OssMountConfigObservation `json:"ossMountConfig,omitempty" tf:"oss_mount_config,omitempty"`
 
-	// Resource Group ID.
+	// Resource Group ID
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
 	// The user is authorized to the RAM role of function compute. After the configuration, function compute will assume this role to generate temporary access credentials. In the function, you can use the temporary access credentials of the role to access the specified Alibaba cloud service, such as OSS and OTS
 	Role *string `json:"role,omitempty" tf:"role,omitempty"`
 
-	// Function runtime type.
+	// Function runtime type
 	Runtime *string `json:"runtime,omitempty" tf:"runtime,omitempty"`
 
 	// The affinity policy of the function compute call request. To implement the request affinity of the MCP SSE protocol, set it to MCP_SSE. If Cookie affinity is used, it can be set to GENERATED_COOKIE. If Header affinity is used, it can be set to HEADER_FIELD. If it is not set or set to NONE, the affinity effect is not set, and the request is routed according to the default scheduling policy of the function calculation system.
@@ -669,6 +675,10 @@ type FunctionParameters struct {
 	// +kubebuilder:validation:Optional
 	Handler *string `json:"handler,omitempty" tf:"handler,omitempty"`
 
+	// Destroy an instance when the instance no-request duration exceeds this attribute. - 1 means that the threshold is cleared and the system default behavior is used.
+	// +kubebuilder:validation:Optional
+	IdleTimeout *float64 `json:"idleTimeout,omitempty" tf:"idle_timeout,omitempty"`
+
 	// Maximum instance concurrency.
 	// +kubebuilder:validation:Optional
 	InstanceConcurrency *float64 `json:"instanceConcurrency,omitempty" tf:"instance_concurrency,omitempty"`
@@ -726,7 +736,7 @@ type FunctionParameters struct {
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"-"`
 
-	// Resource Group ID.
+	// Resource Group ID
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
 
@@ -743,7 +753,7 @@ type FunctionParameters struct {
 	// +kubebuilder:validation:Optional
 	RoleSelector *v1.Selector `json:"roleSelector,omitempty" tf:"-"`
 
-	// Function runtime type.
+	// Function runtime type
 	// +kubebuilder:validation:Optional
 	Runtime *string `json:"runtime,omitempty" tf:"runtime,omitempty"`
 

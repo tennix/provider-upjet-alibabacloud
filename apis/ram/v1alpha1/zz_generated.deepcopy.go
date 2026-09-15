@@ -3004,6 +3004,16 @@ func (in *SecurityPreferenceInitParameters) DeepCopyInto(out *SecurityPreference
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxIdleDaysForAccessKeys != nil {
+		in, out := &in.MaxIdleDaysForAccessKeys, &out.MaxIdleDaysForAccessKeys
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxIdleDaysForUsers != nil {
+		in, out := &in.MaxIdleDaysForUsers, &out.MaxIdleDaysForUsers
+		*out = new(float64)
+		**out = **in
+	}
 	if in.MfaOperationForLogin != nil {
 		in, out := &in.MfaOperationForLogin, &out.MfaOperationForLogin
 		*out = new(string)
@@ -3122,6 +3132,16 @@ func (in *SecurityPreferenceObservation) DeepCopyInto(out *SecurityPreferenceObs
 		*out = new(float64)
 		**out = **in
 	}
+	if in.MaxIdleDaysForAccessKeys != nil {
+		in, out := &in.MaxIdleDaysForAccessKeys, &out.MaxIdleDaysForAccessKeys
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxIdleDaysForUsers != nil {
+		in, out := &in.MaxIdleDaysForUsers, &out.MaxIdleDaysForUsers
+		*out = new(float64)
+		**out = **in
+	}
 	if in.MfaOperationForLogin != nil {
 		in, out := &in.MfaOperationForLogin, &out.MfaOperationForLogin
 		*out = new(string)
@@ -3200,6 +3220,16 @@ func (in *SecurityPreferenceParameters) DeepCopyInto(out *SecurityPreferencePara
 	}
 	if in.LoginSessionDuration != nil {
 		in, out := &in.LoginSessionDuration, &out.LoginSessionDuration
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxIdleDaysForAccessKeys != nil {
+		in, out := &in.MaxIdleDaysForAccessKeys, &out.MaxIdleDaysForAccessKeys
+		*out = new(float64)
+		**out = **in
+	}
+	if in.MaxIdleDaysForUsers != nil {
+		in, out := &in.MaxIdleDaysForUsers, &out.MaxIdleDaysForUsers
 		*out = new(float64)
 		**out = **in
 	}

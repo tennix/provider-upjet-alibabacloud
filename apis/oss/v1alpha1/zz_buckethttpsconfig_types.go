@@ -15,7 +15,7 @@ import (
 
 type BucketHTTPSConfigInitParameters struct {
 
-	// The name of the bucket.
+	// The name of the bucket
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1.Bucket
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
 
@@ -27,6 +27,9 @@ type BucketHTTPSConfigInitParameters struct {
 	// +kubebuilder:validation:Optional
 	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
 
+	// TLS encryption algorithm suite configuration See cipher_suit below.
+	CipherSuit []CipherSuitInitParameters `json:"cipherSuit,omitempty" tf:"cipher_suit,omitempty"`
+
 	// Specifies whether to enable TLS version management for the bucket. Valid values: true, false.
 	Enable *bool `json:"enable,omitempty" tf:"enable,omitempty"`
 
@@ -37,8 +40,11 @@ type BucketHTTPSConfigInitParameters struct {
 
 type BucketHTTPSConfigObservation struct {
 
-	// The name of the bucket.
+	// The name of the bucket
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
+
+	// TLS encryption algorithm suite configuration See cipher_suit below.
+	CipherSuit []CipherSuitObservation `json:"cipherSuit,omitempty" tf:"cipher_suit,omitempty"`
 
 	// Specifies whether to enable TLS version management for the bucket. Valid values: true, false.
 	Enable *bool `json:"enable,omitempty" tf:"enable,omitempty"`
@@ -53,7 +59,7 @@ type BucketHTTPSConfigObservation struct {
 
 type BucketHTTPSConfigParameters struct {
 
-	// The name of the bucket.
+	// The name of the bucket
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/oss/v1alpha1.Bucket
 	// +kubebuilder:validation:Optional
 	Bucket *string `json:"bucket,omitempty" tf:"bucket,omitempty"`
@@ -65,6 +71,10 @@ type BucketHTTPSConfigParameters struct {
 	// Selector for a Bucket in oss to populate bucket.
 	// +kubebuilder:validation:Optional
 	BucketSelector *v1.Selector `json:"bucketSelector,omitempty" tf:"-"`
+
+	// TLS encryption algorithm suite configuration See cipher_suit below.
+	// +kubebuilder:validation:Optional
+	CipherSuit []CipherSuitParameters `json:"cipherSuit,omitempty" tf:"cipher_suit,omitempty"`
 
 	// Specifies whether to enable TLS version management for the bucket. Valid values: true, false.
 	// +kubebuilder:validation:Optional
@@ -79,6 +89,73 @@ type BucketHTTPSConfigParameters struct {
 	// +kubebuilder:validation:Optional
 	// +listType=set
 	TLSVersions []*string `json:"tlsVersions,omitempty" tf:"tls_versions,omitempty"`
+}
+
+type CipherSuitInitParameters struct {
+
+	// This field is used to configure custom encryption algorithm suites for TLS 1.2.
+	// +listType=set
+	CustomCipherSuite []*string `json:"customCipherSuite,omitempty" tf:"custom_cipher_suite,omitempty"`
+
+	// Configures TLS encryption algorithm suites. Valid values:
+	// true: strong encryption algorithm suites or custom encryption algorithm suites.
+	// false: all encryption algorithm suites (default).
+	Enable *bool `json:"enable,omitempty" tf:"enable,omitempty"`
+
+	// Specifies whether to use strong encryption algorithm suites. Valid values:
+	// true: uses strong encryption algorithm suites.
+	// false: uses custom encryption algorithm suites.
+	StrongCipherSuite *bool `json:"strongCipherSuite,omitempty" tf:"strong_cipher_suite,omitempty"`
+
+	// Specifies custom encryption algorithm suites. You can specify multiple suites. This field is used to configure custom encryption algorithm suites for TLS 1.3.
+	// +listType=set
+	Tls13CustomCipherSuite []*string `json:"tls13CustomCipherSuite,omitempty" tf:"tls13_custom_cipher_suite,omitempty"`
+}
+
+type CipherSuitObservation struct {
+
+	// This field is used to configure custom encryption algorithm suites for TLS 1.2.
+	// +listType=set
+	CustomCipherSuite []*string `json:"customCipherSuite,omitempty" tf:"custom_cipher_suite,omitempty"`
+
+	// Configures TLS encryption algorithm suites. Valid values:
+	// true: strong encryption algorithm suites or custom encryption algorithm suites.
+	// false: all encryption algorithm suites (default).
+	Enable *bool `json:"enable,omitempty" tf:"enable,omitempty"`
+
+	// Specifies whether to use strong encryption algorithm suites. Valid values:
+	// true: uses strong encryption algorithm suites.
+	// false: uses custom encryption algorithm suites.
+	StrongCipherSuite *bool `json:"strongCipherSuite,omitempty" tf:"strong_cipher_suite,omitempty"`
+
+	// Specifies custom encryption algorithm suites. You can specify multiple suites. This field is used to configure custom encryption algorithm suites for TLS 1.3.
+	// +listType=set
+	Tls13CustomCipherSuite []*string `json:"tls13CustomCipherSuite,omitempty" tf:"tls13_custom_cipher_suite,omitempty"`
+}
+
+type CipherSuitParameters struct {
+
+	// This field is used to configure custom encryption algorithm suites for TLS 1.2.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	CustomCipherSuite []*string `json:"customCipherSuite,omitempty" tf:"custom_cipher_suite,omitempty"`
+
+	// Configures TLS encryption algorithm suites. Valid values:
+	// true: strong encryption algorithm suites or custom encryption algorithm suites.
+	// false: all encryption algorithm suites (default).
+	// +kubebuilder:validation:Optional
+	Enable *bool `json:"enable,omitempty" tf:"enable,omitempty"`
+
+	// Specifies whether to use strong encryption algorithm suites. Valid values:
+	// true: uses strong encryption algorithm suites.
+	// false: uses custom encryption algorithm suites.
+	// +kubebuilder:validation:Optional
+	StrongCipherSuite *bool `json:"strongCipherSuite,omitempty" tf:"strong_cipher_suite,omitempty"`
+
+	// Specifies custom encryption algorithm suites. You can specify multiple suites. This field is used to configure custom encryption algorithm suites for TLS 1.3.
+	// +kubebuilder:validation:Optional
+	// +listType=set
+	Tls13CustomCipherSuite []*string `json:"tls13CustomCipherSuite,omitempty" tf:"tls13_custom_cipher_suite,omitempty"`
 }
 
 // BucketHTTPSConfigSpec defines the desired state of BucketHTTPSConfig

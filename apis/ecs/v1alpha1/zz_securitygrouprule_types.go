@@ -21,7 +21,7 @@ type SecurityGroupRuleInitParameters struct {
 	// The description of the security group rule. The description can be up to 1 to 512 characters in length. Defaults to null.
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The transport layer protocol of the Security Group Rule. Valid values: tcp, udp, icmp, gre, all.
+	// The transport layer protocol of the Security Group Rule. Valid values: tcp, udp, icmp, icmpv6, gre, all. NOTE: From version 1.262.0, ip_protocol can be set to icmpv6.
 	IPProtocol *string `json:"ipProtocol,omitempty" tf:"ip_protocol,omitempty"`
 
 	// Source IPv6 CIDR address block that requires access. Supports IP address ranges in CIDR format and IPv6 format. NOTE: This parameter cannot be set at the same time as the cidr_ip parameter.
@@ -85,7 +85,7 @@ type SecurityGroupRuleObservation struct {
 
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 
-	// The transport layer protocol of the Security Group Rule. Valid values: tcp, udp, icmp, gre, all.
+	// The transport layer protocol of the Security Group Rule. Valid values: tcp, udp, icmp, icmpv6, gre, all. NOTE: From version 1.262.0, ip_protocol can be set to icmpv6.
 	IPProtocol *string `json:"ipProtocol,omitempty" tf:"ip_protocol,omitempty"`
 
 	// Source IPv6 CIDR address block that requires access. Supports IP address ranges in CIDR format and IPv6 format. NOTE: This parameter cannot be set at the same time as the cidr_ip parameter.
@@ -134,7 +134,7 @@ type SecurityGroupRuleParameters struct {
 	// +kubebuilder:validation:Optional
 	Description *string `json:"description,omitempty" tf:"description,omitempty"`
 
-	// The transport layer protocol of the Security Group Rule. Valid values: tcp, udp, icmp, gre, all.
+	// The transport layer protocol of the Security Group Rule. Valid values: tcp, udp, icmp, icmpv6, gre, all. NOTE: From version 1.262.0, ip_protocol can be set to icmpv6.
 	// +kubebuilder:validation:Optional
 	IPProtocol *string `json:"ipProtocol,omitempty" tf:"ip_protocol,omitempty"`
 

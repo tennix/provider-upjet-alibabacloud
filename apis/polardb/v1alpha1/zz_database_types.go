@@ -15,13 +15,21 @@ import (
 
 type DatabaseInitParameters struct {
 
-	// Account name authorized to access the database. Only supports PostgreSQL.
+	// The name of the account that is authorized to access the database. NOTE: From version 1.265.0, account_name can be modified. However, only PolarDB for PostgreSQL (Compatible with Oracle) and PolarDB for PostgreSQL cluster can be modified.
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Character set. The value range is limited to the following: [ utf8, gbk, latin1, utf8mb4, Chinese_PRC_CI_AS, Chinese_PRC_CS_AS, SQL_Latin1_General_CP1_CI_AS, SQL_Latin1_General_CP1_CS_AS, Chinese_PRC_BIN ], default is "utf8" (utf8mb4 only supports versions 5.5 and 5.6).
+	// The character set that is used by the cluster. For more information, see Character set tables.
 	CharacterSetName *string `json:"characterSetName,omitempty" tf:"character_set_name,omitempty"`
 
-	// The Id of cluster that can run database.
+	// The language that defines the collation rules in the database.
+	// -> NOTE: The locale must be compatible with the character set set set by character_set_name. This parameter is required for a PolarDB for PostgreSQL (Compatible with Oracle) or PolarDB for PostgreSQL cluster. This parameter is optional for a PolarDB for MySQL cluster.
+	Collate *string `json:"collate,omitempty" tf:"collate,omitempty"`
+
+	// The language that indicates the character type of the database.
+	// -> NOTE: The language must be compatible with the character set that is specified by character_set_name. The value that you specify must be the same as the value of collate. This parameter is required for PolarDB for PostgreSQL (Compatible with Oracle) clusters or PolarDB for PostgreSQL clusters. This parameter is optional for PolarDB for MySQL clusters.This parameter is required for a PolarDB for PostgreSQL (Compatible with Oracle) or PolarDB for PostgreSQL cluster. This parameter is optional for a PolarDB for MySQL cluster.
+	Ctype *string `json:"ctype,omitempty" tf:"ctype,omitempty"`
+
+	// The ID of cluster.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/polardb/v1alpha1.Cluster
 	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upjet-alibabacloud/config/common.IdExtractor()
 	DBClusterID *string `json:"dbClusterId,omitempty" tf:"db_cluster_id,omitempty"`
@@ -34,45 +42,66 @@ type DatabaseInitParameters struct {
 	// +kubebuilder:validation:Optional
 	DBClusterIDSelector *v1.Selector `json:"dbClusterIdSelector,omitempty" tf:"-"`
 
-	// Database description. It must start with a Chinese character or English letter, cannot start with "http://" or "https://". It can include Chinese and English characters, underlines (_), hyphens (-), and numbers. The length must be 2-256 characters.
+	// The description of the database. The description must meet the following requirements:
 	DBDescription *string `json:"dbDescription,omitempty" tf:"db_description,omitempty"`
 
-	// Name of the database requiring a uniqueness check. It may consist of lower case letters, numbers, and underlines, and must start with a letterand have no more than 64 characters.
+	// The name of the database. It may consist of lower case letters, numbers, and underlines, and must start with a letterand have no more than 64 characters.
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
 }
 
 type DatabaseObservation struct {
 
-	// Account name authorized to access the database. Only supports PostgreSQL.
+	// The name of the account that is authorized to access the database. NOTE: From version 1.265.0, account_name can be modified. However, only PolarDB for PostgreSQL (Compatible with Oracle) and PolarDB for PostgreSQL cluster can be modified.
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Character set. The value range is limited to the following: [ utf8, gbk, latin1, utf8mb4, Chinese_PRC_CI_AS, Chinese_PRC_CS_AS, SQL_Latin1_General_CP1_CI_AS, SQL_Latin1_General_CP1_CS_AS, Chinese_PRC_BIN ], default is "utf8" (utf8mb4 only supports versions 5.5 and 5.6).
+	// The character set that is used by the cluster. For more information, see Character set tables.
 	CharacterSetName *string `json:"characterSetName,omitempty" tf:"character_set_name,omitempty"`
 
-	// The Id of cluster that can run database.
+	// The language that defines the collation rules in the database.
+	// -> NOTE: The locale must be compatible with the character set set set by character_set_name. This parameter is required for a PolarDB for PostgreSQL (Compatible with Oracle) or PolarDB for PostgreSQL cluster. This parameter is optional for a PolarDB for MySQL cluster.
+	Collate *string `json:"collate,omitempty" tf:"collate,omitempty"`
+
+	// The language that indicates the character type of the database.
+	// -> NOTE: The language must be compatible with the character set that is specified by character_set_name. The value that you specify must be the same as the value of collate. This parameter is required for PolarDB for PostgreSQL (Compatible with Oracle) clusters or PolarDB for PostgreSQL clusters. This parameter is optional for PolarDB for MySQL clusters.This parameter is required for a PolarDB for PostgreSQL (Compatible with Oracle) or PolarDB for PostgreSQL cluster. This parameter is optional for a PolarDB for MySQL cluster.
+	Ctype *string `json:"ctype,omitempty" tf:"ctype,omitempty"`
+
+	// The ID of cluster.
 	DBClusterID *string `json:"dbClusterId,omitempty" tf:"db_cluster_id,omitempty"`
 
-	// Database description. It must start with a Chinese character or English letter, cannot start with "http://" or "https://". It can include Chinese and English characters, underlines (_), hyphens (-), and numbers. The length must be 2-256 characters.
+	// The description of the database. The description must meet the following requirements:
 	DBDescription *string `json:"dbDescription,omitempty" tf:"db_description,omitempty"`
 
-	// Name of the database requiring a uniqueness check. It may consist of lower case letters, numbers, and underlines, and must start with a letterand have no more than 64 characters.
+	// The name of the database. It may consist of lower case letters, numbers, and underlines, and must start with a letterand have no more than 64 characters.
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
 
-	// The current database resource ID. Composed of cluster ID and database name with format <cluster_id>:<name>.
+	// The ID of the resource supplied above.The value is formulated as <db_cluster_id>:<db_name>.
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
+
+	// (Available since v1.265.0) The state of the database.
+	Status *string `json:"status,omitempty" tf:"status,omitempty"`
 }
 
 type DatabaseParameters struct {
 
-	// Account name authorized to access the database. Only supports PostgreSQL.
+	// The name of the account that is authorized to access the database. NOTE: From version 1.265.0, account_name can be modified. However, only PolarDB for PostgreSQL (Compatible with Oracle) and PolarDB for PostgreSQL cluster can be modified.
 	// +kubebuilder:validation:Optional
 	AccountName *string `json:"accountName,omitempty" tf:"account_name,omitempty"`
 
-	// Character set. The value range is limited to the following: [ utf8, gbk, latin1, utf8mb4, Chinese_PRC_CI_AS, Chinese_PRC_CS_AS, SQL_Latin1_General_CP1_CI_AS, SQL_Latin1_General_CP1_CS_AS, Chinese_PRC_BIN ], default is "utf8" (utf8mb4 only supports versions 5.5 and 5.6).
+	// The character set that is used by the cluster. For more information, see Character set tables.
 	// +kubebuilder:validation:Optional
 	CharacterSetName *string `json:"characterSetName,omitempty" tf:"character_set_name,omitempty"`
 
-	// The Id of cluster that can run database.
+	// The language that defines the collation rules in the database.
+	// -> NOTE: The locale must be compatible with the character set set set by character_set_name. This parameter is required for a PolarDB for PostgreSQL (Compatible with Oracle) or PolarDB for PostgreSQL cluster. This parameter is optional for a PolarDB for MySQL cluster.
+	// +kubebuilder:validation:Optional
+	Collate *string `json:"collate,omitempty" tf:"collate,omitempty"`
+
+	// The language that indicates the character type of the database.
+	// -> NOTE: The language must be compatible with the character set that is specified by character_set_name. The value that you specify must be the same as the value of collate. This parameter is required for PolarDB for PostgreSQL (Compatible with Oracle) clusters or PolarDB for PostgreSQL clusters. This parameter is optional for PolarDB for MySQL clusters.This parameter is required for a PolarDB for PostgreSQL (Compatible with Oracle) or PolarDB for PostgreSQL cluster. This parameter is optional for a PolarDB for MySQL cluster.
+	// +kubebuilder:validation:Optional
+	Ctype *string `json:"ctype,omitempty" tf:"ctype,omitempty"`
+
+	// The ID of cluster.
 	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-upjet-alibabacloud/apis/polardb/v1alpha1.Cluster
 	// +crossplane:generate:reference:extractor=github.com/crossplane-contrib/provider-upjet-alibabacloud/config/common.IdExtractor()
 	// +kubebuilder:validation:Optional
@@ -86,11 +115,11 @@ type DatabaseParameters struct {
 	// +kubebuilder:validation:Optional
 	DBClusterIDSelector *v1.Selector `json:"dbClusterIdSelector,omitempty" tf:"-"`
 
-	// Database description. It must start with a Chinese character or English letter, cannot start with "http://" or "https://". It can include Chinese and English characters, underlines (_), hyphens (-), and numbers. The length must be 2-256 characters.
+	// The description of the database. The description must meet the following requirements:
 	// +kubebuilder:validation:Optional
 	DBDescription *string `json:"dbDescription,omitempty" tf:"db_description,omitempty"`
 
-	// Name of the database requiring a uniqueness check. It may consist of lower case letters, numbers, and underlines, and must start with a letterand have no more than 64 characters.
+	// The name of the database. It may consist of lower case letters, numbers, and underlines, and must start with a letterand have no more than 64 characters.
 	// +kubebuilder:validation:Optional
 	DBName *string `json:"dbName,omitempty" tf:"db_name,omitempty"`
 
@@ -127,7 +156,7 @@ type DatabaseStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:storageversion
 
-// Database is the Schema for the Databases API. Provides a PolarDB database resource.
+// Database is the Schema for the Databases API. Provides a Alicloud Polar Db Database resource.
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
