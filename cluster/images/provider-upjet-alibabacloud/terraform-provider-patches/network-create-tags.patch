@@ -1,0 +1,28 @@
+diff --git a/alicloud/resource_alicloud_eip_address.go b/alicloud/resource_alicloud_eip_address.go
+index 0854766..aac3962 100644
+--- a/alicloud/resource_alicloud_eip_address.go
++++ b/alicloud/resource_alicloud_eip_address.go
+@@ -190,6 +190,9 @@ func resourceAliCloudEipAddressCreate(d *schema.ResourceData, meta interface{})
+ 	query["InstanceId"] = d.Get("allocation_id")
+ 	request["RegionId"] = client.RegionId
+ 	request["ClientToken"] = buildClientToken(action)
++	if v, ok := d.GetOk("tags"); ok {
++		request = expandTagsToMap(request, ConvertTags(v.(map[string]interface{})))
++	}
+ 
+ 	if v, ok := d.GetOk("bandwidth"); ok {
+ 		request["Bandwidth"] = v
+diff --git a/alicloud/resource_alicloud_vswitch.go b/alicloud/resource_alicloud_vswitch.go
+index db86f00..ebd82b8 100644
+--- a/alicloud/resource_alicloud_vswitch.go
++++ b/alicloud/resource_alicloud_vswitch.go
+@@ -164,6 +164,9 @@ func resourceAliCloudVpcVswitchCreate(d *schema.ResourceData, meta interface{})
+ 
+ 		request["CidrBlock"] = d.Get("cidr_block")
+ 		request["VpcId"] = d.Get("vpc_id")
++		if v, ok := d.GetOk("tags"); ok {
++			request = expandTagsToMap(request, ConvertTags(v.(map[string]interface{})))
++		}
+ 		if v, ok := d.GetOk("name"); ok {
+ 			request["VSwitchName"] = v
+ 		}

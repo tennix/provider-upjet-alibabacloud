@@ -9,6 +9,17 @@ make submodules
 make generate
 ```
 
+The runtime image builds Terraform provider `1.279.0` from upstream source with
+`cluster/images/provider-upjet-alibabacloud/terraform-provider-patches/network-create-tags.patch`.
+The patch includes the requested tags in `AllocateEipAddress` and ordinary
+`CreateVSwitch` calls, before the resources are created. Existing tag updates and
+default-vSwitch behavior are preserved. Image builds run offline request tests
+before compiling the native plugin for each target architecture. Both the Make
+and CD image builds include this patch; replacing the plugin with an official
+release binary would remove the fix. No CRD/schema regeneration is needed for
+these request-only changes. Cloud-side RequestTag authorization and failure
+cleanup still require deployment validation before narrowing customer policies.
+
 ## Authentication
 
 Provider credentials are configured with a `ProviderConfig`. Static credentials

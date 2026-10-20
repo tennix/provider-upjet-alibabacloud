@@ -1,0 +1,117 @@
+package alicloud
+
+import (
+	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"net/url"
+	"reflect"
+	"strings"
+	"sync"
+	"testing"
+
+	"github.com/aliyun/credentials-go/credentials"
+	"github.com/aliyun/terraform-provider-alicloud/alicloud/connectivity"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+)
+
+// Stop at the first RPC so these tests cannot create cloud resources.
+func TestNetworkCreateRequestTags(t *testing.T) {
+	for _, resource := range []struct {
+		name       string
+		schema     *schema.Resource
+		action     string
+		parameters map[string]interface{}
+	}{
+		{"eip", resourceAliCloudEipAddress(), "AllocateEipAddress", map[string]interface{}{}},
+		{"vswitch", resourceAliCloudVpcVswitch(), "CreateVSwitch", map[string]interface{}{
+			"vpc_id": "vpc-test", "zone_id": "ap-southeast-1a", "cidr_block": "10.0.0.0/24",
+		}},
+		// Default vSwitch creation has a separate API and keeps its existing behavior.
+		{"default_vswitch", resourceAliCloudVpcVswitch(), "CreateDefaultVSwitch", map[string]interface{}{
+			"is_default": true, "zone_id": "ap-southeast-1a",
+		}},
+	} {
+		for _, tagged := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/tagged=%t", resource.name, tagged), func(t *testing.T) {
+				parameters := make(map[string]interface{})
+				for k, v := range resource.parameters {
+					parameters[k] = v
+				}
+				wantTags := map[string]interface{}{}
+				if tagged {
+					parameters["tags"] = map[string]interface{}{"ManagedBy": "PingCAP", "environment": "test"}
+					if resource.name != "default_vswitch" {
+						wantTags = parameters["tags"].(map[string]interface{})
+					}
+				}
+				data := schema.TestResourceDataRaw(t, resource.schema.Schema, parameters)
+				var mu sync.Mutex
+				calls := 0
+				var action string
+				var request url.Values
+				server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+					mu.Lock()
+					defer mu.Unlock()
+					calls++
+					if err := r.ParseForm(); err != nil {
+						t.Errorf("parse RPC form: %v", err)
+					}
+					action = r.Form.Get("Action")
+					if action == "" {
+						action = r.Header.Get("x-acs-action")
+					}
+					request = r.Form
+					w.Header().Set("Content-Type", "application/json")
+					w.WriteHeader(http.StatusBadRequest)
+					fmt.Fprint(w, `{"Code":"TestStop","Message":"stop before cloud request","RequestId":"test"}`)
+				}))
+				defer server.Close()
+				endpoints := &sync.Map{}
+				endpoints.Store("vpc", strings.TrimPrefix(server.URL, "http://"))
+				credential, err := credentials.NewCredential(new(credentials.Config).SetType("access_key").SetAccessKeyId("test-key").SetAccessKeySecret("test-secret"))
+				if err != nil {
+					t.Fatal(err)
+				}
+				cfg := &connectivity.Config{
+					RegionId: "ap-southeast-1", AccessKey: "test-key", SecretKey: "test-secret",
+					Protocol: "HTTP", Endpoints: endpoints, SignVersion: &sync.Map{},
+					Credential: credential, AccountType: "test", SkipRegionValidation: true,
+					ClientReadTimeout: 1000, ClientConnectTimeout: 1000,
+				}
+				client, err := cfg.Client()
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = resource.schema.Create(data, client)
+				mu.Lock()
+				defer mu.Unlock()
+				if err == nil || !strings.Contains(err.Error(), "TestStop") {
+					t.Fatalf("expected stopped RPC, got %v", err)
+				}
+				if calls != 1 || action != resource.action {
+					t.Fatalf("RPC calls=%d action=%s; want one %s", calls, action, resource.action)
+				}
+				gotTags := map[string]interface{}{}
+				for key := range request {
+					if strings.HasPrefix(key, "Tag.") && strings.HasSuffix(key, ".Key") {
+						tagValue, ok := request[strings.TrimSuffix(key, ".Key")+".Value"]
+						if !ok {
+							t.Fatalf("missing value for %s", key)
+						}
+						gotTags[request.Get(key)] = tagValue[0]
+					}
+				}
+				if !reflect.DeepEqual(gotTags, wantTags) {
+					t.Fatalf("request tags=%v; want %v", gotTags, wantTags)
+				}
+				if request.Get("RegionId") != client.RegionId {
+					t.Fatalf("region changed: %v", request)
+				}
+				if resource.name == "vswitch" && (request.Get("VpcId") != "vpc-test" || request.Get("CidrBlock") != "10.0.0.0/24") {
+					t.Fatalf("vSwitch network parameters changed: %v", request)
+				}
+			})
+		}
+	}
+}

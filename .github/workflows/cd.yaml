@@ -9,6 +9,7 @@ on:
       - pingcap
     paths:
       - .github/workflows/cd.yaml
+      - cluster/images/provider-upjet-alibabacloud/**
   workflow_dispatch:
 
 permissions:
@@ -94,7 +95,6 @@ jobs:
         uses: docker/setup-buildx-action@v3
         with:
           version: ${{ env.DOCKER_BUILDX_VERSION }}
-          install: true
 
       - name: Build
         run: make -j2 build.all
@@ -136,6 +136,7 @@ jobs:
           mkdir -p .work/docker-context
           cp cluster/images/provider-upjet-alibabacloud/Dockerfile .work/docker-context/Dockerfile
           cp cluster/images/provider-upjet-alibabacloud/terraformrc.hcl .work/docker-context/terraformrc.hcl
+          cp -r cluster/images/provider-upjet-alibabacloud/terraform-provider-patches .work/docker-context/terraform-provider-patches
           cp -r _output/bin .work/docker-context/bin
 
       - name: Build and push Docker image
